@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="default">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="在实际开发过程中，Webservice是实现各个编程语言和操作系统无障碍交互一种常用方式，Webservice采用Soap协议（HTTP+XML），可以通过SoapUI开源软件或者浏览器直接进行接口服务的测试。但是通常系统交互需要面临网络问题，内网开放的Webservice服务无法在外网环境下调试，Ngrok+Ngnix提供了一种针对Webservice的解决策略。 理解 Ngrok反向代理Ngr">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ngrok+Ngnix搭建内网Webservice服务隧道">
+<meta property="og:url" content="http://jianghao.wang/2017/Nginx学习/index.html">
+<meta property="og:site_name" content="TizzyT&#39;s Blog">
+<meta property="og:description" content="在实际开发过程中，Webservice是实现各个编程语言和操作系统无障碍交互一种常用方式，Webservice采用Soap协议（HTTP+XML），可以通过SoapUI开源软件或者浏览器直接进行接口服务的测试。但是通常系统交互需要面临网络问题，内网开放的Webservice服务无法在外网环境下调试，Ngrok+Ngnix提供了一种针对Webservice的解决策略。 理解 Ngrok反向代理Ngr">
+<meta property="og:image" content="https://arthornye.github.io/images/ngrok.png">
+<meta property="og:image" content="https://arthornye.github.io/images/ngrok%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84.png">
+<meta property="og:image" content="https://arthornye.github.io/images/nginx.png">
+<meta property="og:image" content="https://arthornye.github.io/images/Webservice.png">
+<meta property="og:image" content="https://arthornye.github.io/images/%E6%B5%81%E7%A8%8B.png">
+<meta property="og:updated_time" content="2017-05-04T14:35:27.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Ngrok+Ngnix搭建内网Webservice服务隧道">
+<meta name="twitter:description" content="在实际开发过程中，Webservice是实现各个编程语言和操作系统无障碍交互一种常用方式，Webservice采用Soap协议（HTTP+XML），可以通过SoapUI开源软件或者浏览器直接进行接口服务的测试。但是通常系统交互需要面临网络问题，内网开放的Webservice服务无法在外网环境下调试，Ngrok+Ngnix提供了一种针对Webservice的解决策略。 理解 Ngrok反向代理Ngr">
+<meta name="twitter:image" content="https://arthornye.github.io/images/ngrok.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://jianghao.wang/2017/Nginx学习/"/>
+
+
+
+
+
+  <title>Ngrok+Ngnix搭建内网Webservice服务隧道 | TizzyT's Blog</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-62782471-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?50c15455e37f70aea674ff4a663eef27";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">TizzyT's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">即使是拖后腿的，拼死努力的话，也是可以超越精英的。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            Schedule
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            Sitemap
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            Commonweal 404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://jianghao.wang/2017/Nginx学习/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yeqiaozhu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="TizzyT's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Ngrok+Ngnix搭建内网Webservice服务隧道</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-05-04T22:35:27+08:00">
+                2017-05-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/Nginx学习/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/Nginx学习/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在实际开发过程中，Webservice是实现各个编程语言和操作系统无障碍交互一种常用方式，Webservice采用Soap协议（HTTP+XML），可以通过SoapUI开源软件或者浏览器直接进行接口服务的测试。但是通常系统交互需要面临网络问题，内网开放的Webservice服务无法在外网环境下调试，Ngrok+Ngnix提供了一种针对Webservice的解决策略。</p>
+<h2 id="理解-Ngrok反向代理"><a href="#理解-Ngrok反向代理" class="headerlink" title="理解 Ngrok反向代理"></a>理解 Ngrok反向代理</h2><p>Ngrok内网穿透，通过Ngrok反向代理可以把内网服务暴露给公网Ngrok服务端，从而实现局域网服务-&gt;Ngrok客户端-&gt;公网Ngrok服务端(vps域名)-&gt;请求客户端的服务隧道。Ngrok客户端机器需要<strong>内外双通</strong>，网络链路如下：<br><img src="https://arthornye.github.io/images/ngrok.png" alt="cmd-markdown-logo"></p>
+<h3 id="Ngrok配置"><a href="#Ngrok配置" class="headerlink" title="Ngrok配置"></a>Ngrok配置</h3><p>在已经搭建好的Ngrok服务端的前提下，我们需要起Ngrok的客户端服务，这里提供一个已经编辑好的<a href="http://pan.baidu.com/s/1eRG1DcQ" target="_blank" rel="external">Ngrok包</a>:</p>
+<p>我们可以通过ngrok.config配置我们的隧道，all.bat启动隧道（windows环境下）<img src="https://arthornye.github.io/images/ngrok%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84.png" alt="cmd-markdown-logo"></p>
+<p>ngrok.config内容如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">server_addr: ngrok.yuantutech.com:<span class="number">9002</span>  /**ngrok服务端IP端口公网**/</div><div class="line">trust_host_root_certs: false</div><div class="line">inspect_addr: disabled</div><div class="line">tunnels:</div><div class="line">  guahao: /**定义隧道名**/</div><div class="line">    proto:</div><div class="line">      tcp: localhost:<span class="number">3389</span>  /**内网服务IP端口**/</div><div class="line">    remote_port: <span class="number">40010</span>   /**ngrok服务端分配TCP连接端口**/</div></pre></td></tr></table></figure></p>
+<p>all.bat配置启动项内容如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ngrok -config=ngrok.config start guahao /**启动对应的隧道，可叠加**/</div></pre></td></tr></table></figure></p>
+<h2 id="Nginx-subfilter替换规则"><a href="#Nginx-subfilter替换规则" class="headerlink" title="Nginx subfilter替换规则"></a>Nginx subfilter替换规则</h2><h3 id="理解-Nginx"><a href="#理解-Nginx" class="headerlink" title="理解 Nginx"></a>理解 Nginx</h3><p><a href="http://pan.baidu.com/s/1kUJFoMF" target="_blank" rel="external">Nginx</a>多用户负载均衡（正向代理）配置，在高并发场景下通过nginx负载到多个集群进行请求的分流，同时在多个集群节点的情况下可以灵活配置切换(灰度发布)，保证服务的高可用。Nginx也可以用于反向代理，同时可以对转发接收的报文进行过滤处理，通常我们需要替换报文中某个特定的字段可以通过Nginx的subfilter组件进行过滤。</p>
+<p><img src="https://arthornye.github.io/images/nginx.png" alt="cmd-markdown-logo"></p>
+<h3 id="Ngnix-subfilter配置"><a href="#Ngnix-subfilter配置" class="headerlink" title="Ngnix subfilter配置"></a>Ngnix subfilter配置</h3><p>打开ngnix包中conf文件夹下的ngnix.conf文件编辑进行配置：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">events &#123;</div><div class="line">    worker_connections  <span class="number">1024</span>;</div><div class="line">&#125;</div><div class="line">http &#123;</div><div class="line">    include       mime.types;</div><div class="line">    default_type  application/octet-stream;</div><div class="line">    sendfile        on;</div><div class="line">    keepalive_timeout  <span class="number">65</span>;/**设置ngnix响应超时时间**/</div><div class="line">	server &#123;</div><div class="line">        listen       <span class="number">8002</span>;  /**nginx服务监听端口**/</div><div class="line">        server_name  localhost; /**nginx服务IP**/</div><div class="line">        location  / &#123;  /**理解为JAVA拦截器，对所有路由进行拦截处理**/</div><div class="line">            root   html;</div><div class="line">            index  index.html index.htm;</div><div class="line">			sub_filter  <span class="string">'172.100.100.1'</span> <span class="string">'ngrok.yuantutech.com'</span>;</div><div class="line">			/**接收到的报文进行过滤处理，左边为需要被替换的部分**/</div><div class="line">			sub_filter_once off;</div><div class="line">			/**替换多次**/</div><div class="line">			sub_filter_types text/xml;</div><div class="line">			/**只替换文本文件，不替换二进制流**/</div><div class="line">			proxy_set_header Accept-Encoding <span class="string">""</span>;</div><div class="line">		/**指定ngnix可以接收的类型，接收的二进制流可以转化为文本处理**/</div><div class="line">			proxy_pass http://ngrok.yuantutech.com;</div><div class="line">			/**反向代理的服务器**/</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="搭建Webservice服务隧道"><a href="#搭建Webservice服务隧道" class="headerlink" title="搭建Webservice服务隧道"></a>搭建Webservice服务隧道</h2><p>Webservice搭建在内网的情况下需要建立外网到内网的服务隧道，在实际开发中还是尤为重要的。这里需要介绍一下Webservice在程序中的加载原理：</p>
+<h3 id="Webservice-wsdl解释文件"><a href="#Webservice-wsdl解释文件" class="headerlink" title="Webservice wsdl解释文件"></a>Webservice wsdl解释文件</h3><p>这边是我在搭建完ngrok+nginx服务隧道之后本地访问到的Webservice解释文件，可以看到解释文件中server address是我们ngrok服务端的转发IP端口，是我们通过nginx subfilter替换的结果，这个解释文件可以在程序里正常加载。也是我们请求实际的目的地址，如果不进行替换，我们接收到的解释文件对应的局域网ip端口我们在公网是无法访问到的。<br><img src="https://arthornye.github.io/images/Webservice.png" alt="cmd-markdown-logo"></p>
+<h3 id="服务隧道请求流程图"><a href="#服务隧道请求流程图" class="headerlink" title="服务隧道请求流程图"></a>服务隧道请求流程图</h3><p><img src="https://arthornye.github.io/images/%E6%B5%81%E7%A8%8B.png" alt="cmd-markdown-logo"></p>
+<h2 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h2><p>程序中默认加载的是Webservice wsdl解释文件的目标地址，通过nginx的subfilter可以将其替换为ngrok代理出来的公网地址。其实这里也可以直接将xml作为静态文件发布到自己本地的tomcat下，将地址修改为任意想要的目标地址（还是很实用的）。程序是没有思维的，这里是不是应该赞一波程序员，人工智能慢慢来吧。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/hello-world/" rel="next" title="Hello World">
+                <i class="fa fa-chevron-left"></i> Hello World
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/Tomcat启动参数优化/" rel="prev" title="一次Tomcat启动参数优化">
+                一次Tomcat启动参数优化 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/avatar.jpg"
+                alt="yeqiaozhu" />
+            
+              <p class="site-author-name" itemprop="name">yeqiaozhu</p>
+              <p class="site-description motion-element" itemprop="description">Walk steps step by step</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/ArthornYe" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="http://www.linkedin.com/profile/view?id=137337693" target="_blank" title="Lindedin">
+                    
+                      <i class="fa fa-fw fa-globe"></i>Lindedin</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="http://www.zhihu.com/people/wang-jiang-hao-51" target="_blank" title="ZhiHu">
+                    
+                      <i class="fa fa-fw fa-globe"></i>ZhiHu</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+            <div class="cc-license motion-element" itemprop="license">
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" target="_blank">
+                <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+              </a>
+            </div>
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#理解-Ngrok反向代理"><span class="nav-number">1.</span> <span class="nav-text">理解 Ngrok反向代理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Ngrok配置"><span class="nav-number">1.1.</span> <span class="nav-text">Ngrok配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Nginx-subfilter替换规则"><span class="nav-number">2.</span> <span class="nav-text">Nginx subfilter替换规则</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#理解-Nginx"><span class="nav-number">2.1.</span> <span class="nav-text">理解 Nginx</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Ngnix-subfilter配置"><span class="nav-number">2.2.</span> <span class="nav-text">Ngnix subfilter配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#搭建Webservice服务隧道"><span class="nav-number">3.</span> <span class="nav-text">搭建Webservice服务隧道</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Webservice-wsdl解释文件"><span class="nav-number">3.1.</span> <span class="nav-text">Webservice wsdl解释文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#服务隧道请求流程图"><span class="nav-number">3.2.</span> <span class="nav-text">服务隧道请求流程图</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结："><span class="nav-number">4.</span> <span class="nav-text">总结：</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yeqiaozhu</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://tizzy323.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://jianghao.wang/2017/Nginx学习/';
+          this.page.identifier = '2017/Nginx学习/';
+          this.page.title = 'Ngrok+Ngnix搭建内网Webservice服务隧道';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://tizzy323.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
