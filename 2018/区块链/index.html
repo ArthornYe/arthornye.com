@@ -147,7 +147,7 @@
 <meta property="og:image" content="https://arthornye.github.io/images/seal.png">
 <meta property="og:image" content="https://arthornye.github.io/images/right.png">
 <meta property="og:image" content="https://arthornye.github.io/images/longest.png">
-<meta property="og:updated_time" content="2018-01-15T09:35:23.000Z">
+<meta property="og:updated_time" content="2018-01-15T09:37:33.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="WTF is The BlockChain?">
 <meta name="twitter:description" content="最近区块链大热，走到哪儿都有人在讨论区块链和比特币，甚至于一些对密码学完全没有概念的人都开始大肆吹捧，不免让人嗤之以鼻。相信很多技术和非技术的朋友都希望能够更深层次地去了解它是如何工作的。本文将用不到四千字来尝试阐述区块链的实现原理： 为什么需要区块链这么复杂玩意儿？ For every complex problem there is an answer that is clear, simpl">
@@ -508,11 +508,9 @@
 <p>在矿工工作的过程中，也可能产生欺诈行为，错误的签章数字不能通过团队其他人的校验。其他人如果内容记录被修改过也不能通过校验，这样就保证了被存储的记录永远是可信任的（通过大多数人一致的原则保证）。在挖矿的过程中会消耗“燃料”，这个成本和电力的消耗是巨大的，团队中每个人必须签上章，签章校验不过可能的原因：</p>
 <p>​                          <img src="https://arthornye.github.io/images/seal.png" alt="cmd-markdown-logo"></p>
 <ul>
-<li>节点可能误听了网络中的交易。<ul>
+<li>节点可能误听了网络中的交易。</li>
 <li>节点可能错写了网络中的交易。</li>
 <li>节点可能试图盗取或者欺骗网络中的其他节点。</li>
-</ul>
-</li>
 </ul>
 <p>当然无论出于何种原因，校验不通过的节点只能从其他节点中拷贝一份账本到自己的文件夹中。</p>
 <h4 id="为什么要建立一种竞争机制"><a href="#为什么要建立一种竞争机制" class="headerlink" title="为什么要建立一种竞争机制"></a>为什么要建立一种竞争机制</h4><p>我们可能有个疑问，为什么花费大量的资源去计算这个签章值，建立在竞争机制下的计算出了第一个算力的结果值是有效的。其他的算力都是在产生浪费，之前新加坡一家区块链公司针对比特币产生的大量资源浪费提出了分块计算进行资源利用的优化，但是并没有消除这种竞争，那么我们为什么需要这种竞争？</p>
