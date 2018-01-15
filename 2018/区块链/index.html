@@ -147,7 +147,7 @@
 <meta property="og:image" content="https://arthornye.github.io/images/seal.png">
 <meta property="og:image" content="https://arthornye.github.io/images/right.png">
 <meta property="og:image" content="https://arthornye.github.io/images/longest.png">
-<meta property="og:updated_time" content="2018-01-15T09:27:41.000Z">
+<meta property="og:updated_time" content="2018-01-15T09:35:23.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="WTF is The BlockChain?">
 <meta name="twitter:description" content="最近区块链大热，走到哪儿都有人在讨论区块链和比特币，甚至于一些对密码学完全没有概念的人都开始大肆吹捧，不免让人嗤之以鼻。相信很多技术和非技术的朋友都希望能够更深层次地去了解它是如何工作的。本文将用不到四千字来尝试阐述区块链的实现原理： 为什么需要区块链这么复杂玩意儿？ For every complex problem there is an answer that is clear, simpl">
@@ -461,14 +461,12 @@
 <p>​    在打帐成功之后，银行通知你钱已经转账到位然后你会通知Joe打帐成功让其确认。<img src="https://arthornye.github.io/images/sure.png" alt="cmd-markdown-logo"></p>
 <p>这样的转账方式是我们目前乃至几个世纪之前一直使用的，我们需要一个第三方机构进行担保，才能在彼此之间建立一种信任。但是这样的方式往往机构是单一的，也就是说如果这个第三方机构产生腐化，那么造成的影响也是巨大的（金融次贷危机的屡次发生），这就需要很多的人力去维持机构的工作以及政府的有力监管（政企腐败难以监管）。同时还会面临可能出现的几个问题：</p>
 <ul>
-<li><p>如果这个第三方机构的数据在一次火灾中被烧毁或者数据库数据直接被篡改。</p>
-</li>
-<li><p>又或者客户经理（第三方机构）在转账数额上动手脚，客户可能根本无法感知到（可以关注相关新闻）。</p>
+<li>如果这个第三方机构的数据在一次火灾中被烧毁或者数据库数据直接被篡改。</li>
+<li>又或者客户经理（第三方机构）在转账数额上动手脚，客户可能根本无法感知到（可以关注相关新闻）。</li>
+</ul>
 <blockquote>
 <p>多年以来我们都将所有的鸡蛋放在第三方机构，并且建立了一种习惯上的信任。</p>
 </blockquote>
-</li>
-</ul>
 <p>那么我们是否可以自己去建立这种信任，而不是通过第三方…….</p>
 <h4 id="所以，区块链是如何工作的？"><a href="#所以，区块链是如何工作的？" class="headerlink" title="所以，区块链是如何工作的？"></a>所以，区块链是如何工作的？</h4><p>要达到不通过第三方的目的，我们需要聚集这些志同道合的人形成一个团队，以某种方式在内部建立一种信任机制。</p>
 <p><img src="https://arthornye.github.io/images/group.png" alt="cmd-markdown-logo"></p>
