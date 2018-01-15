@@ -123,13 +123,13 @@
 
 
 
-<meta name="description" content="​    最近区块链大热，走到哪儿都有人在讨论区块链和比特币，甚至于一些对密码学完全没有概念的人都开始大肆吹捧，不免让人嗤之以鼻。相信很多技术和非技术的朋友都希望能够更深层次地去了解它是如何工作的。本文将用不到四千字来尝试阐述区块链的实现原理： #### 为什么需要区块链这么复杂玩意儿？  For every complex problem there is an answer that is c">
+<meta name="description" content="​    最近区块链大热，走到哪儿都有人在讨论区块链和比特币，甚至于一些对密码学完全没有概念的人都开始大肆吹捧，不免让人嗤之以鼻。相信很多技术和非技术的朋友都希望能够更深层次地去了解它是如何工作的。本文将用不到四千字来尝试阐述区块链的实现原理： 为什么需要区块链这么复杂玩意儿？ For every complex problem there is an answer that is clear,">
 <meta name="keywords" content="科技">
 <meta property="og:type" content="article">
 <meta property="og:title" content="WTF is The BlockChain?">
 <meta property="og:url" content="http://jianghao.wang/2018/区块链/index.html">
 <meta property="og:site_name" content="TizzyT&#39;s Blog">
-<meta property="og:description" content="​    最近区块链大热，走到哪儿都有人在讨论区块链和比特币，甚至于一些对密码学完全没有概念的人都开始大肆吹捧，不免让人嗤之以鼻。相信很多技术和非技术的朋友都希望能够更深层次地去了解它是如何工作的。本文将用不到四千字来尝试阐述区块链的实现原理： #### 为什么需要区块链这么复杂玩意儿？  For every complex problem there is an answer that is c">
+<meta property="og:description" content="​    最近区块链大热，走到哪儿都有人在讨论区块链和比特币，甚至于一些对密码学完全没有概念的人都开始大肆吹捧，不免让人嗤之以鼻。相信很多技术和非技术的朋友都希望能够更深层次地去了解它是如何工作的。本文将用不到四千字来尝试阐述区块链的实现原理： 为什么需要区块链这么复杂玩意儿？ For every complex problem there is an answer that is clear,">
 <meta property="og:image" content="https://arthornye.github.io/images/banktransfer.png">
 <meta property="og:image" content="https://arthornye.github.io/images/sure.png">
 <meta property="og:image" content="https://arthornye.github.io/images/group.png">
@@ -147,10 +147,10 @@
 <meta property="og:image" content="https://arthornye.github.io/images/seal.png">
 <meta property="og:image" content="https://arthornye.github.io/images/right.png">
 <meta property="og:image" content="https://arthornye.github.io/images/longest.png">
-<meta property="og:updated_time" content="2018-01-15T08:25:58.000Z">
+<meta property="og:updated_time" content="2018-01-15T08:28:19.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="WTF is The BlockChain?">
-<meta name="twitter:description" content="​    最近区块链大热，走到哪儿都有人在讨论区块链和比特币，甚至于一些对密码学完全没有概念的人都开始大肆吹捧，不免让人嗤之以鼻。相信很多技术和非技术的朋友都希望能够更深层次地去了解它是如何工作的。本文将用不到四千字来尝试阐述区块链的实现原理： #### 为什么需要区块链这么复杂玩意儿？  For every complex problem there is an answer that is c">
+<meta name="twitter:description" content="​    最近区块链大热，走到哪儿都有人在讨论区块链和比特币，甚至于一些对密码学完全没有概念的人都开始大肆吹捧，不免让人嗤之以鼻。相信很多技术和非技术的朋友都希望能够更深层次地去了解它是如何工作的。本文将用不到四千字来尝试阐述区块链的实现原理： 为什么需要区块链这么复杂玩意儿？ For every complex problem there is an answer that is clear,">
 <meta name="twitter:image" content="https://arthornye.github.io/images/banktransfer.png">
 
 
@@ -452,8 +452,7 @@
 
       
         <p>​    最近区块链大热，走到哪儿都有人在讨论区块链和比特币，甚至于一些对密码学完全没有概念的人都开始大肆吹捧，不免让人嗤之以鼻。相信很多技术和非技术的朋友都希望能够更深层次地去了解它是如何工作的。本文将用不到四千字来尝试阐述区块链的实现原理：</p>
-<pre><code>#### 为什么需要区块链这么复杂玩意儿？
-</code></pre><blockquote>
+<h3 id="为什么需要区块链这么复杂玩意儿？"><a href="#为什么需要区块链这么复杂玩意儿？" class="headerlink" title="为什么需要区块链这么复杂玩意儿？"></a>为什么需要区块链这么复杂玩意儿？</h3><blockquote>
 <p>For every complex problem there is an answer that is clear, simple, and wrong.” — H. L. Mencken        </p>
 </blockquote>
 <p>​    在这里不尝试去给区块链一个准确的定义，而是通过区块链可以被使用的地方去分析和深入理解这项技术可能给世界带来的改变。</p>
@@ -473,12 +472,12 @@
 </ul>
 <h4 id="所以，区块链是如何工作的？"><a href="#所以，区块链是如何工作的？" class="headerlink" title="所以，区块链是如何工作的？"></a>所以，区块链是如何工作的？</h4><p>​    要达到不通过第三方的目的，我们需要聚集这些志同道合的人形成一个团队，以某种方式在内部建立一种信任机制。</p>
 <p><img src="https://arthornye.github.io/images/group.png" alt="cmd-markdown-logo"></p>
-<h4 id="1-一个空的文件夹"><a href="#1-一个空的文件夹" class="headerlink" title="1.一个空的文件夹"></a>1.一个空的文件夹</h4><p>​    现在我们发给每个人一个空的文件夹，这个团队内部所有的交易都会被写到各自的文件夹中，这些所有文件夹的集合共同建立了一种信任机制。</p>
-<h4 id="2-发生转账事务"><a href="#2-发生转账事务" class="headerlink" title="2.发生转账事务"></a>2.发生转账事务</h4><p>​    每个人都配有一支笔和空白页，当团队内部发生转账交易时，会记录在自己的纸上，纸张满了会将其存入文件夹。那么我们假设#2想转10美元给#9，然后2号大喊一声：“我要转10块钱给9号，所有人都写下这笔记录”。</p>
+<h4 id="一个空的文件夹"><a href="#一个空的文件夹" class="headerlink" title="一个空的文件夹"></a>一个空的文件夹</h4><p>​    现在我们发给每个人一个空的文件夹，这个团队内部所有的交易都会被写到各自的文件夹中，这些所有文件夹的集合共同建立了一种信任机制。</p>
+<h4 id="发生转账事务"><a href="#发生转账事务" class="headerlink" title="发生转账事务"></a>发生转账事务</h4><p>​    每个人都配有一支笔和空白页，当团队内部发生转账交易时，会记录在自己的纸上，纸张满了会将其存入文件夹。那么我们假设#2想转10美元给#9，然后2号大喊一声：“我要转10块钱给9号，所有人都写下这笔记录”。</p>
 <p><img src="https://arthornye.github.io/images/transaction.png" alt="cmd-markdown-logo"></p>
 <p>​    然后每个人都去check一下2号是否有足够的钱去支持这笔转账，如果有的话每个人都写一份记录在自己的纸上。</p>
 <p>​                            <img src="https://arthornye.github.io/images/firsttrans.png" alt="cmd-markdown-logo"></p>
-<h4 id="3-持续产生转账记录"><a href="#3-持续产生转账记录" class="headerlink" title="3.持续产生转账记录"></a>3.持续产生转账记录</h4><p>​    通过这样的方式团队中每个人想转账就喊一声让其他人记录下这次转账记录，假设一张纸可以写十条记录，那么十条记录写满之后就需要将这张纸存进文件夹，然后拿出一张新的纸开始循环第二步。</p>
+<h4 id="持续产生转账记录"><a href="#持续产生转账记录" class="headerlink" title="持续产生转账记录"></a>持续产生转账记录</h4><p>​    通过这样的方式团队中每个人想转账就喊一声让其他人记录下这次转账记录，假设一张纸可以写十条记录，那么十条记录写满之后就需要将这张纸存进文件夹，然后拿出一张新的纸开始循环第二步。</p>
 <p><img src="https://arthornye.github.io/images/fullfull.png" alt="cmd-markdown-logo"></p>
 <p>​    在我们将写满的一页加入文件夹时，我们需要考虑一个问题如何保证这张被记录的纸是可信任的（所有的记录都未被篡改，所有人的纸张内容不一定一致，即使通过非对称加密保证通讯的加密性也不能保证每个节点都是忠诚的为这个分布式系统服务），那么我们需要给这张纸的内容盖一个印章。盖这个章的目的：</p>
 <ul>
@@ -746,7 +745,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#所以，区块链是如何工作的？"><span class="nav-number">1.</span> <span class="nav-text">所以，区块链是如何工作的？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-一个空的文件夹"><span class="nav-number">2.</span> <span class="nav-text">1.一个空的文件夹</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-发生转账事务"><span class="nav-number">3.</span> <span class="nav-text">2.发生转账事务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-持续产生转账记录"><span class="nav-number">4.</span> <span class="nav-text">3.持续产生转账记录</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何去进行签章"><span class="nav-number"></span> <span class="nav-text">如何去进行签章</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#如何利用hash算法去进行签章？"><span class="nav-number">1.</span> <span class="nav-text">如何利用hash算法去进行签章？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#为什么要建立一种竞争机制"><span class="nav-number">2.</span> <span class="nav-text">为什么要建立一种竞争机制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#如何防止签章被篡改"><span class="nav-number">3.</span> <span class="nav-text">如何防止签章被篡改</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#团队中超过半数的人不诚实？"><span class="nav-number">4.</span> <span class="nav-text">团队中超过半数的人不诚实？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number"></span> <span class="nav-text">总结</span></a></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么需要区块链这么复杂玩意儿？"><span class="nav-number">1.</span> <span class="nav-text">为什么需要区块链这么复杂玩意儿？</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#所以，区块链是如何工作的？"><span class="nav-number">1.1.</span> <span class="nav-text">所以，区块链是如何工作的？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#一个空的文件夹"><span class="nav-number">1.2.</span> <span class="nav-text">一个空的文件夹</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#发生转账事务"><span class="nav-number">1.3.</span> <span class="nav-text">发生转账事务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#持续产生转账记录"><span class="nav-number">1.4.</span> <span class="nav-text">持续产生转账记录</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何去进行签章"><span class="nav-number">2.</span> <span class="nav-text">如何去进行签章</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#如何利用hash算法去进行签章？"><span class="nav-number">2.1.</span> <span class="nav-text">如何利用hash算法去进行签章？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#为什么要建立一种竞争机制"><span class="nav-number">2.2.</span> <span class="nav-text">为什么要建立一种竞争机制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#如何防止签章被篡改"><span class="nav-number">2.3.</span> <span class="nav-text">如何防止签章被篡改</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#团队中超过半数的人不诚实？"><span class="nav-number">2.4.</span> <span class="nav-text">团队中超过半数的人不诚实？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
             
 
           </div>
