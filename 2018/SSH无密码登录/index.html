@@ -132,7 +132,8 @@
 <meta property="og:description" content="​工作中经常需要登录服务器，每次都需要输入服务器登录密码是相当麻烦的，我们可以通过设置RSA密钥对免密码登录。通过本地配置私钥，服务器配置公钥，并且保证私钥不丢失的情况下，服务器可以验证发送方身份唯一，并且报文是未被修改的。 生成一对密钥打开终端，通过ssh-keygen生成RSA密钥对，-t表示type，表示生成rsa加密的钥匙： 1ssh-keygen -t rsa RSA是默认的加密类型，默">
 <meta property="og:image" content="https://arthornye.github.io/images/keygen.png">
 <meta property="og:image" content="https://arthornye.github.io/images/login.png">
-<meta property="og:updated_time" content="2018-01-12T07:51:42.000Z">
+<meta property="og:image" content="https://arthornye.github.io/images/msg.png">
+<meta property="og:updated_time" content="2018-01-31T11:46:25.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SSH无密码登录">
 <meta name="twitter:description" content="​工作中经常需要登录服务器，每次都需要输入服务器登录密码是相当麻烦的，我们可以通过设置RSA密钥对免密码登录。通过本地配置私钥，服务器配置公钥，并且保证私钥不丢失的情况下，服务器可以验证发送方身份唯一，并且报文是未被修改的。 生成一对密钥打开终端，通过ssh-keygen生成RSA密钥对，-t表示type，表示生成rsa加密的钥匙： 1ssh-keygen -t rsa RSA是默认的加密类型，默">
@@ -461,6 +462,9 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ssh stable</div></pre></td></tr></table></figure>
 <p>可以直接登录到服务器：</p>
 <p><img src="https://arthornye.github.io/images/login.png" alt="cmd-markdown-logo"></p>
+<h5 id="碰到的问题"><a href="#碰到的问题" class="headerlink" title="碰到的问题"></a>碰到的问题</h5><p><img src="https://arthornye.github.io/images/msg.png" alt="cmd-markdown-logo"></p>
+<p>目录文件权限太大，需要调整权限：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">chmod -R <span class="number">700</span> ~/.ssh</div></pre></td></tr></table></figure>
 <h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>设置SSH免密登录，学习本地~/.ssh文件夹中的配置项即可。</p>
 
       
@@ -669,7 +673,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#生成一对密钥"><span class="nav-number">1.</span> <span class="nav-text">生成一对密钥</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置config文件"><span class="nav-number">2.</span> <span class="nav-text">配置config文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置服务器公钥"><span class="nav-number">3.</span> <span class="nav-text">配置服务器公钥</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#登陆服务器手动配置"><span class="nav-number">3.1.</span> <span class="nav-text">登陆服务器手动配置</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#命令直接配置"><span class="nav-number">3.2.</span> <span class="nav-text">命令直接配置</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#生成一对密钥"><span class="nav-number">1.</span> <span class="nav-text">生成一对密钥</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置config文件"><span class="nav-number">2.</span> <span class="nav-text">配置config文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置服务器公钥"><span class="nav-number">3.</span> <span class="nav-text">配置服务器公钥</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#登陆服务器手动配置"><span class="nav-number">3.1.</span> <span class="nav-text">登陆服务器手动配置</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#命令直接配置"><span class="nav-number">3.2.</span> <span class="nav-text">命令直接配置</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#碰到的问题"><span class="nav-number">3.3.</span> <span class="nav-text">碰到的问题</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
             
 
           </div>
