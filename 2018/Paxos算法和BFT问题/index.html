@@ -125,13 +125,13 @@
 
 <meta name="description" content="Paxos算法和BFT问题区块链可以去中心化，很大程度上依赖于自建的“共识机制”。Paxos是古代希腊的一个城邦，城邦中有众多议员，议员会对法律提案进行决议，提案通过通讯员进行提交。当某个提案者的提案获得大部分议员的赞同时，代表议案通过。这里涉及到的三个角色，议员，提案者，通讯员，可以对应到区块链网络。每个节点可以去计算hash值，将其作为一个提案，提交给区块链网络中其他的所有节点，这个过程中每个">
 <meta property="og:type" content="article">
-<meta property="og:title" content="TizzyT&#39;s Blog">
+<meta property="og:title" content="Paxos算法和BFT问题">
 <meta property="og:url" content="http://jianghao.wang/2018/Paxos算法和BFT问题/index.html">
 <meta property="og:site_name" content="TizzyT&#39;s Blog">
 <meta property="og:description" content="Paxos算法和BFT问题区块链可以去中心化，很大程度上依赖于自建的“共识机制”。Paxos是古代希腊的一个城邦，城邦中有众多议员，议员会对法律提案进行决议，提案通过通讯员进行提交。当某个提案者的提案获得大部分议员的赞同时，代表议案通过。这里涉及到的三个角色，议员，提案者，通讯员，可以对应到区块链网络。每个节点可以去计算hash值，将其作为一个提案，提交给区块链网络中其他的所有节点，这个过程中每个">
-<meta property="og:updated_time" content="2018-02-05T10:18:04.000Z">
+<meta property="og:updated_time" content="2018-02-05T10:23:15.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="TizzyT&#39;s Blog">
+<meta name="twitter:title" content="Paxos算法和BFT问题">
 <meta name="twitter:description" content="Paxos算法和BFT问题区块链可以去中心化，很大程度上依赖于自建的“共识机制”。Paxos是古代希腊的一个城邦，城邦中有众多议员，议员会对法律提案进行决议，提案通过通讯员进行提交。当某个提案者的提案获得大部分议员的赞同时，代表议案通过。这里涉及到的三个角色，议员，提案者，通讯员，可以对应到区块链网络。每个节点可以去计算hash值，将其作为一个提案，提交给区块链网络中其他的所有节点，这个过程中每个">
 
 
@@ -168,7 +168,7 @@
 
 
 
-  <title> | TizzyT's Blog</title>
+  <title>Paxos算法和BFT问题 | TizzyT's Blog</title>
   
 
 
@@ -371,7 +371,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline"></h1>
+          <h1 class="post-title" itemprop="name headline">Paxos算法和BFT问题</h1>
         
 
         <div class="post-meta">
@@ -435,8 +435,7 @@
         <h2 id="Paxos算法和BFT问题"><a href="#Paxos算法和BFT问题" class="headerlink" title="Paxos算法和BFT问题"></a>Paxos算法和BFT问题</h2><p>区块链可以去中心化，很大程度上依赖于自建的“共识机制”。Paxos是古代希腊的一个城邦，城邦中有众多议员，议员会对法律提案进行决议，提案通过通讯员进行提交。当某个提案者的提案获得大部分议员的赞同时，代表议案通过。这里涉及到的三个角色，议员，提案者，通讯员，可以对应到区块链网络。每个节点可以去计算hash值，将其作为一个提案，提交给区块链网络中其他的所有节点，这个过程中每个节点都在进行计算和提交：</p>
 <p><strong>Paxos问题保证这样的分布式网络中节点可能存在故障的情况下在最快的时间内达成共识。</strong></p>
 <p><strong>BFT保证允许少数节点作恶（企图伪造消息）场景下的一致性达成问题。</strong></p>
-<p>###什么是Paxos算法</p>
-<p>Paxos问题是指分布式系统中存在故障（fault），但是不存在恶意（corrupt）节点场景（消息可能重复或者丢失但是没有错误消息）下的共识达成（consensus）问题。最早是Leslise Lamport用Paxos岛的故事模型来进行描述而命名。</p>
+<h3 id="什么是Paxos算法"><a href="#什么是Paxos算法" class="headerlink" title="什么是Paxos算法"></a>什么是Paxos算法</h3><p>Paxos问题是指分布式系统中存在故障（fault），但是不存在恶意（corrupt）节点场景（消息可能重复或者丢失但是没有错误消息）下的共识达成（consensus）问题。最早是Leslise Lamport用Paxos岛的故事模型来进行描述而命名。</p>
 <p>Paxos可以保证在一半正常节点存在时，系统能达成共识。</p>
 <h4 id="单个提案者-多个接收者"><a href="#单个提案者-多个接收者" class="headerlink" title="单个提案者+多个接收者"></a>单个提案者+多个接收者</h4><p>系统中只指定某个特定的节点时提案者，那么一致性肯定可以达成（只有一个方案，要么达成要么失败）。提案者只要收到了来自多数接收者的投票即可认为是通过，因为系统中不存在其他的提案。</p>
 <h4 id="多个提案者-单个接收者"><a href="#多个提案者-单个接收者" class="headerlink" title="多个提案者+单个接收者"></a>多个提案者+单个接收者</h4><p>限定某个节点作为接收者。这种情况下，共识也很容易达成，接收者接收到多个提案，选择第一个提案作为决议，拒绝掉后续的提案。</p>
@@ -658,7 +657,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Paxos算法和BFT问题"><span class="nav-number">1.</span> <span class="nav-text">Paxos算法和BFT问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#单个提案者-多个接收者"><span class="nav-number">1.0.1.</span> <span class="nav-text">单个提案者+多个接收者</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多个提案者-单个接收者"><span class="nav-number">1.0.2.</span> <span class="nav-text">多个提案者+单个接收者</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多个提案者-多个接受者"><span class="nav-number">1.0.3.</span> <span class="nav-text">多个提案者+多个接受者</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#两阶段提交"><span class="nav-number">1.0.4.</span> <span class="nav-text">两阶段提交</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#准备阶段"><span class="nav-number">1.0.4.1.</span> <span class="nav-text">准备阶段</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#提交阶段"><span class="nav-number">1.0.4.2.</span> <span class="nav-text">提交阶段</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#总结"><span class="nav-number">1.0.5.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#BFT（Byzantine-Generals-Problem）拜占庭问题"><span class="nav-number">1.1.</span> <span class="nav-text">BFT（Byzantine Generals Problem）拜占庭问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#中国将军问题"><span class="nav-number">1.1.1.</span> <span class="nav-text">中国将军问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#拜占庭问题"><span class="nav-number">1.1.2.</span> <span class="nav-text">拜占庭问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PoW（Proof-of-Work）算法"><span class="nav-number">1.1.3.</span> <span class="nav-text">PoW（Proof of Work）算法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结-1"><span class="nav-number">1.2.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Paxos算法和BFT问题"><span class="nav-number">1.</span> <span class="nav-text">Paxos算法和BFT问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是Paxos算法"><span class="nav-number">1.1.</span> <span class="nav-text">什么是Paxos算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#单个提案者-多个接收者"><span class="nav-number">1.1.1.</span> <span class="nav-text">单个提案者+多个接收者</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多个提案者-单个接收者"><span class="nav-number">1.1.2.</span> <span class="nav-text">多个提案者+单个接收者</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多个提案者-多个接受者"><span class="nav-number">1.1.3.</span> <span class="nav-text">多个提案者+多个接受者</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#两阶段提交"><span class="nav-number">1.1.4.</span> <span class="nav-text">两阶段提交</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#准备阶段"><span class="nav-number">1.1.4.1.</span> <span class="nav-text">准备阶段</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#提交阶段"><span class="nav-number">1.1.4.2.</span> <span class="nav-text">提交阶段</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#总结"><span class="nav-number">1.1.5.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#BFT（Byzantine-Generals-Problem）拜占庭问题"><span class="nav-number">1.2.</span> <span class="nav-text">BFT（Byzantine Generals Problem）拜占庭问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#中国将军问题"><span class="nav-number">1.2.1.</span> <span class="nav-text">中国将军问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#拜占庭问题"><span class="nav-number">1.2.2.</span> <span class="nav-text">拜占庭问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PoW（Proof-of-Work）算法"><span class="nav-number">1.2.3.</span> <span class="nav-text">PoW（Proof of Work）算法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结-1"><span class="nav-number">1.3.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -843,7 +842,7 @@
         var disqus_config = function () {
           this.page.url = 'http://jianghao.wang/2018/Paxos算法和BFT问题/';
           this.page.identifier = '2018/Paxos算法和BFT问题/';
-          this.page.title = '';
+          this.page.title = 'Paxos算法和BFT问题';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://tizzy323.disqus.com/embed.js';
