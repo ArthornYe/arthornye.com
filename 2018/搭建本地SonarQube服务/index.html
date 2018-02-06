@@ -133,7 +133,8 @@
 <meta property="og:image" content="http://arthornye.github.io/images/sonar/directory.png">
 <meta property="og:image" content="http://arthornye.github.io/images/sonar/database.png">
 <meta property="og:image" content="http://arthornye.github.io/images/sonar/addrules.png">
-<meta property="og:updated_time" content="2018-02-05T15:25:45.000Z">
+<meta property="og:image" content="http://arthornye.github.io/images/sonar/sonartest.png">
+<meta property="og:updated_time" content="2018-02-06T01:59:41.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="搭建本地SonarQube服务">
 <meta name="twitter:description" content="部门需要对代码质量和风格进行统一，提高开发效率和质量。本篇主要对搭建sonar服务过程中碰到的问题做一个简单的复习记录。 SonarQube介绍SonarQube是基于docker搭建的一个代码检测工具，内置了包括js，xml，java，c#等主流编程语言的代码检测规则。我们也可以通过sonarqube去添加自定义的检测规则。给予阿里巴巴开发手册尝试添加一个自定义的规则。 ​     搭建本地So">
@@ -454,6 +455,8 @@
 <h4 id="sonarqube设置使用规则"><a href="#sonarqube设置使用规则" class="headerlink" title="sonarqube设置使用规则"></a>sonarqube设置使用规则</h4><p>我们登录到sonarqube创建一个自定义规则组。</p>
 <p><img src="http://arthornye.github.io/images/sonar/addrules.png" alt="cmd-markdown-logo"></p>
 <p>我们可以启用规则。</p>
+<h4 id="Idea拉取代码分析结果sonarlink"><a href="#Idea拉取代码分析结果sonarlink" class="headerlink" title="Idea拉取代码分析结果sonarlink"></a>Idea拉取代码分析结果sonarlink</h4><p>我们可以在idea中下载插件，sonarlink配置到我们的sonarqube代码检测平台，将对应的代码检测结果下载到本地代码中注释。本地代码会在对应行的位置报错，不同的代码规则会给到不同的提示。这里需要保证本地代码的版本和远程分析代码的版本一致，不然可能部分的报错没办法正常显示在正确的位置。</p>
+<p><img src="http://arthornye.github.io/images/sonar/sonartest.png" alt="cmd-markdown-logo"></p>
 <h4 id="碰到的问题"><a href="#碰到的问题" class="headerlink" title="碰到的问题"></a>碰到的问题</h4><p>1.从本地访问localhost:9000会访问到空白页，一直没办法定位，一开始以为是数据库配置的问题，后面删除了本地数据库所有的表，sonarqube重启之后正常。</p>
 <p>2.从本地访问localhost:9000空白页，上面提到过通过./sonar.sh status访问到的状态是sonarqube is running但是实际上sonarqube并没有启动成功。</p>
 <p>3.从本地访问localhost:9000空白页，可能是本地数据库服务没打开，我们cd到mysql的目录下启动服务。</p>
@@ -654,7 +657,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#SonarQube介绍"><span class="nav-number">1.</span> <span class="nav-text">SonarQube介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#搭建本地SonarQube服务"><span class="nav-number">2.</span> <span class="nav-text">搭建本地SonarQube服务</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#sonarqube目录结构"><span class="nav-number">2.1.</span> <span class="nav-text">sonarqube目录结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置本地数据库"><span class="nav-number">2.2.</span> <span class="nav-text">配置本地数据库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#maven配置打包自定义规则代码"><span class="nav-number">2.3.</span> <span class="nav-text">maven配置打包自定义规则代码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#sonarqube设置使用规则"><span class="nav-number">2.4.</span> <span class="nav-text">sonarqube设置使用规则</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#碰到的问题"><span class="nav-number">2.5.</span> <span class="nav-text">碰到的问题</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#SonarQube介绍"><span class="nav-number">1.</span> <span class="nav-text">SonarQube介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#搭建本地SonarQube服务"><span class="nav-number">2.</span> <span class="nav-text">搭建本地SonarQube服务</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#sonarqube目录结构"><span class="nav-number">2.1.</span> <span class="nav-text">sonarqube目录结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置本地数据库"><span class="nav-number">2.2.</span> <span class="nav-text">配置本地数据库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#maven配置打包自定义规则代码"><span class="nav-number">2.3.</span> <span class="nav-text">maven配置打包自定义规则代码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#sonarqube设置使用规则"><span class="nav-number">2.4.</span> <span class="nav-text">sonarqube设置使用规则</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Idea拉取代码分析结果sonarlink"><span class="nav-number">2.5.</span> <span class="nav-text">Idea拉取代码分析结果sonarlink</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#碰到的问题"><span class="nav-number">2.6.</span> <span class="nav-text">碰到的问题</span></a></li></ol></li></ol></div>
             
 
           </div>
