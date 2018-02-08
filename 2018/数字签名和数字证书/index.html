@@ -130,7 +130,7 @@
 <meta property="og:site_name" content="TizzyT&#39;s Blog">
 <meta property="og:description" content="数字签名和数字证书一直对RSA等非对称性加密算法理解不够透彻，这几天看到一篇英文文档What is a Digital Signature?介绍较为通俗。本文主要对该文档进行理解翻译： 数字签名是什么主人公Bob拥有两个钥匙，公钥（public key）+私钥（private key），我们可以通过算法随机生成一对密钥。 公钥和私钥​    公钥是对外的，每个人都可以获取到Bob的公钥，但是私钥是">
 <meta property="og:image" content="https://arthornye.github.io/images/certificate.png">
-<meta property="og:updated_time" content="2018-01-03T06:52:28.000Z">
+<meta property="og:updated_time" content="2018-02-08T05:40:39.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="数字签名和数字证书">
 <meta name="twitter:description" content="数字签名和数字证书一直对RSA等非对称性加密算法理解不够透彻，这几天看到一篇英文文档What is a Digital Signature?介绍较为通俗。本文主要对该文档进行理解翻译： 数字签名是什么主人公Bob拥有两个钥匙，公钥（public key）+私钥（private key），我们可以通过算法随机生成一对密钥。 公钥和私钥​    公钥是对外的，每个人都可以获取到Bob的公钥，但是私钥是">
@@ -448,8 +448,24 @@
 <p>我们通过数字签名保证：</p>
 <p>1.私钥只有Bob存有，文档绝对是由Bob发出。</p>
 <p>2.在发送文档的时候，对文档内容进行类似md5加密，获得hash结果作为消息概要message digest，绑定文档内容一并发送，同事接受到消息之后对文档完整性进行验证，比对文档内容hash的结果和公钥验签解密获得的hash结果是否一致。如果一致，代表消息由Bob发出，并且未被篡改；如果不一致代表消息由Bob发出，但是被篡改过。</p>
-<h3 id="数字证书是什么"><a href="#数字证书是什么" class="headerlink" title="数字证书是什么"></a>数字证书是什么</h3><p>数字证书Signature Certificate，在之前Bob和A同事通信的模型下，我们想象如果A同事的公钥被篡改成了B同事的公钥，A同事根本不知道自己接收到的消息来源已经默默从Bob变成了B同事。现实开发过程中也是很有可能发生，如果自己生成一对密钥，只要替换了公钥，另一方是无法感知到消息源的。为了防止这种情况发生，我们需要为消息源建立一个身份认证，类似身份证，我们需要第三方来证明自己的来源，做一个唯一的标示，那么我们在发送消息的时候附送上这个三方的数字证书，接收方直接通过三方提供的公钥来验签解密获取到公钥来进行验签。</p>
+<h3 id="数字证书是什么"><a href="#数字证书是什么" class="headerlink" title="数字证书是什么"></a>数字证书是什么</h3><h4 id="中间人攻击"><a href="#中间人攻击" class="headerlink" title="中间人攻击"></a>中间人攻击</h4><p>之前尝试去理解了数字证书存在的必要性，既然非对称加密保证了通讯的完整性和来源，那么为何需要数字证书。想象一个场景，你在浏览器输入www.baidu.com，那么这个域名有可能被中间人劫持，实际上跳转到了黑客的中间服务器，由中间服务器去转发你的请求报文，真实的服务器将响应报文转发给中间服务器。因为真实服务器的公钥是公开的，那么黑客可以将对应的报文解密，同时修改报文的内容和消息概要。然后用自己的私钥进行签名，同时将死钥对应的公钥配置在浏览器客户端。客户端无法确定自己当前解密的公钥是不是真实的服务器公钥。</p>
+<p>所以实际上我们认为非对称加密保证的完整性和来源，实际上是不能抵御中间人攻击的。基于这种情况，我们需要有一个第三方也就是数字证书机构（Certification Authority，CA)来保证客户端使用到正确的公钥。</p>
+<h4 id="数字证书的内容"><a href="#数字证书的内容" class="headerlink" title="数字证书的内容"></a>数字证书的内容</h4><p>给予上面的假设，我们可以想象一下数字证书需要准备哪些内容。具体的内容可能包含很多。个人觉得从理解上来说，这个数字证书的目的是需要保证客户端获取到正确的公钥进行解密，那么我们需要绑定一开始请求的域名和公钥（注册到CA），客户端再接受到响应的时候便直接从本地去取这个证书中的公钥。</p>
+<p>那么我们如何保证这个证书的正确性或者说合法性？理所当然这个证书中必须带有响应CA的数字签名。        </p>
+<p>主流操作系统和浏览器里面会提前预置一些 CA 的证书(承认这些是合法的证书)，然后所有基于他们认证的签名都会自然被认为合法。</p>
+<h4 id="数字证书的简单过程"><a href="#数字证书的简单过程" class="headerlink" title="数字证书的简单过程"></a>数字证书的简单过程</h4><p>数字证书Signature Certificate，在之前Bob和A同事通信的模型下，我们想象如果A同事的公钥被篡改成了B同事的公钥，A同事根本不知道自己接收到的消息来源已经默默从Bob变成了B同事。现实开发过程中也是很有可能发生，如果自己生成一对密钥，只要替换了公钥，另一方是无法感知到消息源的。为了防止这种情况发生，我们需要为消息源建立一个身份认证，类似身份证，我们需要第三方来证明自己的来源，做一个唯一的标示，那么我们在发送消息的时候附送上这个三方的数字证书，接收方直接通过三方提供的公钥来验签解密获取到公钥来进行验签。</p>
 <p><img src="https://arthornye.github.io/images/certificate.png" alt="cmd-markdown-logo"></p>
+<h3 id="PKI-体系（Public-Key-Infrastructure）"><a href="#PKI-体系（Public-Key-Infrastructure）" class="headerlink" title="PKI 体系（Public Key Infrastructure）"></a>PKI 体系（Public Key Infrastructure）</h3><p>PKI体系在现代密码学领域中处于较为基础的地位，帮助解决了核心的证书管理问题。</p>
+<p>一般情况下，PKI 至少包括如下组件:</p>
+<ul>
+<li>CA(Certification Authority):负责证书的颁发和作废，接收来自 RA 的请求，是最核心的部分;</li>
+<li>bRA(Registration Authority):对用户身份进行验证，校验数据合法性，负责登记，审核过了就发给 CA;</li>
+<li>证书数据库:存放证书，一般采用 LDAP 目录服务，标准格式采用 X.500 系列。CA 是最核心的组件，主要完成对证书的管理。    </li>
+</ul>
+<p>CA 是最核心的组件，主要完成对证书的管理。</p>
+<p>常见的流程为，用户通过 RA 登记申请证书，CA 完成证书的制造，颁发给用户。用户需要撤销证书则向 CA 发出申请。</p>
+<p>用户证书可以有两种方式。一般可以由 CA 来生成证书和私钥;也可以自己生成公钥和私钥，然后由 CA 来对公钥进行签发。后者情况下，当用户私钥丢失后，CA 无法完成恢复。</p>
+<p>​<br>​<br>​        </p>
 
       
     </div>
@@ -651,7 +667,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#数字签名和数字证书"><span class="nav-number">1.</span> <span class="nav-text">数字签名和数字证书</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#数字签名是什么"><span class="nav-number">1.1.</span> <span class="nav-text">数字签名是什么</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#公钥和私钥"><span class="nav-number">1.1.1.</span> <span class="nav-text">公钥和私钥</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#如何理解公私钥"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">如何理解公私钥</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#如何理解Hash算法"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">如何理解Hash算法</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数字签名是如何工作的"><span class="nav-number">1.1.2.</span> <span class="nav-text">数字签名是如何工作的</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数字证书是什么"><span class="nav-number">1.2.</span> <span class="nav-text">数字证书是什么</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#数字签名和数字证书"><span class="nav-number">1.</span> <span class="nav-text">数字签名和数字证书</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#数字签名是什么"><span class="nav-number">1.1.</span> <span class="nav-text">数字签名是什么</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#公钥和私钥"><span class="nav-number">1.1.1.</span> <span class="nav-text">公钥和私钥</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#如何理解公私钥"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">如何理解公私钥</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#如何理解Hash算法"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">如何理解Hash算法</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数字签名是如何工作的"><span class="nav-number">1.1.2.</span> <span class="nav-text">数字签名是如何工作的</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数字证书是什么"><span class="nav-number">1.2.</span> <span class="nav-text">数字证书是什么</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#中间人攻击"><span class="nav-number">1.2.1.</span> <span class="nav-text">中间人攻击</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数字证书的内容"><span class="nav-number">1.2.2.</span> <span class="nav-text">数字证书的内容</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数字证书的简单过程"><span class="nav-number">1.2.3.</span> <span class="nav-text">数字证书的简单过程</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PKI-体系（Public-Key-Infrastructure）"><span class="nav-number">1.3.</span> <span class="nav-text">PKI 体系（Public Key Infrastructure）</span></a></li></ol></li></ol></div>
             
 
           </div>
