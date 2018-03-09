@@ -112,7 +112,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="大搜车的点滴记录," />
 
 
 
@@ -123,18 +123,24 @@
 
 
 
-<meta name="description" content="相信用过Java的都对解释执行这个名词不陌生，但是可能大多数人都不能理解解释执行的意义，以及虚拟机为什么采用解释执行的方式，有什么利弊，它是如何被执行的。本篇博文标题是基于栈的解释执行引擎，那么我们可以直观理解，解释执行操作的是栈，栈存在于虚拟机内存中，频繁的入栈出栈都是对内存的频繁读写，这也是Java在性能上较之C++等编译执行语言所不足的地方，对内存的读写操作较寄存器总是低效。 解释执行解释执">
+<meta name="description" content="代码的单元测试覆盖率是衡量代码质量的标准之一，保证一定的ut覆盖率可以帮助提高开发人员的项目提测质量。本文将介绍如何在idea下利用openclover插件提高ut覆盖率。 安装idea插件Atlassian Clover for IDEA从ItelliJ IDEA —&amp;gt;Preference—&amp;gt;plugins，idea中有自带的插件可供安装，我们可以搜索到该插件。点击安装之后成功之后我">
+<meta name="keywords" content="大搜车的点滴记录">
 <meta property="og:type" content="article">
-<meta property="og:title" content="基于栈的解释执行引擎">
-<meta property="og:url" content="http://jianghao.wang/2017/基于栈的解释执行引擎/index.html">
+<meta property="og:title" content="OpenClover提高ut覆盖率">
+<meta property="og:url" content="http://jianghao.wang/2018/OpenClover提高ut覆盖率/index.html">
 <meta property="og:site_name" content="TizzyT&#39;s Blog">
-<meta property="og:description" content="相信用过Java的都对解释执行这个名词不陌生，但是可能大多数人都不能理解解释执行的意义，以及虚拟机为什么采用解释执行的方式，有什么利弊，它是如何被执行的。本篇博文标题是基于栈的解释执行引擎，那么我们可以直观理解，解释执行操作的是栈，栈存在于虚拟机内存中，频繁的入栈出栈都是对内存的频繁读写，这也是Java在性能上较之C++等编译执行语言所不足的地方，对内存的读写操作较寄存器总是低效。 解释执行解释执">
-<meta property="og:image" content="http://arthornye.github.io/images/%E5%AD%97%E8%8A%82%E7%A0%81%E8%A7%A3%E9%87%8A%E6%89%A7%E8%A1%8C.png">
-<meta property="og:updated_time" content="2017-05-10T05:10:35.000Z">
+<meta property="og:description" content="代码的单元测试覆盖率是衡量代码质量的标准之一，保证一定的ut覆盖率可以帮助提高开发人员的项目提测质量。本文将介绍如何在idea下利用openclover插件提高ut覆盖率。 安装idea插件Atlassian Clover for IDEA从ItelliJ IDEA —&amp;gt;Preference—&amp;gt;plugins，idea中有自带的插件可供安装，我们可以搜索到该插件。点击安装之后成功之后我">
+<meta property="og:image" content="http://arthornye.github.io/images/OpenClover/cloverage.png">
+<meta property="og:image" content="http://arthornye.github.io/images/OpenClover/openclover.png">
+<meta property="og:image" content="http://arthornye.github.io/images/OpenClover/toolbar.png">
+<meta property="og:image" content="http://arthornye.github.io/images/OpenClover/view.png">
+<meta property="og:image" content="http://arthornye.github.io/images/OpenClover/pic.png">
+<meta property="og:image" content="http://arthornye.github.io/images/OpenClover/color.png">
+<meta property="og:updated_time" content="2018-03-09T10:14:58.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="基于栈的解释执行引擎">
-<meta name="twitter:description" content="相信用过Java的都对解释执行这个名词不陌生，但是可能大多数人都不能理解解释执行的意义，以及虚拟机为什么采用解释执行的方式，有什么利弊，它是如何被执行的。本篇博文标题是基于栈的解释执行引擎，那么我们可以直观理解，解释执行操作的是栈，栈存在于虚拟机内存中，频繁的入栈出栈都是对内存的频繁读写，这也是Java在性能上较之C++等编译执行语言所不足的地方，对内存的读写操作较寄存器总是低效。 解释执行解释执">
-<meta name="twitter:image" content="http://arthornye.github.io/images/%E5%AD%97%E8%8A%82%E7%A0%81%E8%A7%A3%E9%87%8A%E6%89%A7%E8%A1%8C.png">
+<meta name="twitter:title" content="OpenClover提高ut覆盖率">
+<meta name="twitter:description" content="代码的单元测试覆盖率是衡量代码质量的标准之一，保证一定的ut覆盖率可以帮助提高开发人员的项目提测质量。本文将介绍如何在idea下利用openclover插件提高ut覆盖率。 安装idea插件Atlassian Clover for IDEA从ItelliJ IDEA —&amp;gt;Preference—&amp;gt;plugins，idea中有自带的插件可供安装，我们可以搜索到该插件。点击安装之后成功之后我">
+<meta name="twitter:image" content="http://arthornye.github.io/images/OpenClover/cloverage.png">
 
 
 
@@ -164,13 +170,13 @@
 
 
 
-  <link rel="canonical" href="http://jianghao.wang/2017/基于栈的解释执行引擎/"/>
+  <link rel="canonical" href="http://jianghao.wang/2018/OpenClover提高ut覆盖率/"/>
 
 
 
 
 
-  <title>基于栈的解释执行引擎 | TizzyT's Blog</title>
+  <title>OpenClover提高ut覆盖率 | TizzyT's Blog</title>
   
 
 
@@ -356,7 +362,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://jianghao.wang/2017/基于栈的解释执行引擎/">
+    <link itemprop="mainEntityOfPage" href="http://jianghao.wang/2018/OpenClover提高ut覆盖率/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="yeqiaozhu">
@@ -373,7 +379,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">基于栈的解释执行引擎</h1>
+          <h1 class="post-title" itemprop="name headline">OpenClover提高ut覆盖率</h1>
         
 
         <div class="post-meta">
@@ -385,8 +391,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-05-10T13:10:35+08:00">
-                2017-05-10
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-03-09T16:59:15+08:00">
+                2018-03-09
               </time>
             
 
@@ -404,9 +410,9 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2017/基于栈的解释执行引擎/#comments" itemprop="discussionUrl">
+                <a href="/2018/OpenClover提高ut覆盖率/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/基于栈的解释执行引擎/" itemprop="commentCount"></span>
+                        data-disqus-identifier="2018/OpenClover提高ut覆盖率/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -434,30 +440,20 @@
       
 
       
-        <p>相信用过Java的都对解释执行这个名词不陌生，但是可能大多数人都不能理解解释执行的意义，以及虚拟机为什么采用解释执行的方式，有什么利弊，它是如何被执行的。本篇博文标题是基于栈的解释执行引擎，那么我们可以直观理解，解释执行操作的是栈，栈存在于虚拟机内存中，频繁的入栈出栈都是对内存的频繁读写，这也是Java在性能上较之C++等编译执行语言所不足的地方，对内存的读写操作较寄存器总是低效。</p>
-<h3 id="解释执行"><a href="#解释执行" class="headerlink" title="解释执行"></a>解释执行</h3><p>解释执行是相对编译执行的一个概念，类比java和c++，解释执行基于字节码，编译执行相对于汇编指令。字节码指令只要相应的解释器都能识别，不依赖于CPU寄存器结构和操作系统，汇编指令则是基于CPU寄存器的操作指令，不同的操作系统会根据CPU的不同导致编译不同的结果。这也是java能跨平台而c++不能跨平台的原因，因为不同的操作系统对硬件的适配不同，所以linux和windows系统对c++等编译执行的语言都有不同的编译器，windows上可执行的程序在linux上是无法执行的。</p>
-<p>Java字节码在执行的解释执行的过程中不依赖于CPU寄存器结构，不代表不会利用寄存器优化执行性能。因为现代计算机的缓存结构是金子塔尖形状，寄存器的读写性能是最优也是最昂贵的，所以Java会把频繁访问的操作数栈顶元素优化缓存的到寄存器中。</p>
-<h3 id="基于栈的指令集和基于寄存器的指令集"><a href="#基于栈的指令集和基于寄存器的指令集" class="headerlink" title="基于栈的指令集和基于寄存器的指令集"></a>基于栈的指令集和基于寄存器的指令集</h3><p>栈指令集的优点：</p>
-<blockquote>
-<ul>
-<li>可移植，寄存器由CPU直接提供不受型号限制，虚拟机可以自行利用寄存器优化性能。</li>
-<li>代码相对紧凑，字节码中每个字节代表一个指令。</li>
-<li>编译器实现简单，不用考虑分配空间，都在栈上进行操作。</li>
-</ul>
-</blockquote>
-<p>栈指令集的缺点：</p>
-<blockquote>
-<ul>
-<li>栈指令集数量较寄存器指令集数量更多。</li>
-<li>栈指令集操作内存执行速度更慢。</li>
-</ul>
-</blockquote>
-<h3 id="基于栈的解释器执行过程"><a href="#基于栈的解释器执行过程" class="headerlink" title="基于栈的解释器执行过程"></a>基于栈的解释器执行过程</h3><p>这里以一段四则运算的代码为例，演示解释器执行字节码的过程。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">test</span><span class="params">()</span></span>&#123;</div><div class="line">    <span class="keyword">int</span> a=<span class="number">100</span>;</div><div class="line">    <span class="keyword">int</span> b=<span class="number">200</span>;</div><div class="line">    <span class="keyword">int</span> c=<span class="number">300</span>;</div><div class="line">    <span class="keyword">return</span> (a+b)*c;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>通过javap -v test.class查看解释编译之后的字节码指令:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">test</span><span class="params">()</span></span>;</div><div class="line">   flags: ACC_PUBLIC</div><div class="line">   Code:</div><div class="line">     stack=<span class="number">2</span>, locals=<span class="number">4</span>, args_size=<span class="number">1</span></div><div class="line">        <span class="number">0</span>: bipush        <span class="number">100</span></div><div class="line">        <span class="number">2</span>: istore_1</div><div class="line">        <span class="number">3</span>: sipush        <span class="number">200</span></div><div class="line">        <span class="number">6</span>: istore_2</div><div class="line">        <span class="number">7</span>: sipush        <span class="number">300</span></div><div class="line">       <span class="number">10</span>: istore_3</div><div class="line">       <span class="number">11</span>: iload_1</div><div class="line">       <span class="number">12</span>: iload_2</div><div class="line">       <span class="number">13</span>: iadd</div><div class="line">       <span class="number">14</span>: iload_3</div><div class="line">       <span class="number">15</span>: imul</div><div class="line">       <span class="number">16</span>: ireturn</div><div class="line">     LineNumberTable:</div><div class="line">       line <span class="number">8</span>: <span class="number">0</span></div><div class="line">       line <span class="number">9</span>: <span class="number">3</span></div><div class="line">       line <span class="number">10</span>: <span class="number">7</span></div><div class="line">       line <span class="number">11</span>: <span class="number">11</span></div><div class="line">       &#125;</div></pre></td></tr></table></figure></p>
-<p>观察Code部分显示栈深度为2，局部变量表为4个Slot大小，下面演示这段字节码是如何被解释执行的。</p>
-<p><img src="http://arthornye.github.io/images/%E5%AD%97%E8%8A%82%E7%A0%81%E8%A7%A3%E9%87%8A%E6%89%A7%E8%A1%8C.png" alt="cmd-markdown-logo"></p>
-<p>这里需要着重解释的一个概念是，虽然虚拟机栈的栈帧在执行过程中局部变量表充当了变量拷贝的角色，有些书上会将堆栈结构类比java并发工作内存和主内存。实际上这里的局部变量表只是在栈中的一份变量拷贝，生命周期是栈帧的生命周期，工作内存是基于高速缓存和主内存这样的缓存结构的，会从一级缓冲向主内存不断会写。如果说强行要将栈类比到工作内存，实际上字节码在执行过程中需要利用现代高速缓存结构这样的概念模型可以类比，如写对象属性操作。</p>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>本篇并没有过多强调和介绍所有的字节码指令，而是展示了字节码指令在执行过程中的几个重要部分，希望读者有一个概念模型上的理解，实际上虚拟机在指令生成过程中会进行很多优化。本文也是解决了我在阅读java并发内存模型中的一些困惑，堆栈模型和java并发内存模型存在本质上的区别，不能完全进行类比，对CAS原子操作的理解也更加深刻。</p>
+        <p>代码的单元测试覆盖率是衡量代码质量的标准之一，保证一定的ut覆盖率可以帮助提高开发人员的项目提测质量。本文将介绍如何在idea下利用openclover插件提高ut覆盖率。</p>
+<h3 id="安装idea插件"><a href="#安装idea插件" class="headerlink" title="安装idea插件"></a>安装idea插件</h3><h4 id="Atlassian-Clover-for-IDEA"><a href="#Atlassian-Clover-for-IDEA" class="headerlink" title="Atlassian Clover for IDEA"></a>Atlassian Clover for IDEA</h4><p>从ItelliJ IDEA —&gt;Preference—&gt;plugins，idea中有自带的插件可供安装，我们可以搜索到该插件。点击安装之后成功之后我们发现该插件需要舒服注册码license。并且我们根据引导无法从Atlassian获取到对应的注册码。感谢国际友人，在一个论坛上发现该插件已经开源，我们可以通过导入插件的方式安装。</p>
+<p><img src="http://arthornye.github.io/images/OpenClover/cloverage.png" alt="cmd-markdown-logo"></p>
+<h4 id="OpenClover-for-IDEA"><a href="#OpenClover-for-IDEA" class="headerlink" title="OpenClover for IDEA"></a>OpenClover for IDEA</h4><p>1.进入OpenClover官网，根据<a href="http://openclover.org/doc/manual/4.2.0/idea--installation-guide.html" target="_blank" rel="external">快速开始OpenClover for IDEA</a>我们将下载到的jar包直接导入到idea下，ItelliJ IDEA —&gt;Preference—&gt;plugins—&gt;Install plugin from disk，如下图：</p>
+<p>​        <img src="http://arthornye.github.io/images/OpenClover/openclover.png" alt="cmd-markdown-logo"></p>
+<p>2.点击View -&gt; Toolbar显示插件按钮，如下图：</p>
+<p><img src="http://arthornye.github.io/images/OpenClover/toolbar.png" alt="cmd-markdown-logo"></p>
+<p>3.通过Preference—&gt;Build,Execution,Deployment—&gt;Clover setting(global settings)—&gt;Clover setting(project setting)我们可以进行一些插件的设置，如下图：</p>
+<p><img src="http://arthornye.github.io/images/OpenClover/view.png" alt="cmd-markdown-logo"></p>
+<h3 id="单元测试覆盖"><a href="#单元测试覆盖" class="headerlink" title="单元测试覆盖"></a>单元测试覆盖</h3><p>一般在开发过程中，开发会对dao层和service层进行基本的单元测试回归保证代码的交付质量，当然单元测试可能并没有覆盖到代码的全部情况。单元测试覆盖需要尽可能覆盖到我们的代码。在使用插件的过程中我们可以看到一张覆盖率的图表：</p>
+<p>​        <img src="http://arthornye.github.io/images/OpenClover/pic.png" alt="cmd-markdown-logo"></p>
+<p>这里主要做了service层的单元测试覆盖，覆盖率平均到了80以上，但是整个项目的覆盖率只有30不到。这里是因为插件统计项目中每个类进行的每个方法以及代码的覆盖率，包括控制层代码。代码中会显示绿色的为覆盖到的代码，红色的未覆盖的代码，包括一些异常，未被执行到的判断。判断如果是多个参数的，需要考虑到所有的情况才算是百分之100通过，可以看到覆盖代码如图：</p>
+<p>​      <img src="http://arthornye.github.io/images/OpenClover/color.png" alt="cmd-markdown-logo"></p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>本次单元测试覆盖率是鉴于部门对代码质量的要求，延续之前增加了sonar自定义检测代码规则。提升代码覆盖率的过程中发现其实是个体力活，这样的覆盖也许在后续补充为了达到指标也许并没有意义。这也许是为了我们可以在项目开发的过程中来补充单元测试用例保证代码交付质量，如果放到后面再来补，也就本末倒置了。希望今后的代码都能在开发过程中做到充分的单元测试。</p>
 
       
     </div>
@@ -473,6 +469,12 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/大搜车的点滴记录/" rel="tag"># 大搜车的点滴记录</a>
+          
+        </div>
+      
 
       
       
@@ -482,8 +484,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/垃圾回收算法/" rel="next" title="垃圾回收算法">
-                <i class="fa fa-chevron-left"></i> 垃圾回收算法
+              <a href="/2018/git如何回滚远程仓库/" rel="next" title="git如何回滚远程仓库">
+                <i class="fa fa-chevron-left"></i> git如何回滚远程仓库
               </a>
             
           </div>
@@ -491,10 +493,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/Java静态代理与动态代理/" rel="prev" title="Java静态代理与动态代理">
-                Java静态代理与动态代理 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -659,7 +657,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#解释执行"><span class="nav-number">1.</span> <span class="nav-text">解释执行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基于栈的指令集和基于寄存器的指令集"><span class="nav-number">2.</span> <span class="nav-text">基于栈的指令集和基于寄存器的指令集</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基于栈的解释器执行过程"><span class="nav-number">3.</span> <span class="nav-text">基于栈的解释器执行过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装idea插件"><span class="nav-number">1.</span> <span class="nav-text">安装idea插件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Atlassian-Clover-for-IDEA"><span class="nav-number">1.1.</span> <span class="nav-text">Atlassian Clover for IDEA</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#OpenClover-for-IDEA"><span class="nav-number">1.2.</span> <span class="nav-text">OpenClover for IDEA</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#单元测试覆盖"><span class="nav-number">2.</span> <span class="nav-text">单元测试覆盖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
             
 
           </div>
@@ -842,9 +840,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'http://jianghao.wang/2017/基于栈的解释执行引擎/';
-          this.page.identifier = '2017/基于栈的解释执行引擎/';
-          this.page.title = '基于栈的解释执行引擎';
+          this.page.url = 'http://jianghao.wang/2018/OpenClover提高ut覆盖率/';
+          this.page.identifier = '2018/OpenClover提高ut覆盖率/';
+          this.page.title = 'OpenClover提高ut覆盖率';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://tizzy323.disqus.com/embed.js';
