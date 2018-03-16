@@ -112,7 +112,7 @@
 
 
 
-  <meta name="keywords" content="Daily," />
+  <meta name="keywords" content="源码学习," />
 
 
 
@@ -123,17 +123,17 @@
 
 
 
-<meta name="description" content="记录一下工作中因误使用Teamvier12的试用版导致重复安装无法逃避服务端的试用版检测，提示试用版到期无法使用。解决办法： 卸载Teamvier并清除所有注册表信息修改MAC地址：windows7以及以上操作系统需要注意修改的MAC地址八位16进制，第二位需要是2，6，A，E其中一个，否则MAC地址重置无效，并且修改之后网络也会重连（实际并未生效）。 重新安装Teamvier12重新安装Team">
-<meta name="keywords" content="Daily">
+<meta name="description" content="在阅读ConcurrentHashMap源码的过程中，频繁使用了volatile+无锁的方式来处理并发，需要对AtomicInteger源码有更深的了解。将这个模块独立抽离出来形成更深刻的理解。 AutomicInteger变量AutomicInteger作为一个原子操作类，定义了一些变量：  private static final Unsafe unsafe = Unsafe.getUnsaf">
+<meta name="keywords" content="源码学习">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Teamvier12试用版到期解决办法">
-<meta property="og:url" content="http://jianghao.wang/2017/teamvier12/index.html">
+<meta property="og:title" content="AtomicInteger源码分析">
+<meta property="og:url" content="http://jianghao.wang/2018/AtomicInteger源码分析/index.html">
 <meta property="og:site_name" content="TizzyT&#39;s Blog">
-<meta property="og:description" content="记录一下工作中因误使用Teamvier12的试用版导致重复安装无法逃避服务端的试用版检测，提示试用版到期无法使用。解决办法： 卸载Teamvier并清除所有注册表信息修改MAC地址：windows7以及以上操作系统需要注意修改的MAC地址八位16进制，第二位需要是2，6，A，E其中一个，否则MAC地址重置无效，并且修改之后网络也会重连（实际并未生效）。 重新安装Teamvier12重新安装Team">
-<meta property="og:updated_time" content="2017-12-28T08:53:37.000Z">
+<meta property="og:description" content="在阅读ConcurrentHashMap源码的过程中，频繁使用了volatile+无锁的方式来处理并发，需要对AtomicInteger源码有更深的了解。将这个模块独立抽离出来形成更深刻的理解。 AutomicInteger变量AutomicInteger作为一个原子操作类，定义了一些变量：  private static final Unsafe unsafe = Unsafe.getUnsaf">
+<meta property="og:updated_time" content="2018-03-16T10:23:32.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Teamvier12试用版到期解决办法">
-<meta name="twitter:description" content="记录一下工作中因误使用Teamvier12的试用版导致重复安装无法逃避服务端的试用版检测，提示试用版到期无法使用。解决办法： 卸载Teamvier并清除所有注册表信息修改MAC地址：windows7以及以上操作系统需要注意修改的MAC地址八位16进制，第二位需要是2，6，A，E其中一个，否则MAC地址重置无效，并且修改之后网络也会重连（实际并未生效）。 重新安装Teamvier12重新安装Team">
+<meta name="twitter:title" content="AtomicInteger源码分析">
+<meta name="twitter:description" content="在阅读ConcurrentHashMap源码的过程中，频繁使用了volatile+无锁的方式来处理并发，需要对AtomicInteger源码有更深的了解。将这个模块独立抽离出来形成更深刻的理解。 AutomicInteger变量AutomicInteger作为一个原子操作类，定义了一些变量：  private static final Unsafe unsafe = Unsafe.getUnsaf">
 
 
 
@@ -163,13 +163,13 @@
 
 
 
-  <link rel="canonical" href="http://jianghao.wang/2017/teamvier12/"/>
+  <link rel="canonical" href="http://jianghao.wang/2018/AtomicInteger源码分析/"/>
 
 
 
 
 
-  <title>Teamvier12试用版到期解决办法 | TizzyT's Blog</title>
+  <title>AtomicInteger源码分析 | TizzyT's Blog</title>
   
 
 
@@ -355,7 +355,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://jianghao.wang/2017/teamvier12/">
+    <link itemprop="mainEntityOfPage" href="http://jianghao.wang/2018/AtomicInteger源码分析/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="yeqiaozhu">
@@ -372,7 +372,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Teamvier12试用版到期解决办法</h1>
+          <h1 class="post-title" itemprop="name headline">AtomicInteger源码分析</h1>
         
 
         <div class="post-meta">
@@ -384,8 +384,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-12-28T16:53:37+08:00">
-                2017-12-28
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-03-16T18:23:32+08:00">
+                2018-03-16
               </time>
             
 
@@ -403,9 +403,9 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2017/teamvier12/#comments" itemprop="discussionUrl">
+                <a href="/2018/AtomicInteger源码分析/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/teamvier12/" itemprop="commentCount"></span>
+                        data-disqus-identifier="2018/AtomicInteger源码分析/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -433,10 +433,28 @@
       
 
       
-        <p>记录一下工作中因误使用Teamvier12的试用版导致重复安装无法逃避服务端的试用版检测，提示试用版到期无法使用。解决办法：</p>
-<h3 id="卸载Teamvier并清除所有注册表信息"><a href="#卸载Teamvier并清除所有注册表信息" class="headerlink" title="卸载Teamvier并清除所有注册表信息"></a>卸载Teamvier并清除所有注册表信息</h3><h3 id="修改MAC地址："><a href="#修改MAC地址：" class="headerlink" title="修改MAC地址："></a>修改MAC地址：</h3><p>windows7以及以上操作系统需要注意修改的MAC地址八位16进制，第二位需要是2，6，A，E其中一个，否则MAC地址重置无效，并且修改之后网络也会重连（实际并未生效）。</p>
-<h3 id="重新安装Teamvier12"><a href="#重新安装Teamvier12" class="headerlink" title="重新安装Teamvier12"></a>重新安装Teamvier12</h3><p>重新安装Teamvier12会发现之前的ID已经被重置。</p>
-<h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><p>Teamvier通过首次安装记录本机的MAC地址和对应的ID到服务器，两者的绑定验证设备的唯一性。更改设备的MAC地址可以解决设备验证问题，一定要注意更改是否生效，确认操作系统的MAC修改规则。</p>
+        <p>在阅读ConcurrentHashMap源码的过程中，频繁使用了volatile+无锁的方式来处理并发，需要对AtomicInteger源码有更深的了解。将这个模块独立抽离出来形成更深刻的理解。</p>
+<h3 id="AutomicInteger变量"><a href="#AutomicInteger变量" class="headerlink" title="AutomicInteger变量"></a>AutomicInteger变量</h3><p>AutomicInteger作为一个原子操作类，定义了一些变量：</p>
+<ul>
+<li><p>private static final Unsafe unsafe = Unsafe.getUnsafe()，定义了一个usafe类对象，主要对native方法进行调用。</p>
+</li>
+<li><p>private static final long valueOffset，这个值可能会被误以为是默认值，查看部分源代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">static</span> &#123;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            valueOffset = unsafe.objectFieldOffset</div><div class="line">                (AtomicInteger.class.getDeclaredField(<span class="string">"value"</span>));</div><div class="line">        &#125; <span class="keyword">catch</span> (Exception ex) &#123; <span class="keyword">throw</span> <span class="keyword">new</span> Error(ex); &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>了解过java虚拟机类加载机制的，类加载触发的其中一个条件是getstatic，这样其他方法在每次访问到这个值的时候都会执行一下静态代码块获取到内存中最新的值。这个值是作为内存中的值，我们在编写程序的时候会存一份拷贝在栈中，通过对比这个值和拷贝值是否一致来决定是否更新新值到内存，也就是这次操作是否成功。</p>
+</li>
+<li><p>private volatile int value，上面通过静态代码块儿去加载的就是内存中value的最新值。</p>
+</li>
+</ul>
+<h3 id="AutomicInteger原子操作"><a href="#AutomicInteger原子操作" class="headerlink" title="AutomicInteger原子操作"></a>AutomicInteger原子操作</h3><p>这里我们通过自己写复杂操作count++对比通过调用AutomicInteger的api，可以对比结果是否保证了正确的输出</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> CasNoLock;</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">import</span> java.util.ArrayList;</div><div class="line"><span class="keyword">import</span> java.util.concurrent.atomic.AtomicInteger;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Created by yqz on 3/16/18.</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Counter</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">volatile</span> <span class="keyword">int</span> count;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> AtomicInteger atomicInteger=<span class="keyword">new</span> AtomicInteger(<span class="number">0</span>);</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">        ArrayList&lt;Thread&gt; threadArrayList=<span class="keyword">new</span> ArrayList&lt;Thread&gt;(<span class="number">100</span>);</div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">100</span>;i++)&#123;</div><div class="line">            Thread thread=<span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</div><div class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">                    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">5000</span>;i++)&#123;</div><div class="line">                        count();</div><div class="line">                        countAtomicInteger();</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">            &#125;);</div><div class="line">            threadArrayList.add(thread);</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">for</span>(Thread t:threadArrayList)&#123;</div><div class="line">            t.start();</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">for</span>(Thread t:threadArrayList)&#123;</div><div class="line">            <span class="keyword">try</span> &#123;</div><div class="line">                t.join();</div><div class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</div><div class="line">                e.printStackTrace();</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        System.out.println(<span class="string">"非原子操作累加结果："</span>+count);</div><div class="line">        System.out.println(<span class="string">"原子操作累加结果："</span>+atomicInteger.intValue());</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 非原子类操作</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">count</span><span class="params">()</span></span>&#123;</div><div class="line">        count++;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 原子类操作</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">countAtomicInteger</span><span class="params">()</span></span>&#123;</div><div class="line">        atomicInteger.getAndIncrement();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">非原子操作累加结果：461539</div><div class="line">原子操作累加结果：50000</div></pre></td></tr></table></figure>
+<h3 id="AutomicInteger-API分析"><a href="#AutomicInteger-API分析" class="headerlink" title="AutomicInteger API分析"></a>AutomicInteger API分析</h3><p>我们查看下atomicInteger.getAndIncrement()在usafe中的实现，实际上它是调用了</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line">     * Atomically increments by one the current value.</div><div class="line">     *</div><div class="line">     * <span class="doctag">@return</span> the previous value</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">int</span> <span class="title">getAndIncrement</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> unsafe.getAndAddInt(<span class="keyword">this</span>, valueOffset, <span class="number">1</span>);</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p> 查看getAndAddInt方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">int</span> <span class="title">getAndAddInt</span><span class="params">(Object var1, <span class="keyword">long</span> var2, <span class="keyword">int</span> var4)</span> </span>&#123;</div><div class="line">        <span class="keyword">int</span> var5;</div><div class="line">        <span class="keyword">do</span> &#123;</div><div class="line">            var5 = <span class="keyword">this</span>.getIntVolatile(var1, var2);</div><div class="line">        &#125; <span class="keyword">while</span>(!<span class="keyword">this</span>.compareAndSwapInt(var1, var2, var5, var5 + var4));</div><div class="line"></div><div class="line">        <span class="keyword">return</span> var5;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p><strong>compareAndSwapInt(var1, var2, var5, var5 + var4)</strong>换成<strong>compareAndSwapInt(obj, offset, expect, update)</strong>比较清楚，意思就是如果<code>obj</code>内的<code>value</code>和<code>expect</code>相等，就证明没有其他线程改变过这个变量，那么就更新它为<code>update</code>，如果这一步的<code>CAS</code>没有成功，那就采用自旋的方式继续进行<code>CAS</code>操作，取出乍一看这也是两个步骤了啊，其实在<code>JNI</code>里是借助于一个<code>CPU</code>指令完成的。所以还是原子操作。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>AutomicInteger源码最终是通过<strong>usafe.compareAndSwapInt(obj, offset, expect, update)</strong>函数实现cas原子操作的。cas中最重要的三个值，volatile value（内存中最新值），expect（拷贝值）和update（更新值），在函数中分别对应offset，expect，和update入参。对这个关键方法的了解可以帮助深入阅读ConcurrentHashMap源码，jdk1.8中大量运用cas+synchronized关键字来实现。</p>
 
       
     </div>
@@ -454,7 +472,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Daily/" rel="tag"># Daily</a>
+            <a href="/tags/源码学习/" rel="tag"># 源码学习</a>
           
         </div>
       
@@ -467,8 +485,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/Cglib动态代理/" rel="next" title="Cglib动态代理">
-                <i class="fa fa-chevron-left"></i> Cglib动态代理
+              <a href="/2018/面试记录/" rel="next" title="面试记录">
+                <i class="fa fa-chevron-left"></i> 面试记录
               </a>
             
           </div>
@@ -476,10 +494,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/数字签名和数字证书/" rel="prev" title="数字签名和数字证书">
-                数字签名和数字证书 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -644,7 +658,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#卸载Teamvier并清除所有注册表信息"><span class="nav-number">1.</span> <span class="nav-text">卸载Teamvier并清除所有注册表信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改MAC地址："><span class="nav-number">2.</span> <span class="nav-text">修改MAC地址：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重新安装Teamvier12"><span class="nav-number">3.</span> <span class="nav-text">重新安装Teamvier12</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结："><span class="nav-number">4.</span> <span class="nav-text">总结：</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#AutomicInteger变量"><span class="nav-number">1.</span> <span class="nav-text">AutomicInteger变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AutomicInteger原子操作"><span class="nav-number">2.</span> <span class="nav-text">AutomicInteger原子操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AutomicInteger-API分析"><span class="nav-number">3.</span> <span class="nav-text">AutomicInteger API分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
             
 
           </div>
@@ -827,9 +841,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'http://jianghao.wang/2017/teamvier12/';
-          this.page.identifier = '2017/teamvier12/';
-          this.page.title = 'Teamvier12试用版到期解决办法';
+          this.page.url = 'http://jianghao.wang/2018/AtomicInteger源码分析/';
+          this.page.identifier = '2018/AtomicInteger源码分析/';
+          this.page.title = 'AtomicInteger源码分析';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://tizzy323.disqus.com/embed.js';
