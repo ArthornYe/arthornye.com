@@ -130,7 +130,7 @@
 <meta property="og:url" content="http://jianghao.wang/2018/ReetrantLock实现源码/index.html">
 <meta property="og:site_name" content="TizzyT&#39;s Blog">
 <meta property="og:description" content="ReetrantLock是基于AQS（AbtractQueuedSynchronizer）实现的。本文将逐渐展开分析ReetrantLock的实现机制以及使用场景。 AQS实现源码 AQS提供了一个框架，用于实现阻塞锁和相关的同步器(semaphores, events等)，它们依赖于先入先出(FIFO)等待队列。这个类被设计成大多数类型的同步器的基础，它们依赖于单个原子{@ code int}值">
-<meta property="og:updated_time" content="2018-03-20T10:34:05.000Z">
+<meta property="og:updated_time" content="2018-03-21T09:21:25.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ReetrantLock实现源码">
 <meta name="twitter:description" content="ReetrantLock是基于AQS（AbtractQueuedSynchronizer）实现的。本文将逐渐展开分析ReetrantLock的实现机制以及使用场景。 AQS实现源码 AQS提供了一个框架，用于实现阻塞锁和相关的同步器(semaphores, events等)，它们依赖于先入先出(FIFO)等待队列。这个类被设计成大多数类型的同步器的基础，它们依赖于单个原子{@ code int}值">
@@ -561,7 +561,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">final</span> <span class="keyword">boolean</span> <span class="title">tryRelease</span><span class="params">(<span class="keyword">int</span> releases)</span> </span>&#123;</div><div class="line">  <span class="keyword">int</span> c = getState() - releases;</div><div class="line">  <span class="keyword">if</span> (Thread.currentThread() != getExclusiveOwnerThread())</div><div class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> IllegalMonitorStateException();</div><div class="line">  <span class="keyword">boolean</span> free = <span class="keyword">false</span>;</div><div class="line">  <span class="keyword">if</span> (c == <span class="number">0</span>) &#123;<span class="comment">//如果当前state保留的值已经变为零，锁释放成功</span></div><div class="line">    free = <span class="keyword">true</span>;</div><div class="line">    setExclusiveOwnerThread(<span class="keyword">null</span>);</div><div class="line">  &#125;</div><div class="line">  setState(c);</div><div class="line">  <span class="keyword">return</span> free;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h4 id="InterruptedException可中断获取锁"><a href="#InterruptedException可中断获取锁" class="headerlink" title="InterruptedException可中断获取锁"></a>InterruptedException可中断获取锁</h4><p>ReetrantLock提供了一种可中断获取锁的方式，也是实现了定义在lock中的接口，该方法很容易理解，在获取锁的过程中会响应中断，那么这种方式和普通的lock方式有什么本质区别。我们看一下这种方式的源码：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line">   * Acquires in exclusive interruptible mode.</div><div class="line">   * <span class="doctag">@param</span> arg the acquire argument</div><div class="line">   */</div><div class="line">  <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">doAcquireInterruptibly</span><span class="params">(<span class="keyword">int</span> arg)</span></span></div><div class="line">      <span class="keyword">throws</span> InterruptedException &#123;</div><div class="line">      <span class="keyword">final</span> Node node = addWaiter(Node.EXCLUSIVE);</div><div class="line">      <span class="keyword">boolean</span> failed = <span class="keyword">true</span>;</div><div class="line">      <span class="keyword">try</span> &#123;</div><div class="line">          <span class="keyword">for</span> (;;) &#123;</div><div class="line">              <span class="keyword">final</span> Node p = node.predecessor();</div><div class="line">              <span class="keyword">if</span> (p == head &amp;&amp; tryAcquire(arg)) &#123;</div><div class="line">                  setHead(node);</div><div class="line">                  p.next = <span class="keyword">null</span>; <span class="comment">// help GC</span></div><div class="line">                  failed = <span class="keyword">false</span>;</div><div class="line">                  <span class="keyword">return</span>;</div><div class="line">              &#125;</div><div class="line">              <span class="keyword">if</span> (shouldParkAfterFailedAcquire(p, node) &amp;&amp;</div><div class="line">                  parkAndCheckInterrupt())</div><div class="line">                  <span class="keyword">throw</span> <span class="keyword">new</span> InterruptedException();<span class="comment">//这里会响应中断，会直接抛异常给上层，在lock中只是维护了一个状态值，进行了状态值的修改，并不会跑出异常到上层。最终回返回false</span></div><div class="line">          &#125;</div><div class="line">      &#125; <span class="keyword">finally</span> &#123;</div><div class="line">          <span class="keyword">if</span> (failed)</div><div class="line">              cancelAcquire(node);</div><div class="line">      &#125;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
-<p>结论：ReentrantLock的中断和非中断加锁模式的区别在于：线程尝试获取锁操作失败后，在等待过程中，如果该线程被其他线程中断了，它是如何响应中断请求的。lock方法会忽略中断请求，继续获取锁直到成功；而lockInterruptibly则直接抛出中断异常来立即响应中断，由上层调用者处理中断。</p>
+<p>结论：ReentrantLock的中断和非中断加锁模式的区别在于：线程尝试获取锁操作失败后，在等待过程中，如果该线程被其他线程中断了，它是如何响应中断请求的。lock方法会忽略中断请求，继续获取锁直到成功；而lockInterruptibly则直接抛出中断异常来立即dsa响应中断，由上层调用者处理中断。</p>
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>本文主要对ReetrantLock的源码进行了一些分析，ReetrantLock是基于AQS实现的一种独占，可重入的锁，可以自己的定义公平锁或者非公平锁。ReetrantLock通过维护AQS类内部的一个volatile state变量来记录锁的状态，通过cas去竞争，同时记录当前持有锁的线程。支持可重入，当当前持有该锁的线程尝试再次进入的时候会通过准入条件，并将state增加1。实际上公平锁和非公平锁主要是当前线程是否会进入线程等待的队列，AQS在底层维护了一个线程的等待队列，基于先进先出的原则去调度这些等待获取锁的队列。如果非公平锁的话直接调用lock去加锁，可能面临失败的情况，如果失败了，就是一次cas自旋失败，同步代码块并不会被执行。如果用trylock方法的话可以尝试增加一个超时时间，会将当前的线程加入到等待队列中然后在超市时间内等待被调度，这种场景在某些情况下还是很适用的。</p>
 
       
@@ -602,6 +602,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/理解Java线程中断/" rel="prev" title="理解Java线程中断">
+                理解Java线程中断 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -692,7 +696,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-count">24</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
