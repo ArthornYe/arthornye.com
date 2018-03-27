@@ -130,7 +130,7 @@
 <meta property="og:url" content="http://jianghao.wang/2018/工作问题记录/index.html">
 <meta property="og:site_name" content="TizzyT&#39;s Blog">
 <meta property="og:description" content="工作问题记录1.mac os查看本地ip 1ifconfig |grep &amp;quot;inet&amp;quot; 服务器git切换分支: 2.修改脚本指向本地分支，通过： 1git checkout -b localbranchname remotebranchname 3.idea中java文件右下角有个红色的j： 不可编译，File—&amp;gt;Project Structure—&amp;gt;Module—">
-<meta property="og:updated_time" content="2018-03-14T03:35:41.000Z">
+<meta property="og:updated_time" content="2018-03-22T10:23:20.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="工作问题记录">
 <meta name="twitter:description" content="工作问题记录1.mac os查看本地ip 1ifconfig |grep &amp;quot;inet&amp;quot; 服务器git切换分支: 2.修改脚本指向本地分支，通过： 1git checkout -b localbranchname remotebranchname 3.idea中java文件右下角有个红色的j： 不可编译，File—&amp;gt;Project Structure—&amp;gt;Module—">
@@ -444,6 +444,8 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">git rm -r --cached .</div><div class="line">git add .</div><div class="line">git commit -m <span class="string">'update .gitignore'</span></div></pre></td></tr></table></figure>
 <p>我们在修改了gitignore文件之后，如果想要被忽略的文件目录已经被git add记录到git工作区中。需要git rm -r –cached .将文件从git中清除再重新add。之后所有被add的文件都会检验.gitignore文件是否忽略。</p>
 <p><strong>如果git目录下没有.gitignore文件可以自行添加</strong></p>
+<p>5.关闭linux服务器上所有的tomcat进程</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ps -ef | grep <span class="string">'org.apache.catalina.startup.Bootstrap start'</span> | awk <span class="string">'&#123; print $2 &#125;'</span> | xargs kill -<span class="number">9</span></div></pre></td></tr></table></figure>
 
       
     </div>
