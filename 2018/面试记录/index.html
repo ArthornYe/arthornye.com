@@ -118,6 +118,8 @@
 
 
 
+  <link rel="alternate" href="/atom.xml" title="TizzyT's Blog" type="application/atom+xml" />
+
 
 
 
@@ -130,6 +132,7 @@
 <meta property="og:url" content="http://jianghao.wang/2018/面试记录/index.html">
 <meta property="og:site_name" content="TizzyT&#39;s Blog">
 <meta property="og:description" content="面试需要手写一段死锁： 123456789101112131415161718192021222324252627package SynchronizedLock;/** * Created by yqz on 3/14/18. */public class MythreadA implements Runnable&amp;#123;    Object a;    Object b;    publi">
+<meta property="og:locale" content="default">
 <meta property="og:updated_time" content="2018-03-14T10:25:12.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试记录">
@@ -434,9 +437,9 @@
 
       
         <p>面试需要手写一段死锁：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> SynchronizedLock;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Created by yqz on 3/14/18.</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MythreadA</span> <span class="keyword">implements</span> <span class="title">Runnable</span></span>&#123;</div><div class="line">    Object a;</div><div class="line">    Object b;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MythreadA</span><span class="params">(Object a,Object b)</span></span>&#123;</div><div class="line">        <span class="keyword">this</span>.a=a;</div><div class="line">        <span class="keyword">this</span>.b=b;</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">synchronized</span> (a)&#123;</div><div class="line">            <span class="keyword">try</span> &#123;</div><div class="line">                System.out.println(<span class="string">"线程A正在等待获取下个对象的锁，已经获取到对象锁："</span>+a);</div><div class="line">                Thread.sleep(<span class="number">10000</span>);</div><div class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</div><div class="line">                e.printStackTrace();</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            <span class="keyword">synchronized</span> (b)&#123;</div><div class="line">                System.out.println(<span class="string">"线程A同时获取到对象A和B的锁"</span>);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> SynchronizedLock;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Created by yqz on 3/14/18.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MythreadA</span> <span class="keyword">implements</span> <span class="title">Runnable</span></span>&#123;</span><br><span class="line">    Object a;</span><br><span class="line">    Object b;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MythreadA</span><span class="params">(Object a,Object b)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.a=a;</span><br><span class="line">        <span class="keyword">this</span>.b=b;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">synchronized</span> (a)&#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                System.out.println(<span class="string">"线程A正在等待获取下个对象的锁，已经获取到对象锁："</span>+a);</span><br><span class="line">                Thread.sleep(<span class="number">10000</span>);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">synchronized</span> (b)&#123;</span><br><span class="line">                System.out.println(<span class="string">"线程A同时获取到对象A和B的锁"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>触发线程：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> SynchronizedLock;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Created by yqz on 3/14/18.</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SynchronizedLockMain</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">        Object a=<span class="keyword">new</span> Object();</div><div class="line">        Object b=<span class="keyword">new</span> Object();</div><div class="line">        <span class="keyword">new</span> Thread(<span class="keyword">new</span> MythreadA(a,b)).start();</div><div class="line">        <span class="keyword">new</span> Thread(<span class="keyword">new</span> MythreadA(b,a)).start();<span class="comment">//调换一下ab顺序保证死锁发生的条件，否则不会发生死锁</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> SynchronizedLock;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Created by yqz on 3/14/18.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SynchronizedLockMain</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Object a=<span class="keyword">new</span> Object();</span><br><span class="line">        Object b=<span class="keyword">new</span> Object();</span><br><span class="line">        <span class="keyword">new</span> Thread(<span class="keyword">new</span> MythreadA(a,b)).start();</span><br><span class="line">        <span class="keyword">new</span> Thread(<span class="keyword">new</span> MythreadA(b,a)).start();<span class="comment">//调换一下ab顺序保证死锁发生的条件，否则不会发生死锁</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -477,8 +480,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/AtomicInteger源码分析/" rel="prev" title="AtomicInteger源码分析">
-                AtomicInteger源码分析 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/ConcurrentHashMap实现源码/" rel="prev" title="ConcurrentHashMap实现源码">
+                ConcurrentHashMap实现源码 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -561,7 +564,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-count">26</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -582,6 +585,13 @@
 
           </nav>
 
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
           
 
           <div class="links-of-author motion-element">

@@ -118,6 +118,8 @@
 
 
 
+  <link rel="alternate" href="/atom.xml" title="TizzyT's Blog" type="application/atom+xml" />
+
 
 
 
@@ -130,7 +132,8 @@
 <meta property="og:url" content="http://jianghao.wang/2018/工作问题记录/index.html">
 <meta property="og:site_name" content="TizzyT&#39;s Blog">
 <meta property="og:description" content="工作问题记录1.mac os查看本地ip 1ifconfig |grep &amp;quot;inet&amp;quot; 服务器git切换分支: 2.修改脚本指向本地分支，通过： 1git checkout -b localbranchname remotebranchname 3.idea中java文件右下角有个红色的j： 不可编译，File—&amp;gt;Project Structure—&amp;gt;Module—">
-<meta property="og:updated_time" content="2018-03-22T10:23:20.000Z">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-05-22T03:12:17.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="工作问题记录">
 <meta name="twitter:description" content="工作问题记录1.mac os查看本地ip 1ifconfig |grep &amp;quot;inet&amp;quot; 服务器git切换分支: 2.修改脚本指向本地分支，通过： 1git checkout -b localbranchname remotebranchname 3.idea中java文件右下角有个红色的j： 不可编译，File—&amp;gt;Project Structure—&amp;gt;Module—">
@@ -434,18 +437,28 @@
 
       
         <h4 id="工作问题记录"><a href="#工作问题记录" class="headerlink" title="工作问题记录"></a>工作问题记录</h4><p>1.mac os查看本地ip</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ifconfig |grep &quot;inet&quot;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ifconfig |grep &quot;inet&quot;</span><br></pre></td></tr></table></figure>
 <p>服务器git切换分支:</p>
 <p>2.修改脚本指向本地分支，通过：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git checkout -b localbranchname remotebranchname</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout -b localbranchname remotebranchname</span><br></pre></td></tr></table></figure>
 <p>3.idea中java文件右下角有个红色的j：</p>
 <p>不可编译，File—&gt;Project Structure—&gt;Module—&gt;Sources将右边第一个X点掉，去掉Root路径之后重新添加。</p>
 <p>4.引入不必要文件修改.gitignore忽略</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">git rm -r --cached .</div><div class="line">git add .</div><div class="line">git commit -m <span class="string">'update .gitignore'</span></div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git rm -r --cached .</span><br><span class="line">git add .</span><br><span class="line">git commit -m <span class="string">'update .gitignore'</span></span><br></pre></td></tr></table></figure>
 <p>我们在修改了gitignore文件之后，如果想要被忽略的文件目录已经被git add记录到git工作区中。需要git rm -r –cached .将文件从git中清除再重新add。之后所有被add的文件都会检验.gitignore文件是否忽略。</p>
 <p><strong>如果git目录下没有.gitignore文件可以自行添加</strong></p>
 <p>5.关闭linux服务器上所有的tomcat进程</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ps -ef | grep <span class="string">'org.apache.catalina.startup.Bootstrap start'</span> | awk <span class="string">'&#123; print $2 &#125;'</span> | xargs kill -<span class="number">9</span></div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps -ef | grep <span class="string">'org.apache.catalina.startup.Bootstrap start'</span> | awk <span class="string">'&#123; print $2 &#125;'</span> | xargs kill -<span class="number">9</span></span><br></pre></td></tr></table></figure>
+<p>6.mvn clean install 找不到symbol问题</p>
+<p>会报错maven-compile-plugin的版本问题，实际上是找不到依赖的包。这种问题可以从以下两个方面定位：</p>
+<p>1.依赖错误，引用了低版本的jar包，部分本地仓库有低版本的拷贝，不会报错。</p>
+<p>2.编译错误</p>
+<p>有时候本地的引用类库和远程的类库不一致，或者低版本不被维护了，导致部分引用到低版本的在存在本地复制的情况下不会报错。</p>
+<p>7.在最外层依赖jar包完全依赖不到</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--仓储服务--&gt;</span><br><span class="line">  &lt;dependency&gt;</span><br><span class="line">        &lt;groupId&gt;com.souche&lt;/groupId&gt;</span><br><span class="line">        &lt;artifactId&gt;souche-storage-api&lt;/artifactId&gt;</span><br><span class="line">        &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;</span><br><span class="line">      &lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+<p>这样是不能将远程仓库的jar包直接下载到本地的，需要在parent上级添加依赖：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--仓储服务--&gt;</span><br><span class="line">  &lt;dependency&gt;</span><br><span class="line">        &lt;groupId&gt;com.souche&lt;/groupId&gt;</span><br><span class="line">        &lt;artifactId&gt;souche-storage-api&lt;/artifactId&gt;</span><br><span class="line">      &lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+<p>这样就可以将包下载到本地。</p>
 
       
     </div>
@@ -579,7 +592,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-count">26</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -600,6 +613,13 @@
 
           </nav>
 
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
           
 
           <div class="links-of-author motion-element">

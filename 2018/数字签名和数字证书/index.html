@@ -118,6 +118,8 @@
 
 
 
+  <link rel="alternate" href="/atom.xml" title="TizzyT's Blog" type="application/atom+xml" />
+
 
 
 
@@ -130,6 +132,7 @@
 <meta property="og:url" content="http://jianghao.wang/2018/数字签名和数字证书/index.html">
 <meta property="og:site_name" content="TizzyT&#39;s Blog">
 <meta property="og:description" content="一直对RSA等非对称性加密算法理解不够透彻，这几天看到一篇英文文档What is a Digital Signature?介绍较为通俗。本文主要对该文档进行理解翻译： 数字签名是什么主人公Bob拥有两个钥匙，公钥（public key）+私钥（private key），我们可以通过算法随机生成一对密钥。 公钥和私钥​    公钥是对外的，每个人都可以获取到Bob的公钥，但是私钥是自己的。之前项目中">
+<meta property="og:locale" content="default">
 <meta property="og:image" content="https://arthornye.github.io/images/certificate.png">
 <meta property="og:updated_time" content="2018-03-27T02:37:37.000Z">
 <meta name="twitter:card" content="summary">
@@ -435,7 +438,7 @@
       
 
       
-        <p>一直对RSA等非对称性加密算法理解不够透彻，这几天看到一篇英文文档<a href="http://www.youdzone.com/signature.html" target="_blank" rel="external">What is a Digital Signature?</a>介绍较为通俗。本文主要对该文档进行理解翻译：</p>
+        <p>一直对RSA等非对称性加密算法理解不够透彻，这几天看到一篇英文文档<a href="http://www.youdzone.com/signature.html" target="_blank" rel="noopener">What is a Digital Signature?</a>介绍较为通俗。本文主要对该文档进行理解翻译：</p>
 <h3 id="数字签名是什么"><a href="#数字签名是什么" class="headerlink" title="数字签名是什么"></a>数字签名是什么</h3><p>主人公Bob拥有两个钥匙，公钥（public key）+私钥（private key），我们可以通过算法随机生成一对密钥。</p>
 <h4 id="公钥和私钥"><a href="#公钥和私钥" class="headerlink" title="公钥和私钥"></a>公钥和私钥</h4><p>​    公钥是对外的，每个人都可以获取到Bob的公钥，但是私钥是自己的。之前项目中有配置过支付宝生活号的密钥，通过本地生成一对RSA密钥，私钥保存在本地，公钥配置到支付宝生活号，同时获取到支付宝生活号服务的公钥保存到本地。通过互换公钥达到双方通信都能保证发送方唯一并且报文不被篡改。</p>
 <h5 id="如何理解公私钥"><a href="#如何理解公私钥" class="headerlink" title="如何理解公私钥"></a>如何理解公私钥</h5><p>​        Bob的公钥，所有需要的人都可以获取到，保证私钥是私有的情况下。密钥是用来加密的，加密的信息是不可逆的，所以只有当对方拥有配对的钥匙的时候才能解开加密后的信息，密钥中的私钥和公钥都可以用来加密，然后另个钥匙对应解密。（这里可能有些人会不理解这两种加密如何区分，我们通常将私钥加密称之为签名也就是Digital Signature，公钥加密称之为加密，因为它并不能代表某种唯一的身份，而私钥加密的报文可以）。</p>
@@ -602,7 +605,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-count">26</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -623,6 +626,13 @@
 
           </nav>
 
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
           
 
           <div class="links-of-author motion-element">

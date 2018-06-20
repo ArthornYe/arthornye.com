@@ -118,6 +118,8 @@
 
 
 
+  <link rel="alternate" href="/atom.xml" title="TizzyT's Blog" type="application/atom+xml" />
+
 
 
 
@@ -129,6 +131,7 @@
 <meta property="og:url" content="http://jianghao.wang/2017/基于栈的解释执行引擎/index.html">
 <meta property="og:site_name" content="TizzyT&#39;s Blog">
 <meta property="og:description" content="相信用过Java的都对解释执行这个名词不陌生，但是可能大多数人都不能理解解释执行的意义，以及虚拟机为什么采用解释执行的方式，有什么利弊，它是如何被执行的。本篇博文标题是基于栈的解释执行引擎，那么我们可以直观理解，解释执行操作的是栈，栈存在于虚拟机内存中，频繁的入栈出栈都是对内存的频繁读写，这也是Java在性能上较之C++等编译执行语言所不足的地方，对内存的读写操作较寄存器总是低效。 解释执行解释执">
+<meta property="og:locale" content="default">
 <meta property="og:image" content="http://arthornye.github.io/images/%E5%AD%97%E8%8A%82%E7%A0%81%E8%A7%A3%E9%87%8A%E6%89%A7%E8%A1%8C.png">
 <meta property="og:updated_time" content="2017-05-10T05:10:35.000Z">
 <meta name="twitter:card" content="summary">
@@ -452,8 +455,8 @@
 <li>栈指令集操作内存执行速度更慢。</li>
 </ul>
 </blockquote>
-<h3 id="基于栈的解释器执行过程"><a href="#基于栈的解释器执行过程" class="headerlink" title="基于栈的解释器执行过程"></a>基于栈的解释器执行过程</h3><p>这里以一段四则运算的代码为例，演示解释器执行字节码的过程。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">test</span><span class="params">()</span></span>&#123;</div><div class="line">    <span class="keyword">int</span> a=<span class="number">100</span>;</div><div class="line">    <span class="keyword">int</span> b=<span class="number">200</span>;</div><div class="line">    <span class="keyword">int</span> c=<span class="number">300</span>;</div><div class="line">    <span class="keyword">return</span> (a+b)*c;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>通过javap -v test.class查看解释编译之后的字节码指令:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">test</span><span class="params">()</span></span>;</div><div class="line">   flags: ACC_PUBLIC</div><div class="line">   Code:</div><div class="line">     stack=<span class="number">2</span>, locals=<span class="number">4</span>, args_size=<span class="number">1</span></div><div class="line">        <span class="number">0</span>: bipush        <span class="number">100</span></div><div class="line">        <span class="number">2</span>: istore_1</div><div class="line">        <span class="number">3</span>: sipush        <span class="number">200</span></div><div class="line">        <span class="number">6</span>: istore_2</div><div class="line">        <span class="number">7</span>: sipush        <span class="number">300</span></div><div class="line">       <span class="number">10</span>: istore_3</div><div class="line">       <span class="number">11</span>: iload_1</div><div class="line">       <span class="number">12</span>: iload_2</div><div class="line">       <span class="number">13</span>: iadd</div><div class="line">       <span class="number">14</span>: iload_3</div><div class="line">       <span class="number">15</span>: imul</div><div class="line">       <span class="number">16</span>: ireturn</div><div class="line">     LineNumberTable:</div><div class="line">       line <span class="number">8</span>: <span class="number">0</span></div><div class="line">       line <span class="number">9</span>: <span class="number">3</span></div><div class="line">       line <span class="number">10</span>: <span class="number">7</span></div><div class="line">       line <span class="number">11</span>: <span class="number">11</span></div><div class="line">       &#125;</div></pre></td></tr></table></figure></p>
+<h3 id="基于栈的解释器执行过程"><a href="#基于栈的解释器执行过程" class="headerlink" title="基于栈的解释器执行过程"></a>基于栈的解释器执行过程</h3><p>这里以一段四则运算的代码为例，演示解释器执行字节码的过程。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">test</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> a=<span class="number">100</span>;</span><br><span class="line">    <span class="keyword">int</span> b=<span class="number">200</span>;</span><br><span class="line">    <span class="keyword">int</span> c=<span class="number">300</span>;</span><br><span class="line">    <span class="keyword">return</span> (a+b)*c;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>通过javap -v test.class查看解释编译之后的字节码指令:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">test</span><span class="params">()</span></span>;</span><br><span class="line">   flags: ACC_PUBLIC</span><br><span class="line">   Code:</span><br><span class="line">     stack=<span class="number">2</span>, locals=<span class="number">4</span>, args_size=<span class="number">1</span></span><br><span class="line">        <span class="number">0</span>: bipush        <span class="number">100</span></span><br><span class="line">        <span class="number">2</span>: istore_1</span><br><span class="line">        <span class="number">3</span>: sipush        <span class="number">200</span></span><br><span class="line">        <span class="number">6</span>: istore_2</span><br><span class="line">        <span class="number">7</span>: sipush        <span class="number">300</span></span><br><span class="line">       <span class="number">10</span>: istore_3</span><br><span class="line">       <span class="number">11</span>: iload_1</span><br><span class="line">       <span class="number">12</span>: iload_2</span><br><span class="line">       <span class="number">13</span>: iadd</span><br><span class="line">       <span class="number">14</span>: iload_3</span><br><span class="line">       <span class="number">15</span>: imul</span><br><span class="line">       <span class="number">16</span>: ireturn</span><br><span class="line">     LineNumberTable:</span><br><span class="line">       line <span class="number">8</span>: <span class="number">0</span></span><br><span class="line">       line <span class="number">9</span>: <span class="number">3</span></span><br><span class="line">       line <span class="number">10</span>: <span class="number">7</span></span><br><span class="line">       line <span class="number">11</span>: <span class="number">11</span></span><br><span class="line">       &#125;</span><br></pre></td></tr></table></figure></p>
 <p>观察Code部分显示栈深度为2，局部变量表为4个Slot大小，下面演示这段字节码是如何被解释执行的。</p>
 <p><img src="http://arthornye.github.io/images/%E5%AD%97%E8%8A%82%E7%A0%81%E8%A7%A3%E9%87%8A%E6%89%A7%E8%A1%8C.png" alt="cmd-markdown-logo"></p>
 <p>这里需要着重解释的一个概念是，虽然虚拟机栈的栈帧在执行过程中局部变量表充当了变量拷贝的角色，有些书上会将堆栈结构类比java并发工作内存和主内存。实际上这里的局部变量表只是在栈中的一份变量拷贝，生命周期是栈帧的生命周期，工作内存是基于高速缓存和主内存这样的缓存结构的，会从一级缓冲向主内存不断会写。如果说强行要将栈类比到工作内存，实际上字节码在执行过程中需要利用现代高速缓存结构这样的概念模型可以类比，如写对象属性操作。</p>
@@ -585,7 +588,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-count">26</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -606,6 +609,13 @@
 
           </nav>
 
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
           
 
           <div class="links-of-author motion-element">

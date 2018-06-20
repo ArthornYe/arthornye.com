@@ -118,6 +118,8 @@
 
 
 
+  <link rel="alternate" href="/atom.xml" title="TizzyT's Blog" type="application/atom+xml" />
+
 
 
 
@@ -130,6 +132,7 @@
 <meta property="og:url" content="http://jianghao.wang/2018/OpenClover提高ut覆盖率/index.html">
 <meta property="og:site_name" content="TizzyT&#39;s Blog">
 <meta property="og:description" content="代码的单元测试覆盖率是衡量代码质量的标准之一，保证一定的ut覆盖率可以帮助提高开发人员的项目提测质量。本文将介绍如何在idea下利用openclover插件提高ut覆盖率。 安装idea插件Atlassian Clover for IDEA从ItelliJ IDEA —&amp;gt;Preference—&amp;gt;plugins，idea中有自带的插件可供安装，我们可以搜索到该插件。点击安装之后成功之后我">
+<meta property="og:locale" content="default">
 <meta property="og:image" content="http://arthornye.github.io/images/OpenClover/cloverage.png">
 <meta property="og:image" content="http://arthornye.github.io/images/OpenClover/openclover.png">
 <meta property="og:image" content="http://arthornye.github.io/images/OpenClover/toolbar.png">
@@ -443,7 +446,7 @@
         <p>代码的单元测试覆盖率是衡量代码质量的标准之一，保证一定的ut覆盖率可以帮助提高开发人员的项目提测质量。本文将介绍如何在idea下利用openclover插件提高ut覆盖率。</p>
 <h3 id="安装idea插件"><a href="#安装idea插件" class="headerlink" title="安装idea插件"></a>安装idea插件</h3><h4 id="Atlassian-Clover-for-IDEA"><a href="#Atlassian-Clover-for-IDEA" class="headerlink" title="Atlassian Clover for IDEA"></a>Atlassian Clover for IDEA</h4><p>从ItelliJ IDEA —&gt;Preference—&gt;plugins，idea中有自带的插件可供安装，我们可以搜索到该插件。点击安装之后成功之后我们发现该插件需要舒服注册码license。并且我们根据引导无法从Atlassian获取到对应的注册码。感谢国际友人，在一个论坛上发现该插件已经开源，我们可以通过导入插件的方式安装。</p>
 <p><img src="http://arthornye.github.io/images/OpenClover/cloverage.png" alt="cmd-markdown-logo"></p>
-<h4 id="OpenClover-for-IDEA"><a href="#OpenClover-for-IDEA" class="headerlink" title="OpenClover for IDEA"></a>OpenClover for IDEA</h4><p>1.进入OpenClover官网，根据<a href="http://openclover.org/doc/manual/4.2.0/idea--installation-guide.html" target="_blank" rel="external">快速开始OpenClover for IDEA</a>我们将下载到的jar包直接导入到idea下，ItelliJ IDEA —&gt;Preference—&gt;plugins—&gt;Install plugin from disk，如下图：</p>
+<h4 id="OpenClover-for-IDEA"><a href="#OpenClover-for-IDEA" class="headerlink" title="OpenClover for IDEA"></a>OpenClover for IDEA</h4><p>1.进入OpenClover官网，根据<a href="http://openclover.org/doc/manual/4.2.0/idea--installation-guide.html" target="_blank" rel="noopener">快速开始OpenClover for IDEA</a>我们将下载到的jar包直接导入到idea下，ItelliJ IDEA —&gt;Preference—&gt;plugins—&gt;Install plugin from disk，如下图：</p>
 <p>​        <img src="http://arthornye.github.io/images/OpenClover/openclover.png" alt="cmd-markdown-logo"></p>
 <p>2.点击View -&gt; Toolbar显示插件按钮，如下图：</p>
 <p><img src="http://arthornye.github.io/images/OpenClover/toolbar.png" alt="cmd-markdown-logo"></p>
@@ -587,7 +590,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-count">26</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -608,6 +611,13 @@
 
           </nav>
 
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
           
 
           <div class="links-of-author motion-element">

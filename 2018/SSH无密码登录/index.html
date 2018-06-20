@@ -118,6 +118,8 @@
 
 
 
+  <link rel="alternate" href="/atom.xml" title="TizzyT's Blog" type="application/atom+xml" />
+
 
 
 
@@ -130,6 +132,7 @@
 <meta property="og:url" content="http://jianghao.wang/2018/SSH无密码登录/index.html">
 <meta property="og:site_name" content="TizzyT&#39;s Blog">
 <meta property="og:description" content="​工作中经常需要登录服务器，每次都需要输入服务器登录密码是相当麻烦的，我们可以通过设置RSA密钥对免密码登录。通过本地配置私钥，服务器配置公钥，并且保证私钥不丢失的情况下，服务器可以验证发送方身份唯一，并且报文是未被修改的。 生成一对密钥打开终端，通过ssh-keygen生成RSA密钥对，-t表示type，表示生成rsa加密的钥匙： 1ssh-keygen -t rsa RSA是默认的加密类型，默">
+<meta property="og:locale" content="default">
 <meta property="og:image" content="https://arthornye.github.io/images/keygen.png">
 <meta property="og:image" content="https://arthornye.github.io/images/login.png">
 <meta property="og:image" content="https://arthornye.github.io/images/msg.png">
@@ -439,16 +442,16 @@
       
         <p>​工作中经常需要登录服务器，每次都需要输入服务器登录密码是相当麻烦的，我们可以通过设置RSA密钥对免密码登录。通过本地配置私钥，服务器配置公钥，并且保证私钥不丢失的情况下，服务器可以验证发送方身份唯一，并且报文是未被修改的。</p>
 <h4 id="生成一对密钥"><a href="#生成一对密钥" class="headerlink" title="生成一对密钥"></a>生成一对密钥</h4><p>打开终端，通过ssh-keygen生成RSA密钥对，-t表示type，表示生成rsa加密的钥匙：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ssh-keygen -t rsa</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa</span><br></pre></td></tr></table></figure>
 <p>RSA是默认的加密类型，默认长度为2048位，可以指定长度为4096更安全：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ssh-keygen -b <span class="number">4096</span> -t rsa</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -b <span class="number">4096</span> -t rsa</span><br></pre></td></tr></table></figure>
 <p>按Enter键，然后需要输入一个密码来加密你的SSH Key．密码至少要20位长度．SSH密钥会保存在home目录下的<strong>.ssh/id_rsa</strong>文件中．SSH公钥保存在<strong>.ssh/id_rsa.pub</strong>文件中。这里的id是我们在输入的时候指定的文件名。</p>
 <p><img src="https://arthornye.github.io/images/keygen.png" alt="cmd-markdown-logo"></p>
-<h4 id="配置config文件"><a href="#配置config文件" class="headerlink" title="配置config文件"></a>配置config文件</h4> <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cd ~/.ssh</div></pre></td></tr></table></figure>
+<h4 id="配置config文件"><a href="#配置config文件" class="headerlink" title="配置config文件"></a>配置config文件</h4> <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd ~/.ssh</span><br></pre></td></tr></table></figure>
 <p>打开config文件，如果不存在，自己新建一个：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mkfile m config</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkfile m config</span><br></pre></td></tr></table></figure>
 <p>当前我本地的config配置为：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">Host github.com</div><div class="line"> IdentityFile ~/.ssh/id_rsa</div><div class="line">Host jhost</div><div class="line">   User yeqiaozhu</div><div class="line">   HostName jhost.hz.souche-inc.com</div><div class="line">   IdentityFile ~/.ssh/jump_rsa</div><div class="line">Host stable</div><div class="line">   User souche</div><div class="line">   HostName 172.17.40.227</div><div class="line">   IdentityFile ~/.ssh/stable_rsa</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Host github.com</span><br><span class="line"> IdentityFile ~/.ssh/id_rsa</span><br><span class="line">Host jhost</span><br><span class="line">   User yeqiaozhu</span><br><span class="line">   HostName jhost.hz.souche-inc.com</span><br><span class="line">   IdentityFile ~/.ssh/jump_rsa</span><br><span class="line">Host stable</span><br><span class="line">   User souche</span><br><span class="line">   HostName 172.17.40.227</span><br><span class="line">   IdentityFile ~/.ssh/stable_rsa</span><br></pre></td></tr></table></figure>
 <p>其中stable是我增加的配置项，这里的几个参数可以注意下：</p>
 <ul>
 <li>Host：别名，我们可以通过ssh stable进行登录。</li>
@@ -457,14 +460,14 @@
 <li>IdentityFile：配置生成的rsa私钥的地址，我们的所有请求报文都会先进行hash之后获得digest然后通过私钥加密。</li>
 </ul>
 <h4 id="配置服务器公钥"><a href="#配置服务器公钥" class="headerlink" title="配置服务器公钥"></a>配置服务器公钥</h4><h5 id="登陆服务器手动配置"><a href="#登陆服务器手动配置" class="headerlink" title="登陆服务器手动配置"></a>登陆服务器手动配置</h5><p>可以直接将公钥粘贴到服务器authorized_keys文件中。</p>
-<h5 id="命令直接配置"><a href="#命令直接配置" class="headerlink" title="命令直接配置"></a>命令直接配置</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ssh-copy-id -i 公钥文件名(stable_rsa.pub) username@remote-server</div></pre></td></tr></table></figure>
+<h5 id="命令直接配置"><a href="#命令直接配置" class="headerlink" title="命令直接配置"></a>命令直接配置</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-copy-id -i 公钥文件名(stable_rsa.pub) username@remote-server</span><br></pre></td></tr></table></figure>
 <p>配置之后我们通过：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ssh stable</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh stable</span><br></pre></td></tr></table></figure>
 <p>可以直接登录到服务器：</p>
 <p><img src="https://arthornye.github.io/images/login.png" alt="cmd-markdown-logo"></p>
 <h5 id="碰到的问题"><a href="#碰到的问题" class="headerlink" title="碰到的问题"></a>碰到的问题</h5><p><img src="https://arthornye.github.io/images/msg.png" alt="cmd-markdown-logo"></p>
 <p>目录文件权限太大，需要调整权限：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">chmod -R <span class="number">700</span> ~/.ssh</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod -R <span class="number">700</span> ~/.ssh</span><br></pre></td></tr></table></figure>
 <h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>设置SSH免密登录，学习本地~/.ssh文件夹中的配置项即可。</p>
 
       
@@ -599,7 +602,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-count">26</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -620,6 +623,13 @@
 
           </nav>
 
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
           
 
           <div class="links-of-author motion-element">
