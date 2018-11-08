@@ -112,7 +112,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="mysql," />
 
 
 
@@ -125,17 +125,18 @@
 
 
 
-<meta name="description" content="title: mysql事务和事务隔离机制 tags:   mysql    在学习mysql的事务隔离机制的过程中，对mysql的会话和事务的概念有点模糊不清，这里主要通过mysql可视化工具sequel pro来记录在实践过程中遇到的问题以及思考。 mysql会话begin自动提交事务12begin;update retail_order set order_status=111 where">
+<meta name="description" content="在学习mysql的事务隔离机制的过程中，对mysql的会话和事务的概念有点模糊不清，这里主要通过mysql可视化工具sequel pro来记录在实践过程中遇到的问题以及思考。 mysql会话begin自动提交事务12begin;update retail_order set order_status=111 where order_code=&amp;apos;899120869590&amp;apos;; 我们">
+<meta name="keywords" content="mysql">
 <meta property="og:type" content="article">
-<meta property="og:title" content="TizzyT&#39;s Blog">
+<meta property="og:title" content="mysql事务和事务隔离机制">
 <meta property="og:url" content="http://jianghao.wang/2018/mysql事务和事务隔离机制/index.html">
 <meta property="og:site_name" content="TizzyT&#39;s Blog">
-<meta property="og:description" content="title: mysql事务和事务隔离机制 tags:   mysql    在学习mysql的事务隔离机制的过程中，对mysql的会话和事务的概念有点模糊不清，这里主要通过mysql可视化工具sequel pro来记录在实践过程中遇到的问题以及思考。 mysql会话begin自动提交事务12begin;update retail_order set order_status=111 where">
+<meta property="og:description" content="在学习mysql的事务隔离机制的过程中，对mysql的会话和事务的概念有点模糊不清，这里主要通过mysql可视化工具sequel pro来记录在实践过程中遇到的问题以及思考。 mysql会话begin自动提交事务12begin;update retail_order set order_status=111 where order_code=&amp;apos;899120869590&amp;apos;; 我们">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-11-08T09:32:52.564Z">
+<meta property="og:updated_time" content="2018-11-08T09:52:57.191Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="TizzyT&#39;s Blog">
-<meta name="twitter:description" content="title: mysql事务和事务隔离机制 tags:   mysql    在学习mysql的事务隔离机制的过程中，对mysql的会话和事务的概念有点模糊不清，这里主要通过mysql可视化工具sequel pro来记录在实践过程中遇到的问题以及思考。 mysql会话begin自动提交事务12begin;update retail_order set order_status=111 where">
+<meta name="twitter:title" content="mysql事务和事务隔离机制">
+<meta name="twitter:description" content="在学习mysql的事务隔离机制的过程中，对mysql的会话和事务的概念有点模糊不清，这里主要通过mysql可视化工具sequel pro来记录在实践过程中遇到的问题以及思考。 mysql会话begin自动提交事务12begin;update retail_order set order_status=111 where order_code=&amp;apos;899120869590&amp;apos;; 我们">
 
 
 
@@ -171,7 +172,7 @@
 
 
 
-  <title> | TizzyT's Blog</title>
+  <title>mysql事务和事务隔离机制 | TizzyT's Blog</title>
   
 
 
@@ -374,7 +375,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline"></h1>
+          <h1 class="post-title" itemprop="name headline">mysql事务和事务隔离机制</h1>
         
 
         <div class="post-meta">
@@ -435,15 +436,7 @@
       
 
       
-        <hr>
-<p>title: mysql事务和事务隔离机制</p>
-<p>tags: </p>
-<ul>
-<li><p>mysql</p>
-<hr>
-</li>
-</ul>
-<p>在学习mysql的事务隔离机制的过程中，对mysql的会话和事务的概念有点模糊不清，这里主要通过mysql可视化工具sequel pro来记录在实践过程中遇到的问题以及思考。</p>
+        <p>在学习mysql的事务隔离机制的过程中，对mysql的会话和事务的概念有点模糊不清，这里主要通过mysql可视化工具sequel pro来记录在实践过程中遇到的问题以及思考。</p>
 <h4 id="mysql会话begin自动提交事务"><a href="#mysql会话begin自动提交事务" class="headerlink" title="mysql会话begin自动提交事务"></a>mysql会话begin自动提交事务</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">begin;</span><br><span class="line">update retail_order set order_status=111 where order_code=&apos;899120869590&apos;;</span><br></pre></td></tr></table></figure>
 <p>我们建立一个mysql连接，然后开启一个会话session1，执行上面的sql。这条sql会在行记录上加锁。但是当前的事务是没有提交的，mysql的默认事务隔离机制是RR（可重复读）。我们在另一个会话session2中执行：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">begin;</span><br><span class="line">update retail_order set order_status=111 where order_code=&apos;899120869590&apos;;</span><br><span class="line">commit;</span><br></pre></td></tr></table></figure>
@@ -542,6 +535,12 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/mysql/" rel="tag"># mysql</a>
+          
+        </div>
+      
 
       
       
@@ -551,8 +550,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/Untitled/" rel="next" title="">
-                <i class="fa fa-chevron-left"></i> 
+              <a href="/2018/Semaphore控制并发的信号量/" rel="next" title="Semaphore控制并发的信号量">
+                <i class="fa fa-chevron-left"></i> Semaphore控制并发的信号量
               </a>
             
           </div>
@@ -650,7 +649,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">31</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -663,7 +662,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -916,7 +915,7 @@
         var disqus_config = function () {
           this.page.url = 'http://jianghao.wang/2018/mysql事务和事务隔离机制/';
           this.page.identifier = '2018/mysql事务和事务隔离机制/';
-          this.page.title = '';
+          this.page.title = 'mysql事务和事务隔离机制';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://tizzy323.disqus.com/embed.js';
