@@ -125,16 +125,19 @@
 
 
 
-<meta name="description" content="Walk steps step by step">
-<meta property="og:type" content="website">
+<meta name="description" content="之前的一篇文章介绍了mysql的四种隔离级别，本篇主要介绍一下mysql是如何进行加锁处理的。主要想了解mysql在处理高并发情况下的读写以及可能遇到的并发问题之间是如何去兼容的。我们都知道加锁是比较资源的操作，但是不加锁也会面临一些并发的问题，本篇文章将基于四种隔离级别去介绍mysql是如何进行加锁的处理的。 当前读和快照读我们需要先了解一下当前读和快照读的区别，实际上在mysql中是区分这两种">
+<meta property="og:type" content="article">
 <meta property="og:title" content="TizzyT&#39;s Blog">
-<meta property="og:url" content="http://jianghao.wang/archives/2018/01/index.html">
+<meta property="og:url" content="http://jianghao.wang/2018/mysql加锁处理分析/index.html">
 <meta property="og:site_name" content="TizzyT&#39;s Blog">
-<meta property="og:description" content="Walk steps step by step">
+<meta property="og:description" content="之前的一篇文章介绍了mysql的四种隔离级别，本篇主要介绍一下mysql是如何进行加锁处理的。主要想了解mysql在处理高并发情况下的读写以及可能遇到的并发问题之间是如何去兼容的。我们都知道加锁是比较资源的操作，但是不加锁也会面临一些并发的问题，本篇文章将基于四种隔离级别去介绍mysql是如何进行加锁的处理的。 当前读和快照读我们需要先了解一下当前读和快照读的区别，实际上在mysql中是区分这两种">
 <meta property="og:locale" content="default">
+<meta property="og:image" content="http://arthornye.github.io/images/lock.png">
+<meta property="og:updated_time" content="2018-11-12T08:27:52.144Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="TizzyT&#39;s Blog">
-<meta name="twitter:description" content="Walk steps step by step">
+<meta name="twitter:description" content="之前的一篇文章介绍了mysql的四种隔离级别，本篇主要介绍一下mysql是如何进行加锁处理的。主要想了解mysql在处理高并发情况下的读写以及可能遇到的并发问题之间是如何去兼容的。我们都知道加锁是比较资源的操作，但是不加锁也会面临一些并发的问题，本篇文章将基于四种隔离级别去介绍mysql是如何进行加锁的处理的。 当前读和快照读我们需要先了解一下当前读和快照读的区别，实际上在mysql中是区分这两种">
+<meta name="twitter:image" content="http://arthornye.github.io/images/lock.png">
 
 
 
@@ -164,13 +167,13 @@
 
 
 
-  <link rel="canonical" href="http://jianghao.wang/archives/2018/01/"/>
+  <link rel="canonical" href="http://jianghao.wang/2018/mysql加锁处理分析/"/>
 
 
 
 
 
-  <title>Archive | TizzyT's Blog</title>
+  <title> | TizzyT's Blog</title>
   
 
 
@@ -208,7 +211,7 @@
     
   
 
-  <div class="container sidebar-position-left page-archive">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -342,221 +345,163 @@
           <div id="content" class="content">
             
 
+  <div id="posts" class="posts-expand">
+    
+
+  
+
   
   
   
-  <div class="post-block archive">
-    <div id="posts" class="posts-collapse">
-      <span class="archive-move-on"></span>
 
-      <span class="archive-page-counter">
-        
-        
-         
-        
-        OK! 32 posts in total. Keep on posting.
-      </span>
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://jianghao.wang/2018/mysql加锁处理分析/">
 
-      
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yeqiaozhu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="TizzyT's Blog">
+    </span>
+
+    
+      <header class="post-header">
 
         
         
+          <h1 class="post-title" itemprop="name headline"></h1>
         
 
-        
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-11-12T14:07:22+08:00">
+                2018-11-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
           
-          <div class="collection-title">
-            <h1 class="archive-year" id="archive-year-2018">2018</h1>
-          </div>
-        
-        
 
-        
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/mysql加锁处理分析/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/mysql加锁处理分析/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+          
+          
 
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/工作问题记录/" itemprop="url">
-              
-                <span itemprop="name">工作问题记录</span>
-              
-            </a>
-        
-      </h2>
+          
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-01-28T12:03:44+08:00"
-              content="2018-01-28" >
-          01-28
-        </time>
-      </div>
+          
 
-    </header>
-  </article>
+          
 
+        </div>
+      </header>
+    
 
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/区块链/" itemprop="url">
-              
-                <span itemprop="name">WTF is The BlockChain?</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-01-15T11:32:25+08:00"
-              content="2018-01-15" >
-          01-15
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/微信小游戏那些坑/" itemprop="url">
-              
-                <span itemprop="name">微信小游戏那些坑</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-01-12T18:04:24+08:00"
-              content="2018-01-12" >
-          01-12
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
       
 
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/SSH无密码登录/" itemprop="url">
-              
-                <span itemprop="name">SSH无密码登录</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-01-11T17:16:55+08:00"
-              content="2018-01-11" >
-          01-11
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
+      
+        <p>之前的一篇文章介绍了mysql的四种隔离级别，本篇主要介绍一下mysql是如何进行加锁处理的。主要想了解mysql在处理高并发情况下的读写以及可能遇到的并发问题之间是如何去兼容的。我们都知道加锁是比较资源的操作，但是不加锁也会面临一些并发的问题，本篇文章将基于四种隔离级别去介绍mysql是如何进行加锁的处理的。</p>
+<h4 id="当前读和快照读"><a href="#当前读和快照读" class="headerlink" title="当前读和快照读"></a>当前读和快照读</h4><p>我们需要先了解一下当前读和快照读的区别，实际上在mysql中是区分这两种读的，看两个sql语句：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">select * from test_test where ? for update;//这一整个事务是一个当前读（实际上是一个写操作）</span><br><span class="line">select * from test_test where ?;//这个事务是一个快照读（实际上只是一个从数据库获取数据的操作）</span><br></pre></td></tr></table></figure>
+<p><strong>当前读：delete，insert，update操作都可以视为当前读，从语义上可以理解为select for udpate，都是先读再写，需要保证并发的读写数据一致性。</strong></p>
+<p><strong>快照读：单纯的select操作，数据库读取操作，不同的数据库隔离级别可能面临重复读的不一致问题和幻读问题。</strong></p>
+<p>在mysql中，针对快照读只有在最高的隔离级别serializable级别下才会对快照读进行加锁，其他的级别下都是不加锁的。针对当前读，mysql在各个级别下为了防止并发的数据不一致问题都会进行加锁，加排他锁，也可以理解为写锁。</p>
+<h4 id="RC隔离级别下的加锁机制"><a href="#RC隔离级别下的加锁机制" class="headerlink" title="RC隔离级别下的加锁机制"></a>RC隔离级别下的加锁机制</h4><p>我们将mysql的隔离级别调整为RC，建立一个test_test表，其中id是primary key，code是unique key。分别执行下面的sql：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">begin;</span><br><span class="line">select * from test_test where code=5 for update;</span><br><span class="line">//先在session1中执行该sql1</span><br><span class="line">id  name code</span><br><span class="line">13	yqz	   5</span><br><span class="line">14	yqz	   5</span><br><span class="line"></span><br><span class="line">update test_test set test_test.name=&apos;pyx&apos; where code =5;</span><br><span class="line">//然后在session2中执行该sql2</span><br><span class="line"></span><br><span class="line">执行结果，sql2获取锁超时。</span><br></pre></td></tr></table></figure>
+<p>结论：RC隔离级别下对快照读不加锁，会存在重复读的数据不一致问题+幻读问题。对当前读，RC隔离级别会加锁，其他事务不允许修改已经被当前读锁定的修改记录。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">begin;</span><br><span class="line">select * from test_test where code=5 for update;</span><br><span class="line">//先在session1中执行该sql1</span><br><span class="line">id  name code</span><br><span class="line">13	yqz	   5</span><br><span class="line">14	yqz	   5</span><br><span class="line"></span><br><span class="line">insert into test_test values(20,&apos;yqz&apos;,7);//session2可以正常插入</span><br><span class="line">insert into test_test values(20,&apos;yqz&apos;,5);//session2不能插入，锁竞争</span><br><span class="line">update test_test set code=1 where id=12;//session2不能插入，锁竞争</span><br></pre></td></tr></table></figure>
+<p>做了个图，分析下这里的加锁：</p>
+<p><img src="http://arthornye.github.io/images/lock.png" alt="cmd-markdown-logo"></p>
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/数字签名和数字证书/" itemprop="url">
-              
-                <span itemprop="name">数字签名和数字证书</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-01-02T21:05:53+08:00"
-              content="2018-01-02" >
-          01-02
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
     </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/mysql事务和事务隔离机制/" rel="next" title="mysql事务和事务隔离机制">
+                <i class="fa fa-chevron-left"></i> mysql事务和事务隔离机制
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
 
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -564,6 +509,20 @@
 
 
           
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
 
         </div>
         
@@ -584,8 +543,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -675,6 +643,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#当前读和快照读"><span class="nav-number">1.</span> <span class="nav-text">当前读和快照读</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RC隔离级别下的加锁机制"><span class="nav-number">2.</span> <span class="nav-text">RC隔离级别下的加锁机制</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -828,6 +812,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
 
   
 
@@ -845,6 +833,18 @@
       <script id="dsq-count-scr" src="https://tizzy323.disqus.com/count.js" async></script>
     
 
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://jianghao.wang/2018/mysql加锁处理分析/';
+          this.page.identifier = '2018/mysql加锁处理分析/';
+          this.page.title = '';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://tizzy323.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
     
 
   

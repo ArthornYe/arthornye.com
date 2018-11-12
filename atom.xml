@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://jianghao.wang/"/>
-  <updated>2018-11-08T09:52:57.191Z</updated>
+  <updated>2018-11-12T08:27:52.144Z</updated>
   <id>http://jianghao.wang/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title></title>
+    <link href="http://jianghao.wang/2018/mysql%E5%8A%A0%E9%94%81%E5%A4%84%E7%90%86%E5%88%86%E6%9E%90/"/>
+    <id>http://jianghao.wang/2018/mysql加锁处理分析/</id>
+    <published>2018-11-12T06:07:22.527Z</published>
+    <updated>2018-11-12T08:27:52.144Z</updated>
+    
+    <content type="html"><![CDATA[<p>之前的一篇文章介绍了mysql的四种隔离级别，本篇主要介绍一下mysql是如何进行加锁处理的。主要想了解mysql在处理高并发情况下的读写以及可能遇到的并发问题之间是如何去兼容的。我们都知道加锁是比较资源的操作，但是不加锁也会面临一些并发的问题，本篇文章将基于四种隔离级别去介绍mysql是如何进行加锁的处理的。</p><h4 id="当前读和快照读"><a href="#当前读和快照读" class="headerlink" title="当前读和快照读"></a>当前读和快照读</h4><p>我们需要先了解一下当前读和快照读的区别，实际上在mysql中是区分这两种读的，看两个sql语句：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">select * from test_test where ? for update;//这一整个事务是一个当前读（实际上是一个写操作）</span><br><span class="line">select * from test_test where ?;//这个事务是一个快照读（实际上只是一个从数据库获取数据的操作）</span><br></pre></td></tr></table></figure><p><strong>当前读：delete，insert，update操作都可以视为当前读，从语义上可以理解为select for udpate，都是先读再写，需要保证并发的读写数据一致性。</strong></p><p><strong>快照读：单纯的select操作，数据库读取操作，不同的数据库隔离级别可能面临重复读的不一致问题和幻读问题。</strong></p><p>在mysql中，针对快照读只有在最高的隔离级别serializable级别下才会对快照读进行加锁，其他的级别下都是不加锁的。针对当前读，mysql在各个级别下为了防止并发的数据不一致问题都会进行加锁，加排他锁，也可以理解为写锁。</p><h4 id="RC隔离级别下的加锁机制"><a href="#RC隔离级别下的加锁机制" class="headerlink" title="RC隔离级别下的加锁机制"></a>RC隔离级别下的加锁机制</h4><p>我们将mysql的隔离级别调整为RC，建立一个test_test表，其中id是primary key，code是unique key。分别执行下面的sql：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">begin;</span><br><span class="line">select * from test_test where code=5 for update;</span><br><span class="line">//先在session1中执行该sql1</span><br><span class="line">id  name code</span><br><span class="line">13yqz   5</span><br><span class="line">14yqz   5</span><br><span class="line"></span><br><span class="line">update test_test set test_test.name=&apos;pyx&apos; where code =5;</span><br><span class="line">//然后在session2中执行该sql2</span><br><span class="line"></span><br><span class="line">执行结果，sql2获取锁超时。</span><br></pre></td></tr></table></figure><p>结论：RC隔离级别下对快照读不加锁，会存在重复读的数据不一致问题+幻读问题。对当前读，RC隔离级别会加锁，其他事务不允许修改已经被当前读锁定的修改记录。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">begin;</span><br><span class="line">select * from test_test where code=5 for update;</span><br><span class="line">//先在session1中执行该sql1</span><br><span class="line">id  name code</span><br><span class="line">13yqz   5</span><br><span class="line">14yqz   5</span><br><span class="line"></span><br><span class="line">insert into test_test values(20,&apos;yqz&apos;,7);//session2可以正常插入</span><br><span class="line">insert into test_test values(20,&apos;yqz&apos;,5);//session2不能插入，锁竞争</span><br><span class="line">update test_test set code=1 where id=12;//session2不能插入，锁竞争</span><br></pre></td></tr></table></figure><p>做了个图，分析下这里的加锁：</p><p><img src="http://arthornye.github.io/images/lock.png" alt="cmd-markdown-logo"></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;之前的一篇文章介绍了mysql的四种隔离级别，本篇主要介绍一下mysql是如何进行加锁处理的。主要想了解mysql在处理高并发情况下的读写以及可能遇到的并发问题之间是如何去兼容的。我们都知道加锁是比较资源的操作，但是不加锁也会面临一些并发的问题，本篇文章将基于四种隔离级别去
+      
+    
+    </summary>
+    
+    
+  </entry>
   
   <entry>
     <title>mysql事务和事务隔离机制</title>
@@ -460,30 +481,6 @@
     
     
       <category term="大搜车微信小游戏学习点滴" scheme="http://jianghao.wang/tags/%E5%A4%A7%E6%90%9C%E8%BD%A6%E5%BE%AE%E4%BF%A1%E5%B0%8F%E6%B8%B8%E6%88%8F%E5%AD%A6%E4%B9%A0%E7%82%B9%E6%BB%B4/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>SSH无密码登录</title>
-    <link href="http://jianghao.wang/2018/SSH%E6%97%A0%E5%AF%86%E7%A0%81%E7%99%BB%E5%BD%95/"/>
-    <id>http://jianghao.wang/2018/SSH无密码登录/</id>
-    <published>2018-01-11T09:16:55.000Z</published>
-    <updated>2018-03-27T02:14:06.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>​工作中经常需要登录服务器，每次都需要输入服务器登录密码是相当麻烦的，我们可以通过设置RSA密钥对免密码登录。通过本地配置私钥，服务器配置公钥，并且保证私钥不丢失的情况下，服务器可以验证发送方身份唯一，并且报文是未被修改的。</p><h4 id="生成一对密钥"><a href="#生成一对密钥" class="headerlink" title="生成一对密钥"></a>生成一对密钥</h4><p>打开终端，通过ssh-keygen生成RSA密钥对，-t表示type，表示生成rsa加密的钥匙：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa</span><br></pre></td></tr></table></figure><p>RSA是默认的加密类型，默认长度为2048位，可以指定长度为4096更安全：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -b <span class="number">4096</span> -t rsa</span><br></pre></td></tr></table></figure><p>按Enter键，然后需要输入一个密码来加密你的SSH Key．密码至少要20位长度．SSH密钥会保存在home目录下的<strong>.ssh/id_rsa</strong>文件中．SSH公钥保存在<strong>.ssh/id_rsa.pub</strong>文件中。这里的id是我们在输入的时候指定的文件名。</p><p><img src="https://arthornye.github.io/images/keygen.png" alt="cmd-markdown-logo"></p><h4 id="配置config文件"><a href="#配置config文件" class="headerlink" title="配置config文件"></a>配置config文件</h4> <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd ~/.ssh</span><br></pre></td></tr></table></figure><p>打开config文件，如果不存在，自己新建一个：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkfile m config</span><br></pre></td></tr></table></figure><p>当前我本地的config配置为：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Host github.com</span><br><span class="line"> IdentityFile ~/.ssh/id_rsa</span><br><span class="line">Host jhost</span><br><span class="line">   User yeqiaozhu</span><br><span class="line">   HostName jhost.hz.souche-inc.com</span><br><span class="line">   IdentityFile ~/.ssh/jump_rsa</span><br><span class="line">Host stable</span><br><span class="line">   User souche</span><br><span class="line">   HostName 172.17.40.227</span><br><span class="line">   IdentityFile ~/.ssh/stable_rsa</span><br></pre></td></tr></table></figure><p>其中stable是我增加的配置项，这里的几个参数可以注意下：</p><ul><li>Host：别名，我们可以通过ssh stable进行登录。</li><li>User：username@hostname我们通常通过这种方式指定登录的远程服务器，username填写对应的就行。</li><li>HostName：同User的方式。</li><li>IdentityFile：配置生成的rsa私钥的地址，我们的所有请求报文都会先进行hash之后获得digest然后通过私钥加密。</li></ul><h4 id="配置服务器公钥"><a href="#配置服务器公钥" class="headerlink" title="配置服务器公钥"></a>配置服务器公钥</h4><h5 id="登陆服务器手动配置"><a href="#登陆服务器手动配置" class="headerlink" title="登陆服务器手动配置"></a>登陆服务器手动配置</h5><p>可以直接将公钥粘贴到服务器authorized_keys文件中。</p><h5 id="命令直接配置"><a href="#命令直接配置" class="headerlink" title="命令直接配置"></a>命令直接配置</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-copy-id -i 公钥文件名(stable_rsa.pub) username@remote-server</span><br></pre></td></tr></table></figure><p>配置之后我们通过：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh stable</span><br></pre></td></tr></table></figure><p>可以直接登录到服务器：</p><p><img src="https://arthornye.github.io/images/login.png" alt="cmd-markdown-logo"></p><h5 id="碰到的问题"><a href="#碰到的问题" class="headerlink" title="碰到的问题"></a>碰到的问题</h5><p><img src="https://arthornye.github.io/images/msg.png" alt="cmd-markdown-logo"></p><p>目录文件权限太大，需要调整权限：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod -R <span class="number">700</span> ~/.ssh</span><br></pre></td></tr></table></figure><h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>设置SSH免密登录，学习本地~/.ssh文件夹中的配置项即可。</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;​工作中经常需要登录服务器，每次都需要输入服务器登录密码是相当麻烦的，我们可以通过设置RSA密钥对免密码登录。通过本地配置私钥，服务器配置公钥，并且保证私钥不丢失的情况下，服务器可以验证发送方身份唯一，并且报文是未被修改的。&lt;/p&gt;
-&lt;h4 id=&quot;生成一对密钥&quot;&gt;&lt;a h
-      
-    
-    </summary>
-    
-    
-      <category term="大搜车的点滴记录" scheme="http://jianghao.wang/tags/%E5%A4%A7%E6%90%9C%E8%BD%A6%E7%9A%84%E7%82%B9%E6%BB%B4%E8%AE%B0%E5%BD%95/"/>
     
   </entry>
   
