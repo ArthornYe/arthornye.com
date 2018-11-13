@@ -135,7 +135,7 @@
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://arthornye.github.io/images/lock.png">
 <meta property="og:image" content="http://arthornye.github.io/images/sqllock.png">
-<meta property="og:updated_time" content="2018-11-12T15:10:01.740Z">
+<meta property="og:updated_time" content="2018-11-13T02:24:01.339Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="mysql加锁处理分析">
 <meta name="twitter:description" content="之前的一篇文章介绍了mysql的四种隔离级别，本篇主要介绍一下mysql是如何进行加锁处理的。主要想了解mysql在处理高并发情况下的读写以及可能遇到的并发问题之间是如何去兼容的。我们都知道加锁是比较资源的操作，但是不加锁也会面临一些并发的问题，本篇文章将基于四种隔离级别去介绍mysql是如何进行加锁的处理的。 当前读和快照读我们需要先了解一下当前读和快照读的区别，实际上在mysql中是区分这两种">
@@ -462,7 +462,7 @@
 <h4 id="mysql死锁的发生"><a href="#mysql死锁的发生" class="headerlink" title="mysql死锁的发生"></a>mysql死锁的发生</h4><p>在mysql中也会发生一些死锁的情况，我们熟知发生死锁的条件能够帮助我们避免写出死锁。下面几种情况会发生死锁</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">session1</span><br><span class="line">select * from test_test where code=5 for udpate;</span><br><span class="line">select * from test_test where id=1 for update;</span><br><span class="line"></span><br><span class="line">session2</span><br><span class="line">select * from test_test where id=1 for update;</span><br><span class="line">select * from test_test where code=5 for udpate;</span><br><span class="line">//这种是比较简单的情况，循环加锁导致死锁</span><br></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">session1</span><br><span class="line">select * from test_test where code=5 for udpate;</span><br><span class="line">id  name code</span><br><span class="line">13	yqz	   5</span><br><span class="line">select * from test_test where code=4 for udpate;</span><br><span class="line">id  name code</span><br><span class="line">12	yqz	   4</span><br><span class="line"></span><br><span class="line">session2</span><br><span class="line">select * from test_test where id=12 for udpate;</span><br><span class="line">select * from test_test where id=13 for udpate;</span><br><span class="line"></span><br><span class="line">//这里虽然不是直接的进行了循环加锁，但是由于在聚簇索引的节点处也加了锁，实际上是有一个加锁的闭环的。我们通过mysql的加锁处理分析可以更准确的得到加锁信息，从而分析出死锁</span><br></pre></td></tr></table></figure>
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>本篇主要分析了mysql是如何进行加锁的处理的。</p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>本篇主要分析了mysql是如何进行加锁的处理的。mysql在RR隔离级别及以下对快照读是比较友好的，不会加锁，这样也极大地提高了数据库处理并发的能力。但是针对快照读RC隔离级别下还是不能防止幻读，也不能重复读。值得注意的是，mysql在RR,RC的隔离级别下都是有对当前读防止幻读的，通过加排他锁和间隙锁的共同使用。针对RR隔离级别的快照读，通过加版本号达到可重复读和防止幻读的目的。通过总结希望从sql语句，结合隔离级别以及索引判断出在执行过程中可能发生的加锁和锁竞争。</p>
 
       
     </div>
