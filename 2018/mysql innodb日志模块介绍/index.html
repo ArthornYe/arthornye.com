@@ -112,7 +112,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="mysql," />
 
 
 
@@ -125,19 +125,21 @@
 
 
 
-<meta name="description" content="Java虚拟机涉及的gc回收器细节和选择上是较为复杂的，本篇文章主要讲解gc回收器有哪些基本算法以及如何进行选择的。垃圾回收算法主要针对java运行时数据区域的堆区域。 垃圾回收算法可达性分析算法可达性分析算法是当前主流语言c#,java等通用的判定对象是否存活的算法。这个算法通过一系列的Gc Roots的对象作为起点，从这些结点开始进行可达性分析，从图论的角度探究当一个对象到根对象不可达时那么可">
+<meta name="description" content="简单介绍一下mysql的日志系统。我们都知道在数据库的生产环境上，可能会发生一些事故。例如之前有个同事在执行数据订正的时候，不小心将很多的订单数据中的凭证数据覆盖成了空。这样的操作第一时间肯定是想通过数据库备份的形式将数据恢复出来，这个时候你的DBA可能会告诉你，有一周的数据的备份。不幸的是，这个事故发生的情况并没有在一星期之内定位到原因。所幸，有一份较久的备份，DBA可以根据这个备份恢复到丢失前">
+<meta name="keywords" content="mysql">
 <meta property="og:type" content="article">
-<meta property="og:title" content="垃圾回收算法">
-<meta property="og:url" content="http://jianghao.wang/2017/垃圾回收算法/index.html">
+<meta property="og:title" content="mysql innodb日志模块介绍">
+<meta property="og:url" content="http://jianghao.wang/2018/mysql innodb日志模块介绍/index.html">
 <meta property="og:site_name" content="TizzyT&#39;s Blog">
-<meta property="og:description" content="Java虚拟机涉及的gc回收器细节和选择上是较为复杂的，本篇文章主要讲解gc回收器有哪些基本算法以及如何进行选择的。垃圾回收算法主要针对java运行时数据区域的堆区域。 垃圾回收算法可达性分析算法可达性分析算法是当前主流语言c#,java等通用的判定对象是否存活的算法。这个算法通过一系列的Gc Roots的对象作为起点，从这些结点开始进行可达性分析，从图论的角度探究当一个对象到根对象不可达时那么可">
+<meta property="og:description" content="简单介绍一下mysql的日志系统。我们都知道在数据库的生产环境上，可能会发生一些事故。例如之前有个同事在执行数据订正的时候，不小心将很多的订单数据中的凭证数据覆盖成了空。这样的操作第一时间肯定是想通过数据库备份的形式将数据恢复出来，这个时候你的DBA可能会告诉你，有一周的数据的备份。不幸的是，这个事故发生的情况并没有在一星期之内定位到原因。所幸，有一份较久的备份，DBA可以根据这个备份恢复到丢失前">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="http://arthornye.github.io/images/新生代分区.png">
-<meta property="og:updated_time" content="2017-05-10T03:22:43.000Z">
+<meta property="og:image" content="http://arthornye.github.io/images/twostep.png">
+<meta property="og:image" content="http://arthornye.github.io/images/pointmove.png">
+<meta property="og:updated_time" content="2018-11-18T02:52:35.993Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="垃圾回收算法">
-<meta name="twitter:description" content="Java虚拟机涉及的gc回收器细节和选择上是较为复杂的，本篇文章主要讲解gc回收器有哪些基本算法以及如何进行选择的。垃圾回收算法主要针对java运行时数据区域的堆区域。 垃圾回收算法可达性分析算法可达性分析算法是当前主流语言c#,java等通用的判定对象是否存活的算法。这个算法通过一系列的Gc Roots的对象作为起点，从这些结点开始进行可达性分析，从图论的角度探究当一个对象到根对象不可达时那么可">
-<meta name="twitter:image" content="http://arthornye.github.io/images/新生代分区.png">
+<meta name="twitter:title" content="mysql innodb日志模块介绍">
+<meta name="twitter:description" content="简单介绍一下mysql的日志系统。我们都知道在数据库的生产环境上，可能会发生一些事故。例如之前有个同事在执行数据订正的时候，不小心将很多的订单数据中的凭证数据覆盖成了空。这样的操作第一时间肯定是想通过数据库备份的形式将数据恢复出来，这个时候你的DBA可能会告诉你，有一周的数据的备份。不幸的是，这个事故发生的情况并没有在一星期之内定位到原因。所幸，有一份较久的备份，DBA可以根据这个备份恢复到丢失前">
+<meta name="twitter:image" content="http://arthornye.github.io/images/twostep.png">
 
 
 
@@ -167,13 +169,13 @@
 
 
 
-  <link rel="canonical" href="http://jianghao.wang/2017/垃圾回收算法/"/>
+  <link rel="canonical" href="http://jianghao.wang/2018/mysql innodb日志模块介绍/"/>
 
 
 
 
 
-  <title>垃圾回收算法 | TizzyT's Blog</title>
+  <title>mysql innodb日志模块介绍 | TizzyT's Blog</title>
   
 
 
@@ -359,7 +361,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://jianghao.wang/2017/垃圾回收算法/">
+    <link itemprop="mainEntityOfPage" href="http://jianghao.wang/2018/mysql innodb日志模块介绍/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="yeqiaozhu">
@@ -376,7 +378,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">垃圾回收算法</h1>
+          <h1 class="post-title" itemprop="name headline">mysql innodb日志模块介绍</h1>
         
 
         <div class="post-meta">
@@ -388,8 +390,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-05-10T11:22:43+08:00">
-                2017-05-10
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-11-17T22:45:21+08:00">
+                2018-11-17
               </time>
             
 
@@ -407,9 +409,9 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2017/垃圾回收算法/#comments" itemprop="discussionUrl">
+                <a href="/2018/mysql innodb日志模块介绍/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/垃圾回收算法/" itemprop="commentCount"></span>
+                        data-disqus-identifier="2018/mysql innodb日志模块介绍/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -437,35 +439,20 @@
       
 
       
-        <p>Java虚拟机涉及的gc回收器细节和选择上是较为复杂的，本篇文章主要讲解gc回收器有哪些基本算法以及如何进行选择的。垃圾回收算法主要针对java运行时数据区域的堆区域。</p>
-<h2 id="垃圾回收算法"><a href="#垃圾回收算法" class="headerlink" title="垃圾回收算法"></a>垃圾回收算法</h2><h3 id="可达性分析算法"><a href="#可达性分析算法" class="headerlink" title="可达性分析算法"></a>可达性分析算法</h3><p>可达性分析算法是当前主流语言c#,java等通用的判定对象是否存活的算法。这个算法通过一系列的Gc Roots的对象作为起点，从这些结点开始进行可达性分析，从图论的角度探究当一个对象到根对象不可达时那么可以视为死亡。可达性分析算法是一个安全的垃圾回收算法，因为可以防止对象之间互相引用的对象群也能被彻底回收。当前主流算法包括swift语言都采用引用计数法进行判定对象的生存状态，减少了维护树结构的成本但是可能有对象会逃逸。Gc Roots：</p>
-<blockquote>
-<ul>
-<li>Green 虚拟机栈（栈帧中的局部变量表）中引用的对象。</li>
-<li>方法区中类静态属性引用的对象。</li>
-<li>方法区中常量引用的对象。</li>
-<li>本地方法栈中Native方法引用的对象。</li>
-</ul>
-</blockquote>
-<p>Gc Roots是java垃圾回收之前必须要停顿进行遍历的，这个过程是Stop The World的，也就是所有线程都停顿在安全点，用户感觉到的是响应时间加长。如果是并发回收在并发标记结束之后还需要进行重新标记，因为Roots在并发过程中是在变化的。</p>
-<h3 id="标记－清除算法（Mark-Sweep）"><a href="#标记－清除算法（Mark-Sweep）" class="headerlink" title="标记－清除算法（Mark-Sweep）"></a>标记－清除算法（Mark-Sweep）</h3><p>内存回收需要经过标记阶段标记死亡对象，然后通过清除将对应的内存地址回收，这个过程是回收算法最基本的过程，几乎每个算法都需要经历这个过程。但是标记清除算法在空间和时间上都不算优秀，时间上标记和清除两个过程效率都不高，空间上来说会造成大量的内存碎片，在大对象到来的时候如果碎片化比较严重会造成无法分配内存地址提前触发gc,但是可能实际还有较大比例的内存剩余。</p>
-<h3 id="复制－清除算法（Mark-Copy-Sweep）"><a href="#复制－清除算法（Mark-Copy-Sweep）" class="headerlink" title="复制－清除算法（Mark-Copy-Sweep）"></a>复制－清除算法（Mark-Copy-Sweep）</h3><p>复制清除算法为了解决效率问题提出的，将可用内存分为两块，使用的时候只使用其中的一块，回收的时候直接将存活的对象复制到另外一块区域，同时将回收区域全部清空。这种算法解决了空间碎片的问题，因为复制过程中都是有序的进行指针的移动。同时也提高了清除的时间效率，全部清除即可。这种方法的缺陷是分成两块减少了内存利用率，同时如果存活对象过多复制成本很高，所以针对存活率较低的区域可以使用，这里参考新生代回收设计：<br><img src="http://arthornye.github.io/images/新生代分区.png" alt="cmd-markdown-logo"></p>
-<h3 id="标记－整理－清除算法（Mark-Compact-Sweep）"><a href="#标记－整理－清除算法（Mark-Compact-Sweep）" class="headerlink" title="标记－整理－清除算法（Mark-Compact-Sweep）"></a>标记－整理－清除算法（Mark-Compact-Sweep）</h3><p>复制算法在对象生存周期比较长回收率比较低的情况下复制量大效率很低，同时还需要维护双倍的内存空间，在新生代利用比较合适。但是针对回收率低的采用整理算法，这种算法会先进行标记，然后将存活的对象向头部进行移动，然后直接删除存活边界外也就是死亡的对象，整理的过程代价较大需要进行频繁的指针移动。</p>
-<h3 id="分代收集算法"><a href="#分代收集算法" class="headerlink" title="分代收集算法"></a>分代收集算法</h3><p>为什么要采用分代收集，我们回顾了上述算法的设计，其实并没有一种完美的算法，算法都是基于场景设计的。分代收集能够很好的处理多种情况，如果是回收量多，大批死去只有少量存活那么复制算法是最高效的，如果大量存活那么整理算法更合适。如果不考虑碎片带来的影响，那么标记清除时最快速的。CMS收集器就采用了标记清除算法，可以通过Tomcat启动参数配置老年代采用该收集器，也可以设定开启整理，通过标记整理清除方式的CMS收集器维护老年代。</p>
-<h2 id="HotSpot算法实现"><a href="#HotSpot算法实现" class="headerlink" title="HotSpot算法实现"></a>HotSpot算法实现</h2><p>垃圾回收算法在细节上的实现并没有上面描述的这么简单，在运行过程中，即使是确定Gc Roots都是一个极为复杂的过程，何时中断所有线程，如何根据根结点快速遍历出整个回收树结构也是效率上需要考虑的。</p>
-<h3 id="枚举根节点"><a href="#枚举根节点" class="headerlink" title="枚举根节点"></a>枚举根节点</h3><p>枚举根节点是必须进行停顿的，中断当前正在执行的所有线程。如果在找到Gc Roots的前提下如果要逐个检查方法区中的引用，会消耗很多的时间，所以维护一个准确的位置时虚拟机所需要考虑的。</p>
-<h4 id="OopMap"><a href="#OopMap" class="headerlink" title="OopMap"></a>OopMap</h4><p>当执行系统停顿下来之后，虚拟机通过OopMap可以直接得知哪些地方存放着对象引用。这个Map是在类加载完的时候，HotSpot虚拟机就把对象什么偏移量上是什么类型的数据都计算出来，在JIT编译过程中，在特定位置记录下栈和寄存器哪些位置是引用。这样在gc扫描的时候就可以直接得知这些信息而不需要进行全局扫描。</p>
-<h3 id="安全点（Safepoint）"><a href="#安全点（Safepoint）" class="headerlink" title="安全点（Safepoint）"></a>安全点（Safepoint）</h3><p>如果为每条指令都生成OopMap,那么程序在每个地方都能暂停进行垃圾回收，但是这样做的空间成本太大，所以虚拟机涉及会在一些地方生成OopMap，这样的地方称之为安全点，程序需要到达这些地方才可以进行线程中断开始标记过程。</p>
-<h4 id="安全点的选择"><a href="#安全点的选择" class="headerlink" title="安全点的选择"></a>安全点的选择</h4><p>安全点的选择主要需要平衡gc的等待时间和运行负荷，所以一般如果调用的栈帧比较长那么会在进入栈帧之前设立一个安全点，所以一般如方法调用，循环跳转，异常跳转等指令之前会生成safepoint。</p>
-<h4 id="抢先式中断和主动式中断"><a href="#抢先式中断和主动式中断" class="headerlink" title="抢先式中断和主动式中断"></a>抢先式中断和主动式中断</h4><p>虚拟机发出gc指令时，程序需要跑到最近的安全点上才能进行标记过程，那么线程如何跑到各自的安全点上去响应中断。</p>
-<blockquote>
-<ul>
-<li>抢先式中断在gc发生时，首先把所有线程中断，如果线程中断的地方不在安全点上，就恢复线程，让它继续跑到安全点上。现在基本是采用抢占式中断来暂停线程响应gc事件，不需要线程的执行代码主动去配合，虚拟机线程调度可以完成。</li>
-<li>主动式中断的思想是当gc需要中断线程时，不直接对线程进行操作，而是设置一个标志，各个线程执行的时候主动去轮询这个标志，发现中断标志为真的时候就中断挂起，轮询标志的地方和安全点是重合的。</li>
-</ul>
-</blockquote>
-<h3 id="安全区域"><a href="#安全区域" class="headerlink" title="安全区域"></a>安全区域</h3><p>安全点机制保证了多个线程能够响应gc同时进入安全点之后中断挂起，但是如果线程当前处于sleep或者blocked状态，这时候线程时无法响应jvm的中断请求的，jvm也不可能去等待cpu再次分配时间片调度这些线程。所以有了安全区域（Safe Region），在这个区域的任何一个点开始gc都是安全的。可以把这个区域看成是扩展了的Safepoint。</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本篇主要分享了各种垃圾回收算法的设计和利弊，以及在实际运行过程中是如何通过安全点和安全区域提高gc回收效率的。这对之后各种回收器的理解是非常重要的，也为调优提供了理论基础。</p>
+        <p>简单介绍一下mysql的日志系统。我们都知道在数据库的生产环境上，可能会发生一些事故。例如之前有个同事在执行数据订正的时候，不小心将很多的订单数据中的凭证数据覆盖成了空。这样的操作第一时间肯定是想通过数据库备份的形式将数据恢复出来，这个时候你的DBA可能会告诉你，有一周的数据的备份。不幸的是，这个事故发生的情况并没有在一星期之内定位到原因。所幸，有一份较久的备份，DBA可以根据这个备份恢复到丢失前的那个节点。那么这里就需要提到mysql的日志系统是如何实现的，只介绍一下概念，具体的实践由伟大的DBA完成。</p>
+<h4 id="mysql的日志模块以及如何保证一致性"><a href="#mysql的日志模块以及如何保证一致性" class="headerlink" title="mysql的日志模块以及如何保证一致性"></a>mysql的日志模块以及如何保证一致性</h4><p>mysql的日志主要分为物理日志redo log（重做日志）和bin log（归档日志）。这两种日志都是只针对更新操作进行记录，针对查询的记录不会记录到mysql的日志模块。更新语句执行的主要流程：</p>
+<p><img src="http://arthornye.github.io/images/twostep.png" alt="cmd-markdown-logo"></p>
+<h5 id="redo-log（重做日志）"><a href="#redo-log（重做日志）" class="headerlink" title="redo log（重做日志）"></a>redo log（重做日志）</h5><p>这个是只针对数据库引擎innodb才有的日志模块。我们可以类比我们在记账的时候，我们有一个账本，记录了每个顾客的账户余额记录，但是如果人特别多的时候我们很难找到每个顾客的记录然后做个更新操作（这里一次查询io一次更新io），最好的办法是将这次的消费记录更新计算的结果记录到一个“白板”上面，等到空闲的时候再去写账本（sync同步到数据库磁盘）。这个“白板”的功能就是redo log。当然这个“白板”也会有写完的时候，实际情况下redo log文件是存在物理文件中的，假设我们有四个redo log文件总共大小为4g，那么每个文件的容量为1g。</p>
+<p><img src="http://arthornye.github.io/images/pointmove.png" alt="cmd-markdown-logo"></p>
+<p>粉板和账本配合的整个过程，其实就是 MySQL 里经常说到WAL 技术，WAL 的全称是 Write-Ahead Logging，它的关键点就是先写日志，再写磁盘，也就是先写粉板，等不忙的时候再写账本。有了 redo log，InnoDB 就可以保证即使数据库发生异常重启，之前提交的记录都不会丢失，这个能力称为crash-safe。</p>
+<h5 id="bin-log（归档日志）"><a href="#bin-log（归档日志）" class="headerlink" title="bin log（归档日志）"></a>bin log（归档日志）</h5><p>可以简单理解为是记录了又一句的更新sql语句，当你需要进行恢复的时候可以先将表恢复到某个历史时间点，然后通过bin log中的记录一个个去执行到丢失数据前的时间点。那么这两种日志有什么不同，为什么要做区分？</p>
+<p><strong>1.redo log是物理日志，记录了在某行做了修改的结果（修改后的记录）。而bin log是逻辑日志，记录了在某行做了什么操作（执行修改的操作）。</strong></p>
+<p><strong>2.redo log是InnoDB 引擎特有的，而bin log是基于mysql的server引擎的，所有的引擎都有选择启用或者关闭这个日志功能。</strong></p>
+<p><strong>3.redo log是循环写的，如果point重合的话是会强制sync到磁盘的，但是bin log是会一直往下写的。</strong></p>
+<h5 id="两阶段提交"><a href="#两阶段提交" class="headerlink" title="两阶段提交"></a>两阶段提交</h5><p>介绍了两种日志模块的功能，我们再来分析开头为什么要做两阶段提交。我们在系统交互的过程中有没有碰到一种情况就是两个任务需要同时完成才算是完成，如果由于异常失败了其中一个，那么整个过程是不成功的，这里我们通常会用一个中间状态来控制整个事务。也就是两阶段提交日志的概念，将写bin log和redo log整个当成一个事务去处理。</p>
+<p><strong>redo log更新成功，binlog更新的时候mysql重启，重启机制检测到之后回滚该事务。redo log更新和bin log更新都成功，提交的时候mysql重启，重启之后检测到该事务已经完成自动提交。那么两个日志模块的数据是始终一致的。</strong></p>
+<p>如果不进行两阶段提交，数据库在异常重启之后恢复的正是库可能和通过bin log恢复的备份数据是不一致的。</p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>主要介绍了mysql innodb在更新操作的时候是如果记录日志，防止突然的重启以及后续的数据备份恢复。即时突然重启，redo log也记录了原始的物理修改信息。当然如果想要恢复到历史的某一个点，也可以通过bin log的形式在历史某一个版本的数据上进行迭代执行。两个日志模块通过了中间状态进行两阶段提交，同时也保证了数据的一致性（这里如果是分各自提交会有问题，数据不一致）。</p>
 
       
     </div>
@@ -481,6 +468,12 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/mysql/" rel="tag"># mysql</a>
+          
+        </div>
+      
 
       
       
@@ -490,8 +483,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/算符优先算法介绍/" rel="next" title="算符优先算法介绍">
-                <i class="fa fa-chevron-left"></i> 算符优先算法介绍
+              <a href="/2018/mysql加锁处理分析/" rel="next" title="mysql加锁处理分析">
+                <i class="fa fa-chevron-left"></i> mysql加锁处理分析
               </a>
             
           </div>
@@ -499,10 +492,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/基于栈的解释执行引擎/" rel="prev" title="基于栈的解释执行引擎">
-                基于栈的解释执行引擎 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -674,7 +663,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#垃圾回收算法"><span class="nav-number">1.</span> <span class="nav-text">垃圾回收算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#可达性分析算法"><span class="nav-number">1.1.</span> <span class="nav-text">可达性分析算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#标记－清除算法（Mark-Sweep）"><span class="nav-number">1.2.</span> <span class="nav-text">标记－清除算法（Mark-Sweep）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#复制－清除算法（Mark-Copy-Sweep）"><span class="nav-number">1.3.</span> <span class="nav-text">复制－清除算法（Mark-Copy-Sweep）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#标记－整理－清除算法（Mark-Compact-Sweep）"><span class="nav-number">1.4.</span> <span class="nav-text">标记－整理－清除算法（Mark-Compact-Sweep）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分代收集算法"><span class="nav-number">1.5.</span> <span class="nav-text">分代收集算法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HotSpot算法实现"><span class="nav-number">2.</span> <span class="nav-text">HotSpot算法实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#枚举根节点"><span class="nav-number">2.1.</span> <span class="nav-text">枚举根节点</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#OopMap"><span class="nav-number">2.1.1.</span> <span class="nav-text">OopMap</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安全点（Safepoint）"><span class="nav-number">2.2.</span> <span class="nav-text">安全点（Safepoint）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#安全点的选择"><span class="nav-number">2.2.1.</span> <span class="nav-text">安全点的选择</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#抢先式中断和主动式中断"><span class="nav-number">2.2.2.</span> <span class="nav-text">抢先式中断和主动式中断</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安全区域"><span class="nav-number">2.3.</span> <span class="nav-text">安全区域</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#mysql的日志模块以及如何保证一致性"><span class="nav-number">1.</span> <span class="nav-text">mysql的日志模块以及如何保证一致性</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#redo-log（重做日志）"><span class="nav-number">1.1.</span> <span class="nav-text">redo log（重做日志）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#bin-log（归档日志）"><span class="nav-number">1.2.</span> <span class="nav-text">bin log（归档日志）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#两阶段提交"><span class="nav-number">1.3.</span> <span class="nav-text">两阶段提交</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#总结"><span class="nav-number">2.</span> <span class="nav-text">总结</span></a></li></ol></div>
             
 
           </div>
@@ -857,9 +846,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'http://jianghao.wang/2017/垃圾回收算法/';
-          this.page.identifier = '2017/垃圾回收算法/';
-          this.page.title = '垃圾回收算法';
+          this.page.url = 'http://jianghao.wang/2018/mysql innodb日志模块介绍/';
+          this.page.identifier = '2018/mysql innodb日志模块介绍/';
+          this.page.title = 'mysql innodb日志模块介绍';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://tizzy323.disqus.com/embed.js';
