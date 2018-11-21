@@ -133,10 +133,12 @@
 <meta property="og:site_name" content="TizzyT&#39;s Blog">
 <meta property="og:description" content="在学习mysql的事务隔离机制的过程中，对mysql的会话和事务的概念有点模糊不清，这里主要通过mysql可视化工具sequel pro来记录在实践过程中遇到的问题以及思考。 mysql会话begin自动提交事务12begin;update retail_order set order_status=111 where order_code=&amp;apos;899120869590&amp;apos;; 我们">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-11-13T06:03:48.436Z">
+<meta property="og:image" content="http://arthornye.github.io/images/mvcc.png">
+<meta property="og:updated_time" content="2018-11-21T02:06:56.503Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="mysql事务和事务隔离机制">
 <meta name="twitter:description" content="在学习mysql的事务隔离机制的过程中，对mysql的会话和事务的概念有点模糊不清，这里主要通过mysql可视化工具sequel pro来记录在实践过程中遇到的问题以及思考。 mysql会话begin自动提交事务12begin;update retail_order set order_status=111 where order_code=&amp;apos;899120869590&amp;apos;; 我们">
+<meta name="twitter:image" content="http://arthornye.github.io/images/mvcc.png">
 
 
 
@@ -494,6 +496,8 @@
 <li>DELETE时，保存当前事务版本号为行的删除版本号。</li>
 <li>UPDATE时，插入一条新纪录，保存当前事务版本号为行创建版本号，同时保存当前事务版本号到原来删除的行。</li>
 </ul>
+<p><strong>2018.11.20增加对MVCC多版本并发控制的理解：</strong>如果我们数据库中某一条记录的值经历的版本变化为4-&gt;3-&gt;2-&gt;1，那么数据库引擎同时会记录一个回滚日志，根据对应事务的版本号去回滚到事务对应的值。</p>
+<p><img src="http://arthornye.github.io/images/mvcc.png" alt="cmd-markdown-logo"></p>
 <p>同样的方式看该该隔离级别下是否存在幻读，session1，事务A：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">begin;</span><br><span class="line">select * from test_test where code=1</span><br></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">1	pyx	1</span><br><span class="line">2	pyx	1</span><br><span class="line">3	pyx	1</span><br><span class="line">4	pyx	1</span><br><span class="line">5	pyx	1</span><br><span class="line">6	pyx	1</span><br></pre></td></tr></table></figure>
