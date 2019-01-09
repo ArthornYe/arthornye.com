@@ -112,7 +112,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="mysql," />
 
 
 
@@ -126,18 +126,17 @@
 
 
 <meta name="description" content="setState异步执行在实践的过程中发现一个奇怪的现象，我们如果先进行setState在进行网络请求，那么网络请求很可能提前进行，也就是setState是异步的，正确的同步写法为： 123456789101112131415onPageChange = (page) =&amp;gt; &amp;#123;       if(this.state.isSaleOrder)&amp;#123;           thi">
+<meta name="keywords" content="mysql">
 <meta property="og:type" content="article">
-<meta property="og:title" content="TizzyT&#39;s Blog">
+<meta property="og:title" content="react学习">
 <meta property="og:url" content="http://jianghao.wang/2018/React学习/index.html">
 <meta property="og:site_name" content="TizzyT&#39;s Blog">
 <meta property="og:description" content="setState异步执行在实践的过程中发现一个奇怪的现象，我们如果先进行setState在进行网络请求，那么网络请求很可能提前进行，也就是setState是异步的，正确的同步写法为： 123456789101112131415onPageChange = (page) =&amp;gt; &amp;#123;       if(this.state.isSaleOrder)&amp;#123;           thi">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://arthornye.github.io/images/zujian.jpg">
-<meta property="og:updated_time" content="2019-01-09T11:15:53.834Z">
+<meta property="og:updated_time" content="2019-01-09T11:27:07.431Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="TizzyT&#39;s Blog">
+<meta name="twitter:title" content="react学习">
 <meta name="twitter:description" content="setState异步执行在实践的过程中发现一个奇怪的现象，我们如果先进行setState在进行网络请求，那么网络请求很可能提前进行，也就是setState是异步的，正确的同步写法为： 123456789101112131415onPageChange = (page) =&amp;gt; &amp;#123;       if(this.state.isSaleOrder)&amp;#123;           thi">
-<meta name="twitter:image" content="https://arthornye.github.io/images/zujian.jpg">
 
 
 
@@ -173,7 +172,7 @@
 
 
 
-  <title> | TizzyT's Blog</title>
+  <title>react学习 | TizzyT's Blog</title>
   
 
 
@@ -376,7 +375,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline"></h1>
+          <h1 class="post-title" itemprop="name headline">react学习</h1>
         
 
         <div class="post-meta">
@@ -443,7 +442,6 @@
 <p>可以通过设置<strong>display:’none’</strong>不显示当前div，通过设置<strong>display:’block’</strong>显示当前div。</p>
 <h4 id="通过Form设置组件布局"><a href="#通过Form设置组件布局" class="headerlink" title="通过Form设置组件布局"></a>通过Form设置组件布局</h4><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">&#123;&#123;</span> <span class="attr">marginTop:</span> <span class="attr">24</span> &#125;&#125;&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">Form</span> <span class="attr">layout</span>=<span class="string">"inline"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">FormItem</span> <span class="attr">label</span>=<span class="string">"请选择业务类型:"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">Select</span> <span class="attr">defaultValue</span>=<span class="string">"全部"</span> <span class="attr">style</span>=<span class="string">&#123;&#123;</span> <span class="attr">width:</span> <span class="attr">120</span> &#125;&#125; <span class="attr">onChange</span>=<span class="string">&#123;this.onChangeBusinessType&#125;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">Option</span> <span class="attr">value</span>=<span class="string">"ALL"</span>&gt;</span>全部<span class="tag">&lt;/<span class="name">Option</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">Option</span> <span class="attr">value</span>=<span class="string">"COMMON_NEW_RETAIL"</span>&gt;</span>普通订单<span class="tag">&lt;/<span class="name">Option</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">Option</span> <span class="attr">value</span>=<span class="string">"CUSTOMIZED_CAR"</span>&gt;</span>定制车订单<span class="tag">&lt;/<span class="name">Option</span>&gt;</span><span class="tag">&lt;/<span class="name">Select</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">FormItem</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">Form</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>通过<strong>label:””</strong>设置左边的显示tab。显示效果如下：</p>
-<p><img src="https://arthornye.github.io/images/zujian.jpg" alt="cmd-markdown-logo"></p>
 
       
     </div>
@@ -458,6 +456,12 @@
     
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/mysql/" rel="tag"># mysql</a>
+          
+        </div>
       
 
       
@@ -478,8 +482,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/mysql查询检索性能语句记录/" rel="prev" title="">
-                 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/mysql查询检索性能语句记录/" rel="prev" title="mysql查询性能优化">
+                mysql查询性能优化 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -837,7 +841,7 @@
         var disqus_config = function () {
           this.page.url = 'http://jianghao.wang/2018/React学习/';
           this.page.identifier = '2018/React学习/';
-          this.page.title = '';
+          this.page.title = 'react学习';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://tizzy323.disqus.com/embed.js';

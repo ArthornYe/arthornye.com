@@ -112,7 +112,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="mysql," />
 
 
 
@@ -126,8 +126,9 @@
 
 
 <meta name="description" content="查询长时间不返回12select * from information_schema.processlist;//这条语句跟下面的语句相同show processlist;//展示出当前的进程信息 特殊的，在模拟一种MDL写锁阻塞的情况可以通过该命令查到阻塞的查询，这种情况一般第一时间执行该语句： 通过kill指令杀掉线程，恢复执行： 1kill 4;//kill pid,通过上面的命令查询到可以">
+<meta name="keywords" content="mysql">
 <meta property="og:type" content="article">
-<meta property="og:title" content="TizzyT&#39;s Blog">
+<meta property="og:title" content="mysql查询性能优化">
 <meta property="og:url" content="http://jianghao.wang/2018/mysql查询检索性能语句记录/index.html">
 <meta property="og:site_name" content="TizzyT&#39;s Blog">
 <meta property="og:description" content="查询长时间不返回12select * from information_schema.processlist;//这条语句跟下面的语句相同show processlist;//展示出当前的进程信息 特殊的，在模拟一种MDL写锁阻塞的情况可以通过该命令查到阻塞的查询，这种情况一般第一时间执行该语句： 通过kill指令杀掉线程，恢复执行： 1kill 4;//kill pid,通过上面的命令查询到可以">
@@ -138,9 +139,9 @@
 <meta property="og:image" content="https://arthornye.github.io/images/noindexlog.jpg">
 <meta property="og:image" content="https://arthornye.github.io/images/useindex.jpg">
 <meta property="og:image" content="https://arthornye.github.io/images/useindexlog.jpg">
-<meta property="og:updated_time" content="2019-01-09T06:33:03.165Z">
+<meta property="og:updated_time" content="2019-01-09T11:26:18.615Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="TizzyT&#39;s Blog">
+<meta name="twitter:title" content="mysql查询性能优化">
 <meta name="twitter:description" content="查询长时间不返回12select * from information_schema.processlist;//这条语句跟下面的语句相同show processlist;//展示出当前的进程信息 特殊的，在模拟一种MDL写锁阻塞的情况可以通过该命令查到阻塞的查询，这种情况一般第一时间执行该语句： 通过kill指令杀掉线程，恢复执行： 1kill 4;//kill pid,通过上面的命令查询到可以">
 <meta name="twitter:image" content="https://arthornye.github.io/images/querylog.jpg">
 
@@ -178,7 +179,7 @@
 
 
 
-  <title> | TizzyT's Blog</title>
+  <title>mysql查询性能优化 | TizzyT's Blog</title>
   
 
 
@@ -381,7 +382,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline"></h1>
+          <h1 class="post-title" itemprop="name headline">mysql查询性能优化</h1>
         
 
         <div class="post-meta">
@@ -481,6 +482,12 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/mysql/" rel="tag"># mysql</a>
+          
+        </div>
+      
 
       
       
@@ -490,8 +497,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/React学习/" rel="next" title="">
-                <i class="fa fa-chevron-left"></i> 
+              <a href="/2018/React学习/" rel="next" title="react学习">
+                <i class="fa fa-chevron-left"></i> react学习
               </a>
             
           </div>
@@ -859,7 +866,7 @@
         var disqus_config = function () {
           this.page.url = 'http://jianghao.wang/2018/mysql查询检索性能语句记录/';
           this.page.identifier = '2018/mysql查询检索性能语句记录/';
-          this.page.title = '';
+          this.page.title = 'mysql查询性能优化';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://tizzy323.disqus.com/embed.js';
