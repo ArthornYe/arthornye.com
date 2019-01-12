@@ -112,7 +112,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="mysql," />
 
 
 
@@ -125,16 +125,20 @@
 
 
 
-<meta name="description" content="Walk steps step by step">
-<meta property="og:type" content="website">
-<meta property="og:title" content="TizzyT&#39;s Blog">
-<meta property="og:url" content="http://jianghao.wang/archives/2018/12/index.html">
+<meta name="description" content="mysql排序主要针对order by指令，本篇主要介绍mysql是如何进行排序以及性能优化的。我们从全字段排序和rowid排序两种排序方式介绍，当然这两种排序都基于基本的排序算法，归并排序。归并排序主要应用于大文件排序，内存有限的情况下，先将文件分为多个有序的小文件，然后将小文件进行排序，时间复杂度nlogn，当然文件的存储形式还有io的时间消耗，这也是数据库性能优化的主要目标，尽量减少磁盘io">
+<meta name="keywords" content="mysql">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mysql排序工作原理">
+<meta property="og:url" content="http://jianghao.wang/2019/mysql排序工作原理/index.html">
 <meta property="og:site_name" content="TizzyT&#39;s Blog">
-<meta property="og:description" content="Walk steps step by step">
+<meta property="og:description" content="mysql排序主要针对order by指令，本篇主要介绍mysql是如何进行排序以及性能优化的。我们从全字段排序和rowid排序两种排序方式介绍，当然这两种排序都基于基本的排序算法，归并排序。归并排序主要应用于大文件排序，内存有限的情况下，先将文件分为多个有序的小文件，然后将小文件进行排序，时间复杂度nlogn，当然文件的存储形式还有io的时间消耗，这也是数据库性能优化的主要目标，尽量减少磁盘io">
 <meta property="og:locale" content="default">
+<meta property="og:image" content="http://arthornye.github.io/images/orderby.jpg">
+<meta property="og:updated_time" content="2019-01-12T09:50:21.078Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="TizzyT&#39;s Blog">
-<meta name="twitter:description" content="Walk steps step by step">
+<meta name="twitter:title" content="mysql排序工作原理">
+<meta name="twitter:description" content="mysql排序主要针对order by指令，本篇主要介绍mysql是如何进行排序以及性能优化的。我们从全字段排序和rowid排序两种排序方式介绍，当然这两种排序都基于基本的排序算法，归并排序。归并排序主要应用于大文件排序，内存有限的情况下，先将文件分为多个有序的小文件，然后将小文件进行排序，时间复杂度nlogn，当然文件的存储形式还有io的时间消耗，这也是数据库性能优化的主要目标，尽量减少磁盘io">
+<meta name="twitter:image" content="http://arthornye.github.io/images/orderby.jpg">
 
 
 
@@ -164,13 +168,13 @@
 
 
 
-  <link rel="canonical" href="http://jianghao.wang/archives/2018/12/"/>
+  <link rel="canonical" href="http://jianghao.wang/2019/mysql排序工作原理/"/>
 
 
 
 
 
-  <title>Archive | TizzyT's Blog</title>
+  <title>mysql排序工作原理 | TizzyT's Blog</title>
   
 
 
@@ -208,7 +212,7 @@
     
   
 
-  <div class="container sidebar-position-left page-archive">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -342,147 +346,163 @@
           <div id="content" class="content">
             
 
+  <div id="posts" class="posts-expand">
+    
+
+  
+
   
   
   
-  <div class="post-block archive">
-    <div id="posts" class="posts-collapse">
-      <span class="archive-move-on"></span>
 
-      <span class="archive-page-counter">
-        
-        
-         
-        
-        OK! 39 posts in total. Keep on posting.
-      </span>
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://jianghao.wang/2019/mysql排序工作原理/">
 
-      
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yeqiaozhu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="TizzyT's Blog">
+    </span>
+
+    
+      <header class="post-header">
 
         
         
+          <h1 class="post-title" itemprop="name headline">mysql排序工作原理</h1>
         
 
-        
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-12T16:44:08+08:00">
+                2019-01-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
           
-          <div class="collection-title">
-            <h1 class="archive-year" id="archive-year-2018">2018</h1>
-          </div>
-        
-        
 
-        
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/mysql排序工作原理/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/mysql排序工作原理/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+          
+          
 
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/mysql查询检索性能语句记录/" itemprop="url">
-              
-                <span itemprop="name">mysql查询性能优化</span>
-              
-            </a>
-        
-      </h2>
+          
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-12-28T17:30:02+08:00"
-              content="2018-12-28" >
-          12-28
-        </time>
-      </div>
+          
 
-    </header>
-  </article>
+          
 
+        </div>
+      </header>
+    
 
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/React学习/" itemprop="url">
-              
-                <span itemprop="name">react学习</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-12-17T19:01:38+08:00"
-              content="2018-12-17" >
-          12-17
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/mysql中的隐式类型转换/" itemprop="url">
-              
-                <span itemprop="name">mysql中的隐式类型转换</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-12-04T12:52:03+08:00"
-              content="2018-12-04" >
-          12-04
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
       
 
+      
+        <p>mysql排序主要针对order by指令，本篇主要介绍mysql是如何进行排序以及性能优化的。我们从全字段排序和rowid排序两种排序方式介绍，当然这两种排序都基于基本的排序算法，归并排序。归并排序主要应用于大文件排序，内存有限的情况下，先将文件分为多个有序的小文件，然后将小文件进行排序，时间复杂度nlogn，当然文件的存储形式还有io的时间消耗，这也是数据库性能优化的主要目标，尽量减少磁盘io。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE `words` (</span><br><span class="line">  `id` int(11) NOT NULL AUTO_INCREMENT,</span><br><span class="line">  `word` varchar(64) DEFAULT NULL,</span><br><span class="line">  PRIMARY KEY (`id`)</span><br><span class="line">) ENGINE=InnoDB AUTO_INCREMENT=2800001 DEFAULT CHARSET=utf8;</span><br></pre></td></tr></table></figure>
+<h4 id="全字段排序-vs-rowId排序"><a href="#全字段排序-vs-rowId排序" class="headerlink" title="全字段排序 vs rowId排序"></a>全字段排序 vs rowId排序</h4><p>顾名思义，全字段排序的意思是将记录的所有行都放到内存中进行排序，排序成功之后取固定的字段或者数量返回给客户端。mysql将所有的排序记录都优先考虑放在内存中，我们通过查询指令可以查到配置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">-- sql query</span><br><span class="line">use souche_study;</span><br><span class="line">show variables like &quot;%sort%&quot;</span><br><span class="line"></span><br><span class="line">-- result</span><br><span class="line">innodb_disable_sort_file_cache	OFF</span><br><span class="line">innodb_ft_sort_pll_degree	2</span><br><span class="line">innodb_sort_buffer_size	1048576//innodb默认的排序大小</span><br><span class="line">max_length_for_sort_data	1024</span><br><span class="line">max_sort_length	1024</span><br><span class="line">myisam_max_sort_file_size	9223372036853727232</span><br><span class="line">myisam_sort_buffer_size	8388608</span><br><span class="line">sort_buffer_size	262144 //默认的排序内存大小</span><br></pre></td></tr></table></figure>
+<p>排序的过程如下：</p>
+<p><img src="http://arthornye.github.io/images/orderby.jpg" alt="cmd-markdown-logo"></p>
+
+      
     </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/mysql/" rel="tag"># mysql</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/mysql加锁分析实践/" rel="next" title="mysql加锁分析实践">
+                <i class="fa fa-chevron-left"></i> mysql加锁分析实践
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
 
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -490,6 +510,20 @@
 
 
           
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
 
         </div>
         
@@ -510,8 +544,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -601,6 +644,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#全字段排序-vs-rowId排序"><span class="nav-number">1.</span> <span class="nav-text">全字段排序 vs rowId排序</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -754,6 +813,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
 
   
 
@@ -771,6 +834,18 @@
       <script id="dsq-count-scr" src="https://tizzy323.disqus.com/count.js" async></script>
     
 
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://jianghao.wang/2019/mysql排序工作原理/';
+          this.page.identifier = '2019/mysql排序工作原理/';
+          this.page.title = 'mysql排序工作原理';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://tizzy323.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
     
 
   
