@@ -134,7 +134,7 @@
 <meta property="og:description" content="mysql排序主要针对order by指令，本篇主要介绍mysql是如何进行排序以及性能优化的。我们从全字段排序和rowid排序两种排序方式介绍，当然这两种排序都基于基本的排序算法，归并排序。归并排序主要应用于大文件排序，内存有限的情况下，先将文件分为多个有序的小文件，然后将小文件进行排序，时间复杂度nlogn，当然文件的存储形式还有io的时间消耗，这也是数据库性能优化的主要目标，尽量减少磁盘io">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://arthornye.github.io/images/orderby.jpg">
-<meta property="og:updated_time" content="2019-01-12T09:54:15.152Z">
+<meta property="og:updated_time" content="2019-01-12T14:46:45.470Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="mysql排序工作原理">
 <meta name="twitter:description" content="mysql排序主要针对order by指令，本篇主要介绍mysql是如何进行排序以及性能优化的。我们从全字段排序和rowid排序两种排序方式介绍，当然这两种排序都基于基本的排序算法，归并排序。归并排序主要应用于大文件排序，内存有限的情况下，先将文件分为多个有序的小文件，然后将小文件进行排序，时间复杂度nlogn，当然文件的存储形式还有io的时间消耗，这也是数据库性能优化的主要目标，尽量减少磁盘io">
@@ -444,6 +444,8 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">-- sql query</span><br><span class="line">use souche_study;</span><br><span class="line">show variables like &quot;%sort%&quot;</span><br><span class="line"></span><br><span class="line">-- result</span><br><span class="line">innodb_disable_sort_file_cache	OFF</span><br><span class="line">innodb_ft_sort_pll_degree	2</span><br><span class="line">innodb_sort_buffer_size	1048576//innodb默认的排序大小</span><br><span class="line">max_length_for_sort_data	1024</span><br><span class="line">max_sort_length	1024</span><br><span class="line">myisam_max_sort_file_size	9223372036853727232</span><br><span class="line">myisam_sort_buffer_size	8388608</span><br><span class="line">sort_buffer_size	262144 //默认的排序内存大小</span><br></pre></td></tr></table></figure>
 <p>排序的过程如下：</p>
 <p><img src="https://arthornye.github.io/images/orderby.jpg" alt="cmd-markdown-logo"></p>
+<h4 id="analyze-table-命令"><a href="#analyze-table-命令" class="headerlink" title="analyze table 命令"></a>analyze table 命令</h4><p>检测和重组表的关键字分布情况。用来分析和存储表的关键字的分布，使得系统获得准确的统计信息。在执行查询计划的时候可能会错误估计要扫描的条数，导致应用不到索引，通过analyze table命令可以使估计值更加准确。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">analyze table table_name;//analyze+表名</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -654,7 +656,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#全字段排序-vs-rowId排序"><span class="nav-number">1.</span> <span class="nav-text">全字段排序 vs rowId排序</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#全字段排序-vs-rowId排序"><span class="nav-number">1.</span> <span class="nav-text">全字段排序 vs rowId排序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#analyze-table-命令"><span class="nav-number">2.</span> <span class="nav-text">analyze table 命令</span></a></li></ol></div>
             
 
           </div>
