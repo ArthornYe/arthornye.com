@@ -991,9 +991,10 @@
       
         
           
-          mysql中的隐式类型转换？mysql innodb有行锁的实现，一般乐观锁的使用场景针对没有行锁的场景，行锁会针对当前读进行加排他锁。
+          mysql中的隐式类型转换？mysql innodb有行锁的实现，行锁会针对当前读进行加排他锁。
 1.对索引字段做函数操作会导致索引失效，破坏索引的有序性，优化器不走b+树搜索
-1select * from trade_log where month(t_mo
+1select * from trade_log where month(t_modify)=7;
+上面的语句没办法使用到
           ...
           <!--noindex-->
           <div class="post-button text-center">
