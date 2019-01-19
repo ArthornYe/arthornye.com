@@ -135,7 +135,8 @@
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://arthornye.github.io/images/poslog.jpg">
 <meta property="og:image" content="http://arthornye.github.io/images/asynclog.jpg">
-<meta property="og:updated_time" content="2019-01-19T09:17:43.208Z">
+<meta property="og:image" content="http://arthornye.github.io/images/gtid.jpg">
+<meta property="og:updated_time" content="2019-01-19T09:28:21.685Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="如何处理读写分离">
 <meta name="twitter:description" content="mysql在读写分离的场景下，可能是一主一从，一主都从。但是在实际应用场景中需要解决一个重要的问题就是“过期读”。本篇主要介读写分离可能的架构方式以及如何解决该问题。 强制从主库读取及时查询vs非及时查询针对某些必须保证正确读的场景，我们可以设置这个请求只能走主库，例如一个场景，商家在发布了商品之后需要立即看到商品的信息，那么这个我们可以直接从主库去读。同样的场景，买家在前端去看新发布的商品时可能">
@@ -481,6 +482,8 @@
 <ul>
 <li><strong>需要将参数 session_track_gtids 设置为OWN_GTID，然后通过 API 接口mysql_session_track_get_first从返回包解析出 GTID 的值即可。</strong></li>
 </ul>
+<p><img src="http://arthornye.github.io/images/gtid.jpg" alt="cmd-markdown-logo"></p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>本篇文章主要是介绍如何在数据库一主多从类似的读写分离的架构下要如何避免过期读。虽然我们发现GTID这种方式好像能够完全避免过期读，表现比较优秀，但是实际场景下我们还是多种方式混合使用。总之我们还是需要客户端去判断，当前的请求是否可以接受过期读，如果可以接受，那完全没有必要采用等待位点或者等待GTID的方案，否则无需采用。这些都需要在实际的业务场景中去检验和选择。</p>
 
       
     </div>
@@ -691,7 +694,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#强制从主库读取"><span class="nav-number">1.</span> <span class="nav-text">强制从主库读取</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#及时查询vs非及时查询"><span class="nav-number">1.1.</span> <span class="nav-text">及时查询vs非及时查询</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#及时查询优化"><span class="nav-number">1.2.</span> <span class="nav-text">及时查询优化</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#判断主备延迟"><span class="nav-number">2.</span> <span class="nav-text">判断主备延迟</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#seconds-behind-master"><span class="nav-number">2.1.</span> <span class="nav-text">seconds_behind_master</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#对比位点和GTID集合"><span class="nav-number">2.2.</span> <span class="nav-text">对比位点和GTID集合</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#业务代码如何写避免过期读？"><span class="nav-number">3.</span> <span class="nav-text">业务代码如何写避免过期读？</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#等主库位点"><span class="nav-number">3.1.</span> <span class="nav-text">等主库位点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#等主库GTID集合"><span class="nav-number">3.2.</span> <span class="nav-text">等主库GTID集合</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#等主库位点vs等主库GTID"><span class="nav-number">3.3.</span> <span class="nav-text">等主库位点vs等主库GTID</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#强制从主库读取"><span class="nav-number">1.</span> <span class="nav-text">强制从主库读取</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#及时查询vs非及时查询"><span class="nav-number">1.1.</span> <span class="nav-text">及时查询vs非及时查询</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#及时查询优化"><span class="nav-number">1.2.</span> <span class="nav-text">及时查询优化</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#判断主备延迟"><span class="nav-number">2.</span> <span class="nav-text">判断主备延迟</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#seconds-behind-master"><span class="nav-number">2.1.</span> <span class="nav-text">seconds_behind_master</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#对比位点和GTID集合"><span class="nav-number">2.2.</span> <span class="nav-text">对比位点和GTID集合</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#业务代码如何写避免过期读？"><span class="nav-number">3.</span> <span class="nav-text">业务代码如何写避免过期读？</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#等主库位点"><span class="nav-number">3.1.</span> <span class="nav-text">等主库位点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#等主库GTID集合"><span class="nav-number">3.2.</span> <span class="nav-text">等主库GTID集合</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#等主库位点vs等主库GTID"><span class="nav-number">3.3.</span> <span class="nav-text">等主库位点vs等主库GTID</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
             
 
           </div>
