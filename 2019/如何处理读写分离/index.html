@@ -134,7 +134,8 @@
 <meta property="og:description" content="mysql在读写分离的场景下，可能是一主一从，一主都从。但是在实际应用场景中需要解决一个重要的问题就是“过期读”。本篇主要介读写分离可能的架构方式以及如何解决该问题。 强制从主库读取及时查询vs非及时查询针对某些必须保证正确读的场景，我们可以设置这个请求只能走主库，例如一个场景，商家在发布了商品之后需要立即看到商品的信息，那么这个我们可以直接从主库去读。同样的场景，买家在前端去看新发布的商品时可能">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://arthornye.github.io/images/poslog.jpg">
-<meta property="og:updated_time" content="2019-01-19T08:29:46.533Z">
+<meta property="og:image" content="http://arthornye.github.io/images/asynclog.jpg">
+<meta property="og:updated_time" content="2019-01-19T09:17:43.208Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="如何处理读写分离">
 <meta name="twitter:description" content="mysql在读写分离的场景下，可能是一主一从，一主都从。但是在实际应用场景中需要解决一个重要的问题就是“过期读”。本篇主要介读写分离可能的架构方式以及如何解决该问题。 强制从主库读取及时查询vs非及时查询针对某些必须保证正确读的场景，我们可以设置这个请求只能走主库，例如一个场景，商家在发布了商品之后需要立即看到商品的信息，那么这个我们可以直接从主库去读。同样的场景，买家在前端去看新发布的商品时可能">
@@ -446,7 +447,7 @@
 </ul>
 <h5 id="及时查询优化"><a href="#及时查询优化" class="headerlink" title="及时查询优化"></a>及时查询优化</h5><p>即使是刚才讲到的可能面对的及时查询的情况，查询的时效性很高。为了减少主库的查询压力，我们可以让前端直接去跳转，看起来做了查询但是实际上没有查询。上架了商品之后直接将上架的商品信息展示在商品栏，减少了一次查询主库的压力。</p>
 <p>实际上我们在应用中经常会采取强制从主库读取这种方式，但是很可能面对尴尬的场景。整个系统对时效性要求都比较高的时候，而又必须通过读写分离改善的场景下，可以如何解决<strong>过期读</strong>的问题？</p>
-<h4 id="判断主备延迟"><a href="#判断主备延迟" class="headerlink" title="判断主备延迟"></a>判断主备延迟</h4><p>每次在从库执行查询请求之前，先判断下主备是否有延迟。可以通过：</p>
+<h4 id="判断主备延迟"><a href="#判断主备延迟" class="headerlink" title="判断主备延迟"></a>判断主备延迟</h4><p>每次在备库执行查询请求之前，先判断下主备是否有延迟。可以通过：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show slave status;</span><br></pre></td></tr></table></figure>
 <h5 id="seconds-behind-master"><a href="#seconds-behind-master" class="headerlink" title="seconds_behind_master"></a>seconds_behind_master</h5><p>判断seconds_behind_master，通过show slave status可以在从库上查看到这个参数，如果seconds_behind_master</p>
 <p>为零，可以走从库进行查询。缺点是精度比较难保证。</p>
@@ -456,11 +457,29 @@
 <li><strong>Master_Log_File == Relay_Master_Log_File  &amp;&amp; Read_    Master_Log_Pos == Exec_Master_log_File  为true，表明备库已经完成接收到的主库的binlog同步。此为对比位点。</strong></li>
 <li><strong>Retrieved_Gtid_Set(接收到的集合) == Executed_Gtid_Set(已经执行了的集合) 为true表明备库已经完成接受到的主binlog的同步。此为对比GTID。Auto_Position=1 ，表示这对主备关系使用了 GTID协议。</strong></li>
 </ul>
-<p>虽然这种方式都可以保证备库已经执行完了主库存传过来的binlog，但是因为binlog的传送这个过程相对客户端是异步的，那么客户端在收到更新成功的一条语句之后，这个语句可能还没有传送到备库。这里需要引入<strong>半同步复制semi-sync</strong>:</p>
+<p>虽然这种方式都可以保证备库已经执行完了主库存传过来的binlog，但是因为binlog的传送这个过程相对客户端是异步的，那么客户端在收到更新成功的一条语句之后，这个语句可能还没有传送到备库。</p>
+<p><img src="http://arthornye.github.io/images/asynclog.jpg" alt="cmd-markdown-logo"></p>
+<p>这里需要引入<strong>半同步复制semi-sync</strong>:</p>
 <ul>
 <li>1.主库的事务提交之后，向备库发一个binlog，注意这里先不返回客户端更新成功。</li>
 <li>2.备库收到binlog之后，向主库发一个ack，表示收到了这个binlog。</li>
 <li>3.主库收到备库的ack之后，向客户端返回更新成功。</li>
+</ul>
+<p>semi-sync缺陷：<strong>目前只能支持一主一从，如果是一主多从，并不能等待所有备库都接收到binlog，而是收到一个ack就返回给客户端。这样就不能完全保证不会出现过期读。</strong></p>
+<h4 id="业务代码如何写避免过期读？"><a href="#业务代码如何写避免过期读？" class="headerlink" title="业务代码如何写避免过期读？"></a>业务代码如何写避免过期读？</h4><p>针对上节的介绍，我们可以通过判断位点和GTID集合，结合semi-sync半同步复制，判断一主多从不会出现过期读，那么在代码中如何操作实现？</p>
+<h5 id="等主库位点"><a href="#等主库位点" class="headerlink" title="等主库位点"></a>等主库位点</h5><p>这里需要介绍一条数据库sql指令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-- 这里file是master主库上的log文件名，pos是执行到的文件位点，timeout是超时时间</span><br><span class="line">-- 这个的返回表示，备库执行到主库的位点经历了多少个binlog，也就是执行了多少事务，如果返回为正整数，表示同步完成，返回-1表示失败，null表示发生了异常。</span><br><span class="line">select master_pos_wait(file, pos[, timeout]);</span><br></pre></td></tr></table></figure>
+<p>1.更新代码完成之后，查询请求进来，先到master执行show master status，查到file 和pos。</p>
+<p>2.任意选择一个备库，执行select master_pos_wait(file, pos[, timeout])。</p>
+<p>3.如果返回正整数表示该备库已经同步完成，将查询在该备库中进行否则到强制到主库中执行。</p>
+<h5 id="等主库GTID集合"><a href="#等主库GTID集合" class="headerlink" title="等主库GTID集合"></a>等主库GTID集合</h5><p>如果数据库开启了GTID模式，这里同样介绍一个指令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">--  gtid_set理解为一个字符串，不同于位点方式的是，更新操作完成之后这种方式会返回给客户端这个gtid，客户端在继续进行查询的时候只需要把这个gtid到备库进行判断。</span><br><span class="line">-- 该命令执行逻辑，1.等待，直到该备库中记录了执行该事务的id，返回0  2.超时返回-1，由业务决定走主库还是放弃。</span><br><span class="line">select wait_for_executed_gtid_set(gtid_set, 1);</span><br></pre></td></tr></table></figure>
+<p>1.客户端执行在主库执行更新请求，更新事务提交成功，返回给客户端gtid。</p>
+<p>2.客户端到备库通过拿到的gtid执行select wait_for_executed_gtid_set(gtid_set, 1)。</p>
+<p>3.返回0，表示备库中已经有执行了这个更新事务，可以进行查询。</p>
+<h5 id="等主库位点vs等主库GTID"><a href="#等主库位点vs等主库GTID" class="headerlink" title="等主库位点vs等主库GTID"></a>等主库位点vs等主库GTID</h5><p>相对等主库位点来说，等主库GTID方式减少了一次show master status的主库查询，对主库比较友好。但是GTID方案，如何让客户端的返回中包含事务执行的gtid？</p>
+<ul>
+<li><strong>需要将参数 session_track_gtids 设置为OWN_GTID，然后通过 API 接口mysql_session_track_get_first从返回包解析出 GTID 的值即可。</strong></li>
 </ul>
 
       
@@ -672,7 +691,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#强制从主库读取"><span class="nav-number">1.</span> <span class="nav-text">强制从主库读取</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#及时查询vs非及时查询"><span class="nav-number">1.1.</span> <span class="nav-text">及时查询vs非及时查询</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#及时查询优化"><span class="nav-number">1.2.</span> <span class="nav-text">及时查询优化</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#判断主备延迟"><span class="nav-number">2.</span> <span class="nav-text">判断主备延迟</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#seconds-behind-master"><span class="nav-number">2.1.</span> <span class="nav-text">seconds_behind_master</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#对比位点和GTID集合"><span class="nav-number">2.2.</span> <span class="nav-text">对比位点和GTID集合</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#强制从主库读取"><span class="nav-number">1.</span> <span class="nav-text">强制从主库读取</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#及时查询vs非及时查询"><span class="nav-number">1.1.</span> <span class="nav-text">及时查询vs非及时查询</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#及时查询优化"><span class="nav-number">1.2.</span> <span class="nav-text">及时查询优化</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#判断主备延迟"><span class="nav-number">2.</span> <span class="nav-text">判断主备延迟</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#seconds-behind-master"><span class="nav-number">2.1.</span> <span class="nav-text">seconds_behind_master</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#对比位点和GTID集合"><span class="nav-number">2.2.</span> <span class="nav-text">对比位点和GTID集合</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#业务代码如何写避免过期读？"><span class="nav-number">3.</span> <span class="nav-text">业务代码如何写避免过期读？</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#等主库位点"><span class="nav-number">3.1.</span> <span class="nav-text">等主库位点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#等主库GTID集合"><span class="nav-number">3.2.</span> <span class="nav-text">等主库GTID集合</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#等主库位点vs等主库GTID"><span class="nav-number">3.3.</span> <span class="nav-text">等主库位点vs等主库GTID</span></a></li></ol></li></ol></div>
             
 
           </div>
