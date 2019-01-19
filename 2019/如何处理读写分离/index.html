@@ -112,7 +112,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="mysql," />
 
 
 
@@ -125,17 +125,20 @@
 
 
 
-<meta name="description" content="Walk steps step by step">
-<meta property="og:type" content="website">
-<meta property="og:title" content="categories">
-<meta property="og:url" content="http://jianghao.wang/categories/index.html">
+<meta name="description" content="mysql在读写分离的场景下，可能是一主一从，一主都从。但是在实际应用场景中需要解决一个重要的问题就是“过期读”。本篇主要介读写分离可能的架构方式以及如何解决该问题。 强制从主库读取及时查询vs非及时查询针对某些必须保证正确读的场景，我们可以设置这个请求只能走主库，例如一个场景，商家在发布了商品之后需要立即看到商品的信息，那么这个我们可以直接从主库去读。同样的场景，买家在前端去看新发布的商品时可能">
+<meta name="keywords" content="mysql">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何处理读写分离">
+<meta property="og:url" content="http://jianghao.wang/2019/如何处理读写分离/index.html">
 <meta property="og:site_name" content="TizzyT&#39;s Blog">
-<meta property="og:description" content="Walk steps step by step">
+<meta property="og:description" content="mysql在读写分离的场景下，可能是一主一从，一主都从。但是在实际应用场景中需要解决一个重要的问题就是“过期读”。本篇主要介读写分离可能的架构方式以及如何解决该问题。 强制从主库读取及时查询vs非及时查询针对某些必须保证正确读的场景，我们可以设置这个请求只能走主库，例如一个场景，商家在发布了商品之后需要立即看到商品的信息，那么这个我们可以直接从主库去读。同样的场景，买家在前端去看新发布的商品时可能">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2017-12-28T06:35:01.000Z">
+<meta property="og:image" content="http://arthornye.github.io/images/poslog.jpg">
+<meta property="og:updated_time" content="2019-01-19T08:29:46.533Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="categories">
-<meta name="twitter:description" content="Walk steps step by step">
+<meta name="twitter:title" content="如何处理读写分离">
+<meta name="twitter:description" content="mysql在读写分离的场景下，可能是一主一从，一主都从。但是在实际应用场景中需要解决一个重要的问题就是“过期读”。本篇主要介读写分离可能的架构方式以及如何解决该问题。 强制从主库读取及时查询vs非及时查询针对某些必须保证正确读的场景，我们可以设置这个请求只能走主库，例如一个场景，商家在发布了商品之后需要立即看到商品的信息，那么这个我们可以直接从主库去读。同样的场景，买家在前端去看新发布的商品时可能">
+<meta name="twitter:image" content="http://arthornye.github.io/images/poslog.jpg">
 
 
 
@@ -165,13 +168,13 @@
 
 
 
-  <link rel="canonical" href="http://jianghao.wang/categories/"/>
+  <link rel="canonical" href="http://jianghao.wang/2019/如何处理读写分离/"/>
 
 
 
 
 
-  <title>categories | TizzyT's Blog</title>
+  <title>如何处理读写分离 | TizzyT's Blog</title>
   
 
 
@@ -345,40 +348,178 @@
 
   <div id="posts" class="posts-expand">
     
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://jianghao.wang/2019/如何处理读写分离/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yeqiaozhu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="TizzyT's Blog">
+    </span>
+
     
-    
-    <div class="post-block page">
       <header class="post-header">
 
-	<h1 class="post-title" itemprop="name headline">categories</h1>
-
-
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
         
         
-          <div class="category-all-page">
-            <div class="category-all-title">
-                No categories
-            </div>
-            <div class="category-all">
+          <h1 class="post-title" itemprop="name headline">如何处理读写分离</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
               
-            </div>
-          </div>
-        
-      </div>
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-16T11:09:54+08:00">
+                2019-01-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/如何处理读写分离/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/如何处理读写分离/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
       
+
+      
+        <p>mysql在读写分离的场景下，可能是一主一从，一主都从。但是在实际应用场景中需要解决一个重要的问题就是<strong>“过期读”</strong>。本篇主要介读写分离可能的架构方式以及如何解决该问题。</p>
+<h4 id="强制从主库读取"><a href="#强制从主库读取" class="headerlink" title="强制从主库读取"></a>强制从主库读取</h4><h5 id="及时查询vs非及时查询"><a href="#及时查询vs非及时查询" class="headerlink" title="及时查询vs非及时查询"></a>及时查询vs非及时查询</h5><p>针对某些必须保证正确读的场景，我们可以设置这个请求只能走主库，例如一个场景，商家在发布了商品之后需要立即看到商品的信息，那么这个我们可以直接从主库去读。同样的场景，买家在前端去看新发布的商品时可能并不需要这么及时，可以容忍有一定时间的延迟，那么这个查询比较适合走从库。这里我们将查询分为两类：<strong>及时查询和非及时查询。</strong></p>
+<ul>
+<li>优点：逻辑上比较简单，易于实现和区分</li>
+<li>缺点：可能会面临所有的查询都是及时查询的情况，例如一些金融系统对及时性要求很高。</li>
+</ul>
+<h5 id="及时查询优化"><a href="#及时查询优化" class="headerlink" title="及时查询优化"></a>及时查询优化</h5><p>即使是刚才讲到的可能面对的及时查询的情况，查询的时效性很高。为了减少主库的查询压力，我们可以让前端直接去跳转，看起来做了查询但是实际上没有查询。上架了商品之后直接将上架的商品信息展示在商品栏，减少了一次查询主库的压力。</p>
+<p>实际上我们在应用中经常会采取强制从主库读取这种方式，但是很可能面对尴尬的场景。整个系统对时效性要求都比较高的时候，而又必须通过读写分离改善的场景下，可以如何解决<strong>过期读</strong>的问题？</p>
+<h4 id="判断主备延迟"><a href="#判断主备延迟" class="headerlink" title="判断主备延迟"></a>判断主备延迟</h4><p>每次在从库执行查询请求之前，先判断下主备是否有延迟。可以通过：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show slave status;</span><br></pre></td></tr></table></figure>
+<h5 id="seconds-behind-master"><a href="#seconds-behind-master" class="headerlink" title="seconds_behind_master"></a>seconds_behind_master</h5><p>判断seconds_behind_master，通过show slave status可以在从库上查看到这个参数，如果seconds_behind_master</p>
+<p>为零，可以走从库进行查询。缺点是精度比较难保证。</p>
+<h5 id="对比位点和GTID集合"><a href="#对比位点和GTID集合" class="headerlink" title="对比位点和GTID集合"></a>对比位点和GTID集合</h5><p>在备库执行show slave status可以看到备库的位点和GTID集合的状态：</p>
+<p><img src="http://arthornye.github.io/images/poslog.jpg" alt="cmd-markdown-logo"></p>
+<ul>
+<li><strong>Master_Log_File == Relay_Master_Log_File  &amp;&amp; Read_    Master_Log_Pos == Exec_Master_log_File  为true，表明备库已经完成接收到的主库的binlog同步。此为对比位点。</strong></li>
+<li><strong>Retrieved_Gtid_Set(接收到的集合) == Executed_Gtid_Set(已经执行了的集合) 为true表明备库已经完成接受到的主binlog的同步。此为对比GTID。Auto_Position=1 ，表示这对主备关系使用了 GTID协议。</strong></li>
+</ul>
+<p>虽然这种方式都可以保证备库已经执行完了主库存传过来的binlog，但是因为binlog的传送这个过程相对客户端是异步的，那么客户端在收到更新成功的一条语句之后，这个语句可能还没有传送到备库。这里需要引入<strong>半同步复制semi-sync</strong>:</p>
+<ul>
+<li>1.主库的事务提交之后，向备库发一个binlog，注意这里先不返回客户端更新成功。</li>
+<li>2.备库收到binlog之后，向主库发一个ack，表示收到了这个binlog。</li>
+<li>3.主库收到备库的ack之后，向客户端返回更新成功。</li>
+</ul>
+
       
     </div>
     
     
     
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/mysql/" rel="tag"># mysql</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/mysql排序工作原理/" rel="next" title="mysql排序工作原理">
+                <i class="fa fa-chevron-left"></i> mysql排序工作原理
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
   </div>
 
 
@@ -421,8 +562,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -512,6 +662,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#强制从主库读取"><span class="nav-number">1.</span> <span class="nav-text">强制从主库读取</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#及时查询vs非及时查询"><span class="nav-number">1.1.</span> <span class="nav-text">及时查询vs非及时查询</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#及时查询优化"><span class="nav-number">1.2.</span> <span class="nav-text">及时查询优化</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#判断主备延迟"><span class="nav-number">2.</span> <span class="nav-text">判断主备延迟</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#seconds-behind-master"><span class="nav-number">2.1.</span> <span class="nav-text">seconds_behind_master</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#对比位点和GTID集合"><span class="nav-number">2.2.</span> <span class="nav-text">对比位点和GTID集合</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -689,9 +855,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'http://jianghao.wang/categories/index.html';
-          this.page.identifier = 'categories/index.html';
-          this.page.title = 'categories';
+          this.page.url = 'http://jianghao.wang/2019/如何处理读写分离/';
+          this.page.identifier = '2019/如何处理读写分离/';
+          this.page.title = '如何处理读写分离';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://tizzy323.disqus.com/embed.js';
