@@ -134,7 +134,8 @@
 <meta property="og:description" content="mysql在处理大查询的时候需要有自己的内存策略，保证不会出现OOM（Out Of Memory）内存泄漏。我们从server层面和引擎层面剖析一下内存策略。 server层处理大查询server层对大查询的处理，这里针对的大查询是返回的数据量巨大。针对这种查询server层会采用边读边发策略。也就是数据由客户端分阶段整合，服务端并不需要保证一个完整的结果集。 1234-- 查看net_buffe">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://arthornye.github.io/images/bigquery.jpg">
-<meta property="og:updated_time" content="2019-01-28T03:16:25.022Z">
+<meta property="og:image" content="http://arthornye.github.io/images/pagelink.jpg">
+<meta property="og:updated_time" content="2019-01-28T03:31:36.537Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="mysql大查询内存策略">
 <meta name="twitter:description" content="mysql在处理大查询的时候需要有自己的内存策略，保证不会出现OOM（Out Of Memory）内存泄漏。我们从server层面和引擎层面剖析一下内存策略。 server层处理大查询server层对大查询的处理，这里针对的大查询是返回的数据量巨大。针对这种查询server层会采用边读边发策略。也就是数据由客户端分阶段整合，服务端并不需要保证一个完整的结果集。 1234-- 查看net_buffe">
@@ -457,6 +458,8 @@
 <li>3.访问到某个数据页Px，先返回客户端结果，然后将该页放置到链表的头部。</li>
 <li>4.当Innodb buffer pool size已经满了，取一个最旧的页，删除数据，存入新数据并将其放置到头部。</li>
 </ul>
+<p><img src="http://arthornye.github.io/images/pagelink.jpg" alt="cmd-markdown-logo"></p>
+<p>针对大查询的场景，如果不断查询出新的数据，单纯采用<strong>LRU算法（最近最少使用）</strong>查询出来的新页会直接替换老页，导致正常的业务内存缓存会被替换掉，增加了磁盘IO，而这些新增的缓存页在第一次使用之后又不会再进行使用。这种场景Innodb<strong>针对LRU做了分代优化，将这个buffer区域按照5:3划分为young和old区。这个概念其实在垃圾回收机制的分代收集的场景类似。针对不同的生命周期定制不同的淘汰方案。</strong></p>
 
       
     </div>
