@@ -125,22 +125,18 @@
 
 
 
-<meta name="description" content="mysql在读写分离的场景下，可能是一主一从，一主都从。但是在实际应用场景中需要解决一个重要的问题就是“过期读”。本篇主要介读写分离可能的架构方式以及如何解决该问题。 强制从主库读取及时查询vs非及时查询针对某些必须保证正确读的场景，我们可以设置这个请求只能走主库，例如一个场景，商家在发布了商品之后需要立即看到商品的信息，那么这个我们可以直接从主库去读。同样的场景，买家在前端去看新发布的商品时可能">
+<meta name="description" content="mysql什么时候使用到内部临时表，通过explain可以看到extra信息里面会显示using temporary。我们知道针对mysql的order by操作，维护了一个内存空间sort_buffer，超出这个内存之后会采用磁盘辅助排序，extra信息中会有using filesort。那么mysql什么时候会有using temporary并且如何进行优化。 内部临时表，存储过程类似sort">
 <meta name="keywords" content="mysql">
 <meta property="og:type" content="article">
-<meta property="og:title" content="如何处理读写分离">
-<meta property="og:url" content="http://jianghao.wang/2019/如何处理读写分离/index.html">
+<meta property="og:title" content="mysql内部临时表和分组优化">
+<meta property="og:url" content="http://jianghao.wang/2019/mysql内部临时表和分组优化/index.html">
 <meta property="og:site_name" content="TizzyT&#39;s Blog">
-<meta property="og:description" content="mysql在读写分离的场景下，可能是一主一从，一主都从。但是在实际应用场景中需要解决一个重要的问题就是“过期读”。本篇主要介读写分离可能的架构方式以及如何解决该问题。 强制从主库读取及时查询vs非及时查询针对某些必须保证正确读的场景，我们可以设置这个请求只能走主库，例如一个场景，商家在发布了商品之后需要立即看到商品的信息，那么这个我们可以直接从主库去读。同样的场景，买家在前端去看新发布的商品时可能">
+<meta property="og:description" content="mysql什么时候使用到内部临时表，通过explain可以看到extra信息里面会显示using temporary。我们知道针对mysql的order by操作，维护了一个内存空间sort_buffer，超出这个内存之后会采用磁盘辅助排序，extra信息中会有using filesort。那么mysql什么时候会有using temporary并且如何进行优化。 内部临时表，存储过程类似sort">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="http://arthornye.github.io/images/poslog.jpg">
-<meta property="og:image" content="http://arthornye.github.io/images/asynclog.jpg">
-<meta property="og:image" content="http://arthornye.github.io/images/gtid.jpg">
-<meta property="og:updated_time" content="2019-01-19T09:28:21.685Z">
+<meta property="og:updated_time" content="2019-02-18T06:18:41.174Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="如何处理读写分离">
-<meta name="twitter:description" content="mysql在读写分离的场景下，可能是一主一从，一主都从。但是在实际应用场景中需要解决一个重要的问题就是“过期读”。本篇主要介读写分离可能的架构方式以及如何解决该问题。 强制从主库读取及时查询vs非及时查询针对某些必须保证正确读的场景，我们可以设置这个请求只能走主库，例如一个场景，商家在发布了商品之后需要立即看到商品的信息，那么这个我们可以直接从主库去读。同样的场景，买家在前端去看新发布的商品时可能">
-<meta name="twitter:image" content="http://arthornye.github.io/images/poslog.jpg">
+<meta name="twitter:title" content="mysql内部临时表和分组优化">
+<meta name="twitter:description" content="mysql什么时候使用到内部临时表，通过explain可以看到extra信息里面会显示using temporary。我们知道针对mysql的order by操作，维护了一个内存空间sort_buffer，超出这个内存之后会采用磁盘辅助排序，extra信息中会有using filesort。那么mysql什么时候会有using temporary并且如何进行优化。 内部临时表，存储过程类似sort">
 
 
 
@@ -170,13 +166,13 @@
 
 
 
-  <link rel="canonical" href="http://jianghao.wang/2019/如何处理读写分离/"/>
+  <link rel="canonical" href="http://jianghao.wang/2019/mysql内部临时表和分组优化/"/>
 
 
 
 
 
-  <title>如何处理读写分离 | TizzyT's Blog</title>
+  <title>mysql内部临时表和分组优化 | TizzyT's Blog</title>
   
 
 
@@ -362,7 +358,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://jianghao.wang/2019/如何处理读写分离/">
+    <link itemprop="mainEntityOfPage" href="http://jianghao.wang/2019/mysql内部临时表和分组优化/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="yeqiaozhu">
@@ -379,7 +375,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">如何处理读写分离</h1>
+          <h1 class="post-title" itemprop="name headline">mysql内部临时表和分组优化</h1>
         
 
         <div class="post-meta">
@@ -391,8 +387,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-16T11:09:54+08:00">
-                2019-01-16
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-16T20:54:41+08:00">
+                2019-02-16
               </time>
             
 
@@ -410,9 +406,9 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/如何处理读写分离/#comments" itemprop="discussionUrl">
+                <a href="/2019/mysql内部临时表和分组优化/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2019/如何处理读写分离/" itemprop="commentCount"></span>
+                        data-disqus-identifier="2019/mysql内部临时表和分组优化/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -440,50 +436,34 @@
       
 
       
-        <p>mysql在读写分离的场景下，可能是一主一从，一主都从。但是在实际应用场景中需要解决一个重要的问题就是<strong>“过期读”</strong>。本篇主要介读写分离可能的架构方式以及如何解决该问题。</p>
-<h4 id="强制从主库读取"><a href="#强制从主库读取" class="headerlink" title="强制从主库读取"></a>强制从主库读取</h4><h5 id="及时查询vs非及时查询"><a href="#及时查询vs非及时查询" class="headerlink" title="及时查询vs非及时查询"></a>及时查询vs非及时查询</h5><p>针对某些必须保证正确读的场景，我们可以设置这个请求只能走主库，例如一个场景，商家在发布了商品之后需要立即看到商品的信息，那么这个我们可以直接从主库去读。同样的场景，买家在前端去看新发布的商品时可能并不需要这么及时，可以容忍有一定时间的延迟，那么这个查询比较适合走从库。这里我们将查询分为两类：<strong>及时查询和非及时查询。</strong></p>
+        <p>mysql什么时候使用到内部临时表，通过explain可以看到extra信息里面会显示using temporary。我们知道针对mysql的order by操作，维护了一个内存空间sort_buffer，超出这个内存之后会采用磁盘辅助排序，extra信息中会有using filesort。那么mysql什么时候会有using temporary并且如何进行优化。</p>
+<p>内部临时表，存储过程类似sort_buffer的进化过程，先存内存，后退化到磁盘辅助。可以查看到mysql为内部临时表分配的内存大小：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-- 查看配置temp_table_size大小</span><br><span class="line">show variables like &quot;tmp_table%&quot;</span><br><span class="line">-- result 1KB 超过1KB之后用磁盘存储</span><br><span class="line">tmp_table_size	1024</span><br><span class="line">-- 可以设定temp_table_size内存的大小,global去除只对当前session生效</span><br><span class="line">set global tmp_table_size=1024</span><br></pre></td></tr></table></figure>
+<h4 id="union操作using-temporary"><a href="#union操作using-temporary" class="headerlink" title="union操作using temporary"></a>union操作using temporary</h4><p>union操作的语义，将两个结果集整合到一个结果集，union操作会有using temporary，用到内部临时表。主要由于union操作需要去重，如果是union all操作会直接将结果返回给客户端，不在内部临时表做去重操作。</p>
+<h4 id="group-by操作using-temporary"><a href="#group-by操作using-temporary" class="headerlink" title="group by操作using temporary"></a>group by操作using temporary</h4><p>group by操作的过程：</p>
 <ul>
-<li>优点：逻辑上比较简单，易于实现和区分</li>
-<li>缺点：可能会面临所有的查询都是及时查询的情况，例如一些金融系统对及时性要求很高。</li>
+<li>1.根据结果集的字段建立内部临时表，分组id，count两个字段。</li>
+<li>2.全表扫描需要分组的表，如果内部临时表没有对应的分组id，新增一条记录。</li>
+<li>3.如果内部临时表有对应的分组id，直接count++累加。</li>
+<li>4.根据id进行排序order by将结果存在内存或者持久化到临时磁盘表。</li>
 </ul>
-<h5 id="及时查询优化"><a href="#及时查询优化" class="headerlink" title="及时查询优化"></a>及时查询优化</h5><p>即使是刚才讲到的可能面对的及时查询的情况，查询的时效性很高。为了减少主库的查询压力，我们可以让前端直接去跳转，看起来做了查询但是实际上没有查询。上架了商品之后直接将上架的商品信息展示在商品栏，减少了一次查询主库的压力。</p>
-<p>实际上我们在应用中经常会采取强制从主库读取这种方式，但是很可能面对尴尬的场景。整个系统对时效性要求都比较高的时候，而又必须通过读写分离改善的场景下，可以如何解决<strong>过期读</strong>的问题？</p>
-<h4 id="判断主备延迟"><a href="#判断主备延迟" class="headerlink" title="判断主备延迟"></a>判断主备延迟</h4><p>每次在备库执行查询请求之前，先判断下主备是否有延迟。可以通过：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show slave status;</span><br></pre></td></tr></table></figure>
-<h5 id="seconds-behind-master"><a href="#seconds-behind-master" class="headerlink" title="seconds_behind_master"></a>seconds_behind_master</h5><p>判断seconds_behind_master，通过show slave status可以在从库上查看到这个参数，如果seconds_behind_master</p>
-<p>为零，可以走从库进行查询。缺点是精度比较难保证。</p>
-<h5 id="对比位点和GTID集合"><a href="#对比位点和GTID集合" class="headerlink" title="对比位点和GTID集合"></a>对比位点和GTID集合</h5><p>在备库执行show slave status可以看到备库的位点和GTID集合的状态：</p>
-<p><img src="http://arthornye.github.io/images/poslog.jpg" alt="cmd-markdown-logo"></p>
+<h4 id="group-by操作索引优化"><a href="#group-by操作索引优化" class="headerlink" title="group by操作索引优化"></a>group by操作索引优化</h4><p>group by操作explain如果extra信息中有using temporary和using filesort，在数据量比较大的情况下会造成慢查询。mysql 5.7以上版本提供关联列更新操作，<strong>generated column关联某列数据的更新。</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-- 增加一列，列的值为id % 100（分组字段） ，然后为该列建立索引（建立索引避免了排序）。generated column操作会关联列，继续新增一条记录即使没有制定值也会通过关联的列的值计算。</span><br><span class="line">alter table t1 add column z int generated always as (id % 100),add index z_index(z);</span><br></pre></td></tr></table></figure>
+<p>通过加索引，避免了使用临时表，同时避免了使用排序（取出来即为有序），也就是extra中不会出现using temporary和using filesort。那么这个过程为什么避免了？</p>
 <ul>
-<li><strong>Master_Log_File == Relay_Master_Log_File  &amp;&amp; Read_    Master_Log_Pos == Exec_Master_log_File  为true，表明备库已经完成接收到的主库的binlog同步。此为对比位点。</strong></li>
-<li><strong>Retrieved_Gtid_Set(接收到的集合) == Executed_Gtid_Set(已经执行了的集合) 为true表明备库已经完成接受到的主binlog的同步。此为对比GTID。Auto_Position=1 ，表示这对主备关系使用了 GTID协议。</strong></li>
+<li>没有索引的情况下，需要临时表来记录，因为过程无序，并且最终需要排序。</li>
+<li>有索引的情况下本身有序，不需要记录累加的结果，结果在扫描过过程中得到并且是有序的。</li>
 </ul>
-<p>虽然这种方式都可以保证备库已经执行完了主库存传过来的binlog，但是因为binlog的传送这个过程相对客户端是异步的，那么客户端在收到更新成功的一条语句之后，这个语句可能还没有传送到备库。</p>
-<p><img src="http://arthornye.github.io/images/asynclog.jpg" alt="cmd-markdown-logo"></p>
-<p>这里需要引入<strong>半同步复制semi-sync</strong>:</p>
-<ul>
-<li>1.主库的事务提交之后，向备库发一个binlog，注意这里先不返回客户端更新成功。</li>
-<li>2.备库收到binlog之后，向主库发一个ack，表示收到了这个binlog。</li>
-<li>3.主库收到备库的ack之后，向客户端返回更新成功。</li>
+<h4 id="group-by操作存储优化"><a href="#group-by操作存储优化" class="headerlink" title="group by操作存储优化"></a>group by操作存储优化</h4><p>内存临时表容量，也就是tmp_table_size不够大的时候，会退化为磁盘存储，在数据量大的时候直接指定使用磁盘存储。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-- 通过SQL_BIG_RESULT这种方式指定不走内存内存临时表，直接用磁盘临时表。</span><br><span class="line">select SQL_BIG_RESULT id%100 as m, count(*) as c from t1 group by m;</span><br></pre></td></tr></table></figure>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><ul>
+<li><p>sort_buffer是有序数组，tmp_table_size临时表是二维表结构，具备表的语义，join_buffer是无序数组，均可查看配置大小。</p>
+</li>
+<li><p>执行过程中需要使用二维表结构语义的，优先使用临时表。union操作需要检验唯一约束，需要使用临时表存储。group by需要在过程中用另一个字段计算累加结果。</p>
+</li>
+<li><p>扫描过程中可以直接得到结果的，不需要使用临时表，需要计算的要使用临时表。</p>
+</li>
 </ul>
-<p>semi-sync缺陷：<strong>目前只能支持一主一从，如果是一主多从，并不能等待所有备库都接收到binlog，而是收到一个ack就返回给客户端。这样就不能完全保证不会出现过期读。</strong></p>
-<h4 id="业务代码如何写避免过期读？"><a href="#业务代码如何写避免过期读？" class="headerlink" title="业务代码如何写避免过期读？"></a>业务代码如何写避免过期读？</h4><p>针对上节的介绍，我们可以通过判断位点和GTID集合，结合semi-sync半同步复制，判断一主多从不会出现过期读，那么在代码中如何操作实现？</p>
-<h5 id="等主库位点"><a href="#等主库位点" class="headerlink" title="等主库位点"></a>等主库位点</h5><p>这里需要介绍一条数据库sql指令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-- 这里file是master主库上的log文件名，pos是执行到的文件位点，timeout是超时时间</span><br><span class="line">-- 这个的返回表示，备库执行到主库的位点经历了多少个binlog，也就是执行了多少事务，如果返回为正整数，表示同步完成，返回-1表示失败，null表示发生了异常。</span><br><span class="line">select master_pos_wait(file, pos[, timeout]);</span><br></pre></td></tr></table></figure>
-<p>1.更新代码完成之后，查询请求进来，先到master执行show master status，查到file 和pos。</p>
-<p>2.任意选择一个备库，执行select master_pos_wait(file, pos[, timeout])。</p>
-<p>3.如果返回正整数表示该备库已经同步完成，将查询在该备库中进行否则到强制到主库中执行。</p>
-<h5 id="等主库GTID集合"><a href="#等主库GTID集合" class="headerlink" title="等主库GTID集合"></a>等主库GTID集合</h5><p>如果数据库开启了GTID模式，这里同样介绍一个指令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">--  gtid_set理解为一个字符串，不同于位点方式的是，更新操作完成之后这种方式会返回给客户端这个gtid，客户端在继续进行查询的时候只需要把这个gtid到备库进行判断。</span><br><span class="line">-- 该命令执行逻辑，1.等待，直到该备库中记录了执行该事务的id，返回0  2.超时返回-1，由业务决定走主库还是放弃。</span><br><span class="line">select wait_for_executed_gtid_set(gtid_set, 1);</span><br></pre></td></tr></table></figure>
-<p>1.客户端执行在主库执行更新请求，更新事务提交成功，返回给客户端gtid。</p>
-<p>2.客户端到备库通过拿到的gtid执行select wait_for_executed_gtid_set(gtid_set, 1)。</p>
-<p>3.返回0，表示备库中已经有执行了这个更新事务，可以进行查询。</p>
-<h5 id="等主库位点vs等主库GTID"><a href="#等主库位点vs等主库GTID" class="headerlink" title="等主库位点vs等主库GTID"></a>等主库位点vs等主库GTID</h5><p>相对等主库位点来说，等主库GTID方式减少了一次show master status的主库查询，对主库比较友好。但是GTID方案，如何让客户端的返回中包含事务执行的gtid？</p>
-<ul>
-<li><strong>需要将参数 session_track_gtids 设置为OWN_GTID，然后通过 API 接口mysql_session_track_get_first从返回包解析出 GTID 的值即可。</strong></li>
-</ul>
-<p><img src="http://arthornye.github.io/images/gtid.jpg" alt="cmd-markdown-logo"></p>
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>本篇文章主要是介绍如何在数据库一主多从类似的读写分离的架构下要如何避免过期读。虽然我们发现GTID这种方式好像能够完全避免过期读，表现比较优秀，但是实际场景下我们还是多种方式混合使用。总之我们还是需要客户端去判断，当前的请求是否可以接受过期读，如果可以接受，那完全没有必要采用等待位点或者等待GTID的方案，否则无需采用。这些都需要在实际的业务场景中去检验和选择。</p>
 
       
     </div>
@@ -514,8 +494,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/mysql排序工作原理/" rel="next" title="mysql排序工作原理">
-                <i class="fa fa-chevron-left"></i> mysql排序工作原理
+              <a href="/2019/Java-8异步处理/" rel="next" title="Java 8中异步处理">
+                <i class="fa fa-chevron-left"></i> Java 8中异步处理
               </a>
             
           </div>
@@ -523,10 +503,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/sql操作记录/" rel="prev" title="sql操作记录">
-                sql操作记录 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -698,7 +674,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#强制从主库读取"><span class="nav-number">1.</span> <span class="nav-text">强制从主库读取</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#及时查询vs非及时查询"><span class="nav-number">1.1.</span> <span class="nav-text">及时查询vs非及时查询</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#及时查询优化"><span class="nav-number">1.2.</span> <span class="nav-text">及时查询优化</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#判断主备延迟"><span class="nav-number">2.</span> <span class="nav-text">判断主备延迟</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#seconds-behind-master"><span class="nav-number">2.1.</span> <span class="nav-text">seconds_behind_master</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#对比位点和GTID集合"><span class="nav-number">2.2.</span> <span class="nav-text">对比位点和GTID集合</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#业务代码如何写避免过期读？"><span class="nav-number">3.</span> <span class="nav-text">业务代码如何写避免过期读？</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#等主库位点"><span class="nav-number">3.1.</span> <span class="nav-text">等主库位点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#等主库GTID集合"><span class="nav-number">3.2.</span> <span class="nav-text">等主库GTID集合</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#等主库位点vs等主库GTID"><span class="nav-number">3.3.</span> <span class="nav-text">等主库位点vs等主库GTID</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#union操作using-temporary"><span class="nav-number">1.</span> <span class="nav-text">union操作using temporary</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#group-by操作using-temporary"><span class="nav-number">2.</span> <span class="nav-text">group by操作using temporary</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#group-by操作索引优化"><span class="nav-number">3.</span> <span class="nav-text">group by操作索引优化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#group-by操作存储优化"><span class="nav-number">4.</span> <span class="nav-text">group by操作存储优化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#总结"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li></ol></div>
             
 
           </div>
@@ -881,9 +857,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'http://jianghao.wang/2019/如何处理读写分离/';
-          this.page.identifier = '2019/如何处理读写分离/';
-          this.page.title = '如何处理读写分离';
+          this.page.url = 'http://jianghao.wang/2019/mysql内部临时表和分组优化/';
+          this.page.identifier = '2019/mysql内部临时表和分组优化/';
+          this.page.title = 'mysql内部临时表和分组优化';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://tizzy323.disqus.com/embed.js';
