@@ -112,7 +112,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="mysql," />
 
 
 
@@ -125,19 +125,18 @@
 
 
 
-<meta name="description" content="由于Tomcat启动时设置的初始堆大小较小，在实际运行过程中GC频繁，调整Tomcat启动参数设置堆内存和永久代大小（JDK1.8之后移除永久代增加MetaSpace元空间） Tomcat修改启动参数Windows下打开Tomcat根目录bin文件夹下catalina.bat文件中定位到setlocal行，在该行后面添加启动参数如下：12set JAVA_OPTS=%JAVA_OPTS% -Xms">
+<meta name="description" content="本篇主要介绍mysql在join操作上采用的一些算法，以及如何做优化。主要分为Index Nested-Loop Join（NLJ）算法和Block Nested-Loop Join（BLJ）算法，基于Multi-Range Read优化的Batched Access Key（BKA）算法。 Block Nested-Loop Join (BNL)通常在explain执行的extra中会有join">
+<meta name="keywords" content="mysql">
 <meta property="og:type" content="article">
-<meta property="og:title" content="一次Tomcat启动参数优化">
-<meta property="og:url" content="http://jianghao.wang/2017/Tomcat启动参数优化/index.html">
+<meta property="og:title" content="mysql中的join操作算法介绍">
+<meta property="og:url" content="http://jianghao.wang/2019/mysql中的join操作/index.html">
 <meta property="og:site_name" content="TizzyT&#39;s Blog">
-<meta property="og:description" content="由于Tomcat启动时设置的初始堆大小较小，在实际运行过程中GC频繁，调整Tomcat启动参数设置堆内存和永久代大小（JDK1.8之后移除永久代增加MetaSpace元空间） Tomcat修改启动参数Windows下打开Tomcat根目录bin文件夹下catalina.bat文件中定位到setlocal行，在该行后面添加启动参数如下：12set JAVA_OPTS=%JAVA_OPTS% -Xms">
+<meta property="og:description" content="本篇主要介绍mysql在join操作上采用的一些算法，以及如何做优化。主要分为Index Nested-Loop Join（NLJ）算法和Block Nested-Loop Join（BLJ）算法，基于Multi-Range Read优化的Batched Access Key（BKA）算法。 Block Nested-Loop Join (BNL)通常在explain执行的extra中会有join">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://arthornye.github.io/images/Tomcat启动参数优化/tomcat.png">
-<meta property="og:updated_time" content="2017-05-04T14:38:26.000Z">
+<meta property="og:updated_time" content="2019-02-27T07:50:29.158Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="一次Tomcat启动参数优化">
-<meta name="twitter:description" content="由于Tomcat启动时设置的初始堆大小较小，在实际运行过程中GC频繁，调整Tomcat启动参数设置堆内存和永久代大小（JDK1.8之后移除永久代增加MetaSpace元空间） Tomcat修改启动参数Windows下打开Tomcat根目录bin文件夹下catalina.bat文件中定位到setlocal行，在该行后面添加启动参数如下：12set JAVA_OPTS=%JAVA_OPTS% -Xms">
-<meta name="twitter:image" content="https://arthornye.github.io/images/Tomcat启动参数优化/tomcat.png">
+<meta name="twitter:title" content="mysql中的join操作算法介绍">
+<meta name="twitter:description" content="本篇主要介绍mysql在join操作上采用的一些算法，以及如何做优化。主要分为Index Nested-Loop Join（NLJ）算法和Block Nested-Loop Join（BLJ）算法，基于Multi-Range Read优化的Batched Access Key（BKA）算法。 Block Nested-Loop Join (BNL)通常在explain执行的extra中会有join">
 
 
 
@@ -167,13 +166,13 @@
 
 
 
-  <link rel="canonical" href="http://jianghao.wang/2017/Tomcat启动参数优化/"/>
+  <link rel="canonical" href="http://jianghao.wang/2019/mysql中的join操作/"/>
 
 
 
 
 
-  <title>一次Tomcat启动参数优化 | TizzyT's Blog</title>
+  <title>mysql中的join操作算法介绍 | TizzyT's Blog</title>
   
 
 
@@ -359,7 +358,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://jianghao.wang/2017/Tomcat启动参数优化/">
+    <link itemprop="mainEntityOfPage" href="http://jianghao.wang/2019/mysql中的join操作/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="yeqiaozhu">
@@ -376,7 +375,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">一次Tomcat启动参数优化</h1>
+          <h1 class="post-title" itemprop="name headline">mysql中的join操作算法介绍</h1>
         
 
         <div class="post-meta">
@@ -388,8 +387,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-05-04T22:38:26+08:00">
-                2017-05-04
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-21T16:53:21+08:00">
+                2019-02-21
               </time>
             
 
@@ -407,9 +406,9 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2017/Tomcat启动参数优化/#comments" itemprop="discussionUrl">
+                <a href="/2019/mysql中的join操作/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/Tomcat启动参数优化/" itemprop="commentCount"></span>
+                        data-disqus-identifier="2019/mysql中的join操作/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -437,10 +436,39 @@
       
 
       
-        <p>由于Tomcat启动时设置的初始堆大小较小，在实际运行过程中GC频繁，调整Tomcat启动参数设置堆内存和永久代大小（JDK1.8之后移除永久代增加MetaSpace元空间）</p>
-<h2 id="Tomcat修改启动参数"><a href="#Tomcat修改启动参数" class="headerlink" title="Tomcat修改启动参数"></a>Tomcat修改启动参数</h2><p>Windows下打开Tomcat根目录bin文件夹下catalina.bat文件中定位到setlocal行，在该行后面添加启动参数如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">set JAVA_OPTS=%JAVA_OPTS% -Xms1548m -Xmx1548m -XX:PermSize=<span class="number">256</span>m -XX:MaxPermSize=<span class="number">512</span>m</span><br><span class="line">/**-Xms为最小堆，-Xmx为最大堆，-XX:MaxPermSize为永久代最大空间**/</span><br></pre></td></tr></table></figure></p>
-<p>如果是JDK1.8需要调整元空间大小，启动参数修改：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">set JAVA_OPTS=%JAVA_OPTS% -Xms1548m -Xmx1548m -XX:MaxMetaSpace=<span class="number">512</span>m</span><br><span class="line">/**-Xms为最小堆，-Xmx为最大堆，-XX:MaxMetaSpace为最大元空间大小**/</span><br></pre></td></tr></table></figure></p>
-<h2 id="Jps查看启动参数"><a href="#Jps查看启动参数" class="headerlink" title="Jps查看启动参数"></a>Jps查看启动参数</h2><p>命令台输入Jps -v可以查看Tomcat启动的参数配置：<br><img src="https://arthornye.github.io/images/Tomcat启动参数优化/tomcat.png" alt="cmd-markdown-logo"></p>
+        <p>本篇主要介绍mysql在join操作上采用的一些算法，以及如何做优化。主要分为Index Nested-Loop Join（NLJ）算法和Block Nested-Loop Join（BLJ）算法，基于Multi-Range Read优化的Batched Access Key（BKA）算法。</p>
+<h4 id="Block-Nested-Loop-Join-BNL"><a href="#Block-Nested-Loop-Join-BNL" class="headerlink" title="Block Nested-Loop Join (BNL)"></a>Block Nested-Loop Join (BNL)</h4><p>通常在explain执行的extra中会有<strong>join_buffer(Block Nested-Loop Join)</strong>表示这次join操作使用了BNL算法。算法主要步骤是：</p>
+<ul>
+<li>1.从驱动表批量查出数据，放到<strong>join_buffer</strong>中。</li>
+<li>2.根据<strong>关联字段</strong>从被驱动表全表<strong>扫描数据</strong>，进行关联。</li>
+<li>3.被关联表查到数据之后进行<strong>回表</strong>。</li>
+<li>4.join_buffer中封装最终数据。</li>
+</ul>
+<p>存在的性能问题：</p>
+<ul>
+<li>1.buffer_pool被占用，降低了缓存命中率。buffer_pool使用<strong>LRU(最近最少使用原则)</strong>理论上M*N不断的进行全表扫描，被驱动表数据会大量缓存在buffer_pool中。</li>
+<li>2.查询操作频繁，耗费大量cpu资源。同时会有大量的磁盘io。</li>
+</ul>
+<p><strong>实际运用过程中，如果出现了使用Block Nested-Loop Join(BNL)建议进行优化。对性能影响较大。</strong></p>
+<h4 id="Index-Nested-Loop-Join-NLJ"><a href="#Index-Nested-Loop-Join-NLJ" class="headerlink" title="Index Nested-Loop Join (NLJ)"></a>Index Nested-Loop Join (NLJ)</h4><p>在上面的基础之上，采用了对被驱动表加索引的方式，极大的提升了效率，如果explain的结果extra中没有出现<strong>join_buffer(Block Nested-Loop Join)</strong>就表示这次join操作默认使用了NLJ算法。该算法有相对的优点：</p>
+<ul>
+<li>1.采用索引的方式定位磁盘块，减少了io次数和cpu资源的消耗。</li>
+<li>2.不会出现BNL算法可能淘汰热点页的问题。只会缓存不同的磁盘块数据。</li>
+</ul>
+<h4 id="Multi-Range-Read-MRR"><a href="#Multi-Range-Read-MRR" class="headerlink" title="Multi-Range Read (MRR)"></a>Multi-Range Read (MRR)</h4><p>该优化主要针对索引回表，<strong>MRR将随机回表读通过join_buffer根据主键id排序改变为顺序回表，一定程度上提升了回表效率，减少了回表次数加快了io读。</strong>mysql中可以通过设置参数开启该算法，默认是关闭的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-- 通过设置参数开启mrr算法优化。mrr_cost_based=off</span><br><span class="line">set optimizer_switch=&apos;mrr=on,mrr_cost_based=off,batched_key_access=on&apos;;</span><br></pre></td></tr></table></figure>
+<h4 id="Batched-Access-Key-BKA"><a href="#Batched-Access-Key-BKA" class="headerlink" title="Batched Access Key (BKA)"></a>Batched Access Key (BKA)</h4><p>基于Multi-Range Read优化的Batched Access Key（BKA）算法，实际上也是对<strong>NLJ算法的优化。</strong>执行流程如下：</p>
+<ul>
+<li>1.从驱动表中加载数据到join_buffer中得到数据块x，这里如果超出了容量，通过分段的方式加载。（可以通过调整join_buffer的大小改善）。</li>
+<li>2.通过索引查到join_buffer中所有的被驱动表上的数据块y，放到join_buffer中。</li>
+<li>3.通过join_buffer对数据块y进行主键id排序，得到主键id数据块z。</li>
+<li>4.根据排序好的主键id去回表执行顺序读，得到关联查询的数据结果集。</li>
+<li>5.在join_buffer中整合数据数据块x和z，返回结果集给客户端。</li>
+</ul>
+<p><strong>一般我们如果需要将BNL算法转成BKA算法，只需要在被驱动表上建立一个索引就行了。</strong></p>
+<h4 id="特殊情况处理（无法建立索引）"><a href="#特殊情况处理（无法建立索引）" class="headerlink" title="特殊情况处理（无法建立索引）"></a>特殊情况处理（无法建立索引）</h4><p>当在被驱动表上建立索引的成本可能比较高的时候，不建议建立索引。<strong>例如，当关联的结果集实际上可以精简到一个小结果的时候，我们可以建立一个临时表，在临时表上建立索引。</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-- 模拟一下，b字段所在的表数据量很大，但是我们只需要两千条，通过create temporary table建立临时表同时建立索引</span><br><span class="line">create temporary table temp_t(id int primary key, a int, b int, index(b))engine=innodb;</span><br><span class="line">insert into temp_t select * from t2 where b&gt;=1 and b&lt;=2000;</span><br><span class="line">select * from t1 join temp_t on (t1.b=temp_t.b);</span><br></pre></td></tr></table></figure>
+<p>当然最好的操作方式还是数据引擎如果<strong>支持hash join</strong>就完美了，但是mysql是不支持的。如果支持hash join可以快速定位到记录，数据结构参考HashMap数据结构。如果数据引擎不支持，可以考虑在程序内存中将被驱动表的数据放在<strong>Set或者HashMap</strong>这样的数据结构中，进行关联。</p>
 
       
     </div>
@@ -456,6 +484,12 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/mysql/" rel="tag"># mysql</a>
+          
+        </div>
+      
 
       
       
@@ -465,8 +499,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/Nginx学习/" rel="next" title="Ngrok+Ngnix搭建内网Webservice服务隧道">
-                <i class="fa fa-chevron-left"></i> Ngrok+Ngnix搭建内网Webservice服务隧道
+              <a href="/2019/mysql内部临时表和分组优化/" rel="next" title="mysql内部临时表和分组优化">
+                <i class="fa fa-chevron-left"></i> mysql内部临时表和分组优化
               </a>
             
           </div>
@@ -474,10 +508,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/Java虚拟机运行时数据区域/" rel="prev" title="Java虚拟机运行时数据区域">
-                Java虚拟机运行时数据区域 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -649,7 +679,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Tomcat修改启动参数"><span class="nav-number">1.</span> <span class="nav-text">Tomcat修改启动参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Jps查看启动参数"><span class="nav-number">2.</span> <span class="nav-text">Jps查看启动参数</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Block-Nested-Loop-Join-BNL"><span class="nav-number">1.</span> <span class="nav-text">Block Nested-Loop Join (BNL)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Index-Nested-Loop-Join-NLJ"><span class="nav-number">2.</span> <span class="nav-text">Index Nested-Loop Join (NLJ)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Multi-Range-Read-MRR"><span class="nav-number">3.</span> <span class="nav-text">Multi-Range Read (MRR)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Batched-Access-Key-BKA"><span class="nav-number">4.</span> <span class="nav-text">Batched Access Key (BKA)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#特殊情况处理（无法建立索引）"><span class="nav-number">5.</span> <span class="nav-text">特殊情况处理（无法建立索引）</span></a></li></ol></div>
             
 
           </div>
@@ -832,9 +862,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'http://jianghao.wang/2017/Tomcat启动参数优化/';
-          this.page.identifier = '2017/Tomcat启动参数优化/';
-          this.page.title = '一次Tomcat启动参数优化';
+          this.page.url = 'http://jianghao.wang/2019/mysql中的join操作/';
+          this.page.identifier = '2019/mysql中的join操作/';
+          this.page.title = 'mysql中的join操作算法介绍';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://tizzy323.disqus.com/embed.js';

@@ -133,7 +133,7 @@
 <meta property="og:site_name" content="TizzyT&#39;s Blog">
 <meta property="og:description" content="mysql中的隐式类型转换？mysql innodb有行锁的实现，行锁会针对当前读进行加排他锁。 1.对索引字段做函数操作会导致索引失效，破坏索引的有序性，优化器不走b+树搜索 1select * from trade_log where month(t_modify)=7; 上面的语句没办法使用到索引，不可以在索引的字段上加函数操作，这里复杂的函数操作导致了破坏索引的扫描，但是即使类似where">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-02-16T13:58:35.842Z">
+<meta property="og:updated_time" content="2019-02-21T03:25:17.817Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="mysql中的隐式类型转换">
 <meta name="twitter:description" content="mysql中的隐式类型转换？mysql innodb有行锁的实现，行锁会针对当前读进行加排他锁。 1.对索引字段做函数操作会导致索引失效，破坏索引的有序性，优化器不走b+树搜索 1select * from trade_log where month(t_modify)=7; 上面的语句没办法使用到索引，不可以在索引的字段上加函数操作，这里复杂的函数操作导致了破坏索引的扫描，但是即使类似where">
@@ -463,6 +463,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1	SIMPLE	t1	NULL	ALL	NULL	NULL	NULL	NULL	186	100.00	NULL</span><br><span class="line">1	SIMPLE	t2	NULL	index	order_code_index	sync_index	107	NULL	113582	100.00	Using where; Using index; Using join buffer (Block Nested Loop)</span><br></pre></td></tr></table></figure>
 <p>sql查询日志：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"># Query_time: 0.002302  Lock_time: 0.000244 Rows_sent: 186  Rows_examined: 372  一次回表查询</span><br><span class="line">SET timestamp=1548079631;</span><br><span class="line">SELECT t1.retail_order_code</span><br><span class="line">  , (</span><br><span class="line">    SELECT CASE t2.order_status</span><br><span class="line">        WHEN 150 THEN 3</span><br><span class="line">        ELSE 4</span><br><span class="line">      END</span><br><span class="line">  ), t1.tmail_order_id, 1,t1.step_count, t1.disburse_fee</span><br><span class="line">  , t1.voucher_price, t1.deleted, t1.sku_id, t1.date_create, t1.date_update</span><br><span class="line">  , &apos;distributor&apos;, &apos;retainge&apos;, 50</span><br><span class="line">  , 50</span><br><span class="line">FROM retail_marketing_order t1</span><br><span class="line">  LEFT JOIN retail_order t2 ON convert(t1.retail_order_code USING utf8) = t2.order_code;</span><br></pre></td></tr></table></figure>
+<p><strong>join操作在驱动表上加父集合（convert using utf8）使用索引。</strong></p>
 <h4 id="Using-join-buffer-Block-Nested-Loop"><a href="#Using-join-buffer-Block-Nested-Loop" class="headerlink" title="Using join buffer (Block Nested Loop)"></a>Using join buffer (Block Nested Loop)</h4><p>BNL算法建立在join操作的基础上，join操作有一个内表一个外表，外表和内表两层循环。BNL算法取出100条放到join buffer中，内层循环直接从buffer中全部匹配出来100条，这样操作减少了磁盘io</p>
 
       
@@ -597,7 +598,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">45</span>
+                  <span class="site-state-item-count">46</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
