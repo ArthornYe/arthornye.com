@@ -133,10 +133,12 @@
 <meta property="og:site_name" content="TizzyT&#39;s Blog">
 <meta property="og:description" content="当mysql单表的数据量达到200万条以上时，建立索引和单表查询的代价较大，查询性能也会到达瓶颈，需要进行分库分表。 垂直拆分+水平拆分垂直拆分（单表字段过多）：将单表的数据量分别分散到多个库表，拆分的主要标准是热点数据vs非热点数据，热点数据mysql有buffer_pool缓存热点数据页。分别将热点字段拆分到热点表，非热点数据拆分到非热点表。 水平拆分（单表数据记录过多）：将单表大量的数据分散">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-03-04T09:06:06.075Z">
+<meta property="og:image" content="https://arthornye.github.io/images/doublewrite.jpg">
+<meta property="og:updated_time" content="2019-03-04T09:18:46.884Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="分库分表">
 <meta name="twitter:description" content="当mysql单表的数据量达到200万条以上时，建立索引和单表查询的代价较大，查询性能也会到达瓶颈，需要进行分库分表。 垂直拆分+水平拆分垂直拆分（单表字段过多）：将单表的数据量分别分散到多个库表，拆分的主要标准是热点数据vs非热点数据，热点数据mysql有buffer_pool缓存热点数据页。分别将热点字段拆分到热点表，非热点数据拆分到非热点表。 水平拆分（单表数据记录过多）：将单表大量的数据分散">
+<meta name="twitter:image" content="https://arthornye.github.io/images/doublewrite.jpg">
 
 
 
@@ -455,6 +457,7 @@
 <li>2.开始从<strong>老数据库导入数据到数据库中间件</strong>，覆盖原则为<strong>新数据覆盖老数据</strong>根据最新更新时间<strong>date_update</strong>来判断。</li>
 <li>3.确保数据全部导入完成，业务方配置全部切换到<strong>分库分表数据库中间件</strong>。</li>
 </ul>
+<p><img src="https://arthornye.github.io/images/doublewrite.jpg" alt="cmd-markdown-logo"></p>
 <h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>中间件是如何进行分库分表适配的？不管是基于proxy还是基于客户端，对客户端的查询来说，都不需要关心最终查询落到了哪个库表上，中间件会帮你全部封装好。我的理解是垂直拆分和两种水平拆分的方式，中间件会帮你维护一个映射表，某个对应的key具体映射到哪个库哪个表，然后进行统一的提交。</p>
 
       
