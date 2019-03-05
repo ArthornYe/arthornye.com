@@ -134,7 +134,7 @@
 <meta property="og:description" content="当mysql单表的数据量达到200万条以上时，建立索引和单表查询的代价较大，查询性能也会到达瓶颈，需要进行分库分表。 垂直拆分+水平拆分垂直拆分（单表字段过多）：将单表的数据量分别分散到多个库表，拆分的主要标准是热点数据vs非热点数据，热点数据mysql有buffer_pool缓存热点数据页。分别将热点字段拆分到热点表，非热点数据拆分到非热点表。 水平拆分（单表数据记录过多）：将单表大量的数据分散">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://arthornye.github.io/images/doublewrite.jpg">
-<meta property="og:updated_time" content="2019-03-04T09:18:46.884Z">
+<meta property="og:updated_time" content="2019-03-05T02:37:57.899Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="分库分表">
 <meta name="twitter:description" content="当mysql单表的数据量达到200万条以上时，建立索引和单表查询的代价较大，查询性能也会到达瓶颈，需要进行分库分表。 垂直拆分+水平拆分垂直拆分（单表字段过多）：将单表的数据量分别分散到多个库表，拆分的主要标准是热点数据vs非热点数据，热点数据mysql有buffer_pool缓存热点数据页。分别将热点字段拆分到热点表，非热点数据拆分到非热点表。 水平拆分（单表数据记录过多）：将单表大量的数据分散">
@@ -458,6 +458,28 @@
 <li>3.确保数据全部导入完成，业务方配置全部切换到<strong>分库分表数据库中间件</strong>。</li>
 </ul>
 <p><img src="https://arthornye.github.io/images/doublewrite.jpg" alt="cmd-markdown-logo"></p>
+<h4 id="动态扩容缩容分库分表方案"><a href="#动态扩容缩容分库分表方案" class="headerlink" title="动态扩容缩容分库分表方案"></a>动态扩容缩容分库分表方案</h4><p>真实场景下对数据库做分库分表之后可能还会面临扩容的情况，需要最大程度上支持可扩展，先生成一个32*32足够使用的逻辑表，当需要扩容的时候进行动态扩容。动态扩容缩容分库分表方案步骤：</p>
+<ol>
+<li>设定好几台数据库服务器，每台服务器上几个库，每个库多少个表，推荐是 32库 * 32表，对于大部分公司来说，可能几年都够了。</li>
+<li>路由的规则，orderId 模 32 = 库，orderId / 32 模 32 = 表</li>
+<li>扩容的时候，申请增加更多的数据库服务器，装好 mysql，呈倍数扩容，4 台服务器，扩到 8 台服务器，再到 16 台服务器。</li>
+<li>由 dba 负责将原先数据库服务器的库，迁移到新的数据库服务器上去，库迁移是有一些便捷的工具的。</li>
+<li>我们这边就是修改一下配置，调整迁移的库所在数据库服务器的地址。</li>
+<li>重新发布系统，上线，原先的路由规则变都不用变，直接可以基于 n 倍的数据库服务器的资源，继续进行线上系统的提供服务。</li>
+</ol>
+<h4 id="主键id如何设计"><a href="#主键id如何设计" class="headerlink" title="主键id如何设计"></a>主键id如何设计</h4><p>分库分表有一个问题就是自增id如何生成，唯一主键id再分布式的情况下如何生成，介绍几种方法的利弊：</p>
+<table><br><tr><br>    <th>走单库生成主键id</th><br>    <th>比较简单</th><br>    <th>单库生成无用数据，并发承载量为单库承载量，违背分库分表的初衷</th><br></tr><br><tr><br>    <th>数据库sequence字段分段自增 </th><br>    <th>简单，分为32个模块32个表，每个表自增分别从id+1024累加</th><br>    <th>缺点是没办法进行扩展</th><br></tr><br><tr><br>    <th>UUID生成唯一主键</th><br>    <th>优点是业务方自动生成，方便</th><br>    <th>确定是这样生成比较占用空间，字符串太长</th><br></tr><br><tr><br>    <th>snowflake 算法</th><br>    <th>推荐</th><br>    <th>推荐</th><br></tr><br></table>
+
+
+
+<h5 id="snowflake-算法"><a href="#snowflake-算法" class="headerlink" title="snowflake 算法"></a>snowflake 算法</h5><p>snowflake 算法是 twitter 开源的分布式 id 生成算法，采用 Scala 语言实现，是把一个 64 位的 long 型的 id，1 个 bit 是不用的，用其中的 41 bit 作为毫秒数，用 10 bit 作为工作机器 id，12 bit 作为序列号。</p>
+<ul>
+<li>1 bit：不用，为啥呢？因为二进制里第一个 bit 为如果是 1，那么都是负数，但是我们生成的 id 都是正数，所以第一个 bit 统一都是 0。</li>
+<li>41 bit：表示的是时间戳，单位是毫秒。41 bit 可以表示的数字多达 <code>2^41 - 1</code>，也就是可以标识 <code>2^41 - 1</code> 个毫秒值，换算成年就是表示69年的时间。</li>
+<li>10 bit：记录工作机器 id，代表的是这个服务最多可以部署在 2^10台机器上哪，也就是1024台机器。但是 10 bit 里 5 个 bit 代表机房 id，5 个 bit 代表机器 id。意思就是最多代表 <code>2^5</code>个机房（32个机房），每个机房里可以代表 <code>2^5</code> 个机器（32台机器）。</li>
+<li>12 bit：这个是用来记录同一个毫秒内产生的不同 id，12 bit 可以代表的最大正整数是 <code>2^12 - 1 = 4096</code>，也就是说可以用这个 12 bit 代表的数字来区分<strong>同一个毫秒内</strong>的 4096 个不同的 id。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0 | 0001100 10100010 10111110 10001001 01011100 00 | 10001 | 1 1001 | 0000 00000000</span><br></pre></td></tr></table></figure>
 <h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>中间件是如何进行分库分表适配的？不管是基于proxy还是基于客户端，对客户端的查询来说，都不需要关心最终查询落到了哪个库表上，中间件会帮你全部封装好。我的理解是垂直拆分和两种水平拆分的方式，中间件会帮你维护一个映射表，某个对应的key具体映射到哪个库哪个表，然后进行统一的提交。</p>
 
       
@@ -669,7 +691,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#垂直拆分-水平拆分"><span class="nav-number">1.</span> <span class="nav-text">垂直拆分+水平拆分</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据库（分库分表）中间件"><span class="nav-number">2.</span> <span class="nav-text">数据库（分库分表）中间件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mycat优点是proxy有单独的团队维护升级，业务团队客户端不需要关心，适用于大规模公司（阿里面试问了好几次分库分表）。"><span class="nav-number">3.</span> <span class="nav-text">mycat优点是proxy有单独的团队维护升级，业务团队客户端不需要关心，适用于大规模公司（阿里面试问了好几次分库分表）。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#sharding-jdbc是基于客户端的模式，缺点是需要客户端主动进行版本的升级，优点是不需要团队专门维护，适用于中小规模公司。"><span class="nav-number">4.</span> <span class="nav-text">sharding-jdbc是基于客户端的模式，缺点是需要客户端主动进行版本的升级，优点是不需要团队专门维护，适用于中小规模公司。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分库分表数据迁移"><span class="nav-number">5.</span> <span class="nav-text">分库分表数据迁移</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#总结"><span class="nav-number">6.</span> <span class="nav-text">总结</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#垂直拆分-水平拆分"><span class="nav-number">1.</span> <span class="nav-text">垂直拆分+水平拆分</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据库（分库分表）中间件"><span class="nav-number">2.</span> <span class="nav-text">数据库（分库分表）中间件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mycat优点是proxy有单独的团队维护升级，业务团队客户端不需要关心，适用于大规模公司（阿里面试问了好几次分库分表）。"><span class="nav-number">3.</span> <span class="nav-text">mycat优点是proxy有单独的团队维护升级，业务团队客户端不需要关心，适用于大规模公司（阿里面试问了好几次分库分表）。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#sharding-jdbc是基于客户端的模式，缺点是需要客户端主动进行版本的升级，优点是不需要团队专门维护，适用于中小规模公司。"><span class="nav-number">4.</span> <span class="nav-text">sharding-jdbc是基于客户端的模式，缺点是需要客户端主动进行版本的升级，优点是不需要团队专门维护，适用于中小规模公司。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分库分表数据迁移"><span class="nav-number">5.</span> <span class="nav-text">分库分表数据迁移</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#动态扩容缩容分库分表方案"><span class="nav-number">6.</span> <span class="nav-text">动态扩容缩容分库分表方案</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#主键id如何设计"><span class="nav-number">7.</span> <span class="nav-text">主键id如何设计</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#snowflake-算法"><span class="nav-number">7.1.</span> <span class="nav-text">snowflake 算法</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#总结"><span class="nav-number">8.</span> <span class="nav-text">总结</span></a></li></ol></div>
             
 
           </div>
