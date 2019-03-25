@@ -112,7 +112,7 @@
 
 
 
-  <meta name="keywords" content="大搜车的点滴记录," />
+  <meta name="keywords" content="dubbo," />
 
 
 
@@ -125,22 +125,20 @@
 
 
 
-<meta name="description" content="​工作中经常需要登录服务器，每次都需要输入服务器登录密码是相当麻烦的，我们可以通过设置RSA密钥对免密码登录。通过本地配置私钥，服务器配置公钥，并且保证私钥不丢失的情况下，服务器可以验证发送方身份唯一，并且报文是未被修改的。 生成一对密钥打开终端，通过ssh-keygen生成RSA密钥对，-t表示type，表示生成rsa加密的钥匙： 1ssh-keygen -t rsa RSA是默认的加密类型，默">
-<meta name="keywords" content="大搜车的点滴记录">
+<meta name="description" content="dubbo基本概念现代的分布式架构基本都是基于Remote Method Invocation（远程调用），通过interface暴露服务接口，客户端调用代理类实现远程通信，dubbo的分布式架构中主要有几个角色：  1.服务提供者-服务启动时在指定的端口上暴露服务，并同步调用注册中心将服务的地址和端口注册到注册中心。 2.服务消费者-服务启动时从注册中心pull提供者暴露的服务，缓存到本地，并保">
+<meta name="keywords" content="dubbo">
 <meta property="og:type" content="article">
-<meta property="og:title" content="SSH无密码登录">
-<meta property="og:url" content="http://jianghao.wang/2018/SSH无密码登录/index.html">
+<meta property="og:title" content="dubbo简单介绍">
+<meta property="og:url" content="http://jianghao.wang/2019/了解dubbo模块/index.html">
 <meta property="og:site_name" content="TizzyT&#39;s Blog">
-<meta property="og:description" content="​工作中经常需要登录服务器，每次都需要输入服务器登录密码是相当麻烦的，我们可以通过设置RSA密钥对免密码登录。通过本地配置私钥，服务器配置公钥，并且保证私钥不丢失的情况下，服务器可以验证发送方身份唯一，并且报文是未被修改的。 生成一对密钥打开终端，通过ssh-keygen生成RSA密钥对，-t表示type，表示生成rsa加密的钥匙： 1ssh-keygen -t rsa RSA是默认的加密类型，默">
+<meta property="og:description" content="dubbo基本概念现代的分布式架构基本都是基于Remote Method Invocation（远程调用），通过interface暴露服务接口，客户端调用代理类实现远程通信，dubbo的分布式架构中主要有几个角色：  1.服务提供者-服务启动时在指定的端口上暴露服务，并同步调用注册中心将服务的地址和端口注册到注册中心。 2.服务消费者-服务启动时从注册中心pull提供者暴露的服务，缓存到本地，并保">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://arthornye.github.io/images/keygen.png">
-<meta property="og:image" content="https://arthornye.github.io/images/login.png">
-<meta property="og:image" content="https://arthornye.github.io/images/msg.png">
-<meta property="og:updated_time" content="2018-03-27T02:14:06.000Z">
+<meta property="og:image" content="http://arthornye.github.io/images/dubbo.png">
+<meta property="og:updated_time" content="2019-03-25T06:24:58.612Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="SSH无密码登录">
-<meta name="twitter:description" content="​工作中经常需要登录服务器，每次都需要输入服务器登录密码是相当麻烦的，我们可以通过设置RSA密钥对免密码登录。通过本地配置私钥，服务器配置公钥，并且保证私钥不丢失的情况下，服务器可以验证发送方身份唯一，并且报文是未被修改的。 生成一对密钥打开终端，通过ssh-keygen生成RSA密钥对，-t表示type，表示生成rsa加密的钥匙： 1ssh-keygen -t rsa RSA是默认的加密类型，默">
-<meta name="twitter:image" content="https://arthornye.github.io/images/keygen.png">
+<meta name="twitter:title" content="dubbo简单介绍">
+<meta name="twitter:description" content="dubbo基本概念现代的分布式架构基本都是基于Remote Method Invocation（远程调用），通过interface暴露服务接口，客户端调用代理类实现远程通信，dubbo的分布式架构中主要有几个角色：  1.服务提供者-服务启动时在指定的端口上暴露服务，并同步调用注册中心将服务的地址和端口注册到注册中心。 2.服务消费者-服务启动时从注册中心pull提供者暴露的服务，缓存到本地，并保">
+<meta name="twitter:image" content="http://arthornye.github.io/images/dubbo.png">
 
 
 
@@ -170,13 +168,13 @@
 
 
 
-  <link rel="canonical" href="http://jianghao.wang/2018/SSH无密码登录/"/>
+  <link rel="canonical" href="http://jianghao.wang/2019/了解dubbo模块/"/>
 
 
 
 
 
-  <title>SSH无密码登录 | TizzyT's Blog</title>
+  <title>dubbo简单介绍 | TizzyT's Blog</title>
   
 
 
@@ -362,7 +360,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://jianghao.wang/2018/SSH无密码登录/">
+    <link itemprop="mainEntityOfPage" href="http://jianghao.wang/2019/了解dubbo模块/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="yeqiaozhu">
@@ -379,7 +377,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">SSH无密码登录</h1>
+          <h1 class="post-title" itemprop="name headline">dubbo简单介绍</h1>
         
 
         <div class="post-meta">
@@ -391,8 +389,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-01-11T17:16:55+08:00">
-                2018-01-11
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-25T13:54:57+08:00">
+                2019-03-25
               </time>
             
 
@@ -410,9 +408,9 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/SSH无密码登录/#comments" itemprop="discussionUrl">
+                <a href="/2019/了解dubbo模块/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/SSH无密码登录/" itemprop="commentCount"></span>
+                        data-disqus-identifier="2019/了解dubbo模块/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -440,35 +438,15 @@
       
 
       
-        <p>​工作中经常需要登录服务器，每次都需要输入服务器登录密码是相当麻烦的，我们可以通过设置RSA密钥对免密码登录。通过本地配置私钥，服务器配置公钥，并且保证私钥不丢失的情况下，服务器可以验证发送方身份唯一，并且报文是未被修改的。</p>
-<h4 id="生成一对密钥"><a href="#生成一对密钥" class="headerlink" title="生成一对密钥"></a>生成一对密钥</h4><p>打开终端，通过ssh-keygen生成RSA密钥对，-t表示type，表示生成rsa加密的钥匙：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa</span><br></pre></td></tr></table></figure>
-<p>RSA是默认的加密类型，默认长度为2048位，可以指定长度为4096更安全：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -b <span class="number">4096</span> -t rsa</span><br></pre></td></tr></table></figure>
-<p>按Enter键，然后需要输入一个密码来加密你的SSH Key．密码至少要20位长度．SSH密钥会保存在home目录下的<strong>.ssh/id_rsa</strong>文件中．SSH公钥保存在<strong>.ssh/id_rsa.pub</strong>文件中。这里的id是我们在输入的时候指定的文件名。</p>
-<p><img src="https://arthornye.github.io/images/keygen.png" alt="cmd-markdown-logo"></p>
-<h4 id="配置config文件"><a href="#配置config文件" class="headerlink" title="配置config文件"></a>配置config文件</h4> <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd ~/.ssh</span><br></pre></td></tr></table></figure>
-<p>打开config文件，如果不存在，自己新建一个：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkfile m config</span><br></pre></td></tr></table></figure>
-<p>当前我本地的config配置为：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Host github.com</span><br><span class="line"> IdentityFile ~/.ssh/id_rsa</span><br><span class="line">Host jhost</span><br><span class="line">   User yeqiaozhu</span><br><span class="line">   HostName jhost.hz.souche-inc.com</span><br><span class="line">   IdentityFile ~/.ssh/jump_rsa</span><br><span class="line">Host stable</span><br><span class="line">   User souche</span><br><span class="line">   HostName 172.17.40.227</span><br><span class="line">   IdentityFile ~/.ssh/stable_rsa</span><br></pre></td></tr></table></figure>
-<p>其中stable是我增加的配置项，这里的几个参数可以注意下：</p>
+        <h4 id="dubbo基本概念"><a href="#dubbo基本概念" class="headerlink" title="dubbo基本概念"></a>dubbo基本概念</h4><p>现代的分布式架构基本都是基于Remote Method Invocation（远程调用），通过interface暴露服务接口，客户端调用代理类实现远程通信，dubbo的分布式架构中主要有几个角色：</p>
 <ul>
-<li>Host：别名，我们可以通过ssh stable进行登录。</li>
-<li>User：username@hostname我们通常通过这种方式指定登录的远程服务器，username填写对应的就行。</li>
-<li>HostName：同User的方式。</li>
-<li>IdentityFile：配置生成的rsa私钥的地址，我们的所有请求报文都会先进行hash之后获得digest然后通过私钥加密。</li>
+<li>1.服务提供者-服务启动时在指定的端口上暴露服务，并同步调用注册中心将服务的地址和端口注册到注册中心。</li>
+<li>2.服务消费者-服务启动时从注册中心pull提供者暴露的服务，缓存到本地，并保持长连接监听注册中心的服务推送。</li>
+<li>3.注册中心-提供者将服务暴露到zookeeper注册中心，负责保存服务提供方上报的地址信息，并向服务消费方推送。</li>
+<li>4.监控中心-服务提供者和消费者异步更新调用信息到监控中心，监控中心监控服务的调用次数，延迟等参数。</li>
+<li>5.运行容器-管理提供者暴露服务对象的加载，初始化以及生命周期。</li>
 </ul>
-<h4 id="配置服务器公钥"><a href="#配置服务器公钥" class="headerlink" title="配置服务器公钥"></a>配置服务器公钥</h4><h5 id="登陆服务器手动配置"><a href="#登陆服务器手动配置" class="headerlink" title="登陆服务器手动配置"></a>登陆服务器手动配置</h5><p>可以直接将公钥粘贴到服务器authorized_keys文件中。</p>
-<h5 id="命令直接配置"><a href="#命令直接配置" class="headerlink" title="命令直接配置"></a>命令直接配置</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-copy-id -i 公钥文件名(stable_rsa.pub) username@remote-server</span><br></pre></td></tr></table></figure>
-<p>配置之后我们通过：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh stable</span><br></pre></td></tr></table></figure>
-<p>可以直接登录到服务器：</p>
-<p><img src="https://arthornye.github.io/images/login.png" alt="cmd-markdown-logo"></p>
-<h5 id="碰到的问题"><a href="#碰到的问题" class="headerlink" title="碰到的问题"></a>碰到的问题</h5><p><img src="https://arthornye.github.io/images/msg.png" alt="cmd-markdown-logo"></p>
-<p>目录文件权限太大，需要调整权限：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod -R <span class="number">700</span> ~/.ssh</span><br></pre></td></tr></table></figure>
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>设置SSH免密登录，学习本地~/.ssh文件夹中的配置项即可。</p>
+<p><img src="http://arthornye.github.io/images/dubbo.png" alt="cmd-markdown-logo"></p>
 
       
     </div>
@@ -486,7 +464,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/大搜车的点滴记录/" rel="tag"># 大搜车的点滴记录</a>
+            <a href="/tags/dubbo/" rel="tag"># dubbo</a>
           
         </div>
       
@@ -499,8 +477,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/数字签名和数字证书/" rel="next" title="数字签名和数字证书">
-                <i class="fa fa-chevron-left"></i> 数字签名和数字证书
+              <a href="/2019/Redis缓存/" rel="next" title="Redis缓存">
+                <i class="fa fa-chevron-left"></i> Redis缓存
               </a>
             
           </div>
@@ -508,10 +486,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/微信小游戏那些坑/" rel="prev" title="微信小游戏那些坑">
-                微信小游戏那些坑 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -683,7 +657,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#生成一对密钥"><span class="nav-number">1.</span> <span class="nav-text">生成一对密钥</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置config文件"><span class="nav-number">2.</span> <span class="nav-text">配置config文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置服务器公钥"><span class="nav-number">3.</span> <span class="nav-text">配置服务器公钥</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#登陆服务器手动配置"><span class="nav-number">3.1.</span> <span class="nav-text">登陆服务器手动配置</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#命令直接配置"><span class="nav-number">3.2.</span> <span class="nav-text">命令直接配置</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#碰到的问题"><span class="nav-number">3.3.</span> <span class="nav-text">碰到的问题</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#dubbo基本概念"><span class="nav-number">1.</span> <span class="nav-text">dubbo基本概念</span></a></li></ol></div>
             
 
           </div>
@@ -866,9 +840,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'http://jianghao.wang/2018/SSH无密码登录/';
-          this.page.identifier = '2018/SSH无密码登录/';
-          this.page.title = 'SSH无密码登录';
+          this.page.url = 'http://jianghao.wang/2019/了解dubbo模块/';
+          this.page.identifier = '2019/了解dubbo模块/';
+          this.page.title = 'dubbo简单介绍';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://tizzy323.disqus.com/embed.js';
