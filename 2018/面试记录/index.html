@@ -133,7 +133,7 @@
 <meta property="og:site_name" content="TizzyT&#39;s Blog">
 <meta property="og:description" content="搜车的手写代码面试需要手写一段死锁： 123456789101112131415161718192021222324252627package SynchronizedLock;/** * Created by yqz on 3/14/18. */public class MythreadA implements Runnable&amp;#123;    Object a;    Object b;">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-03-25T10:12:08.356Z">
+<meta property="og:updated_time" content="2019-03-27T02:58:38.345Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试记录">
 <meta name="twitter:description" content="搜车的手写代码面试需要手写一段死锁： 123456789101112131415161718192021222324252627package SynchronizedLock;/** * Created by yqz on 3/14/18. */public class MythreadA implements Runnable&amp;#123;    Object a;    Object b;">
@@ -449,7 +449,9 @@
 <h4 id="如何快速定位线上cpu飙升（linux环境）"><a href="#如何快速定位线上cpu飙升（linux环境）" class="headerlink" title="如何快速定位线上cpu飙升（linux环境）"></a>如何快速定位线上cpu飙升（linux环境）</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//1. 通过top命令查看到cpu占用最高的pid 这个pid是processid</span></span><br><span class="line">top</span><br><span class="line"><span class="comment">//2. 通过top -p &lt;pid&gt; -H命令查看当前进程下哪个线程占用了最多的cpu，记录threadid</span></span><br><span class="line">top -p &lt;pid&gt; -H</span><br><span class="line"><span class="comment">//3. 第二步获取到的threadid默认是十进制，需要转换成十六进制进行处理</span></span><br><span class="line">printf <span class="string">"%x"</span> threadid</span><br><span class="line"><span class="comment">//4. 通过jstack定位到具体的线程，通过线程的状态记录跟踪到代码的具体位置</span></span><br><span class="line">jstack &lt;pid&gt; | grep threadid</span><br></pre></td></tr></table></figure>
 <h4 id="大文件排序"><a href="#大文件排序" class="headerlink" title="大文件排序"></a>大文件排序</h4><p>内存有限的情况下，进行大文件排序，基本思想是归并排序。这里记录一下思维漏洞，在进行分治之后，每个小文件都是有序的，这里怎么对小文件进行合并？之前想到这个地方经常会陷入思维误区，想把小文件如何在内存中进行比较，或者如何定位到文件的具体位置，如果写到文件位置的缝隙中？记录一下这个思维误区。其实可以通过例如我们将文件分成了三份，三份文件都排好序：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-- 文件1 有序 数字 1 3 7</span><br><span class="line">1 3 7</span><br><span class="line">-- 文件2 有序 数字 2 4 5 </span><br><span class="line">2 4 5 </span><br><span class="line">-- 文件3 有序 数字 6 8 9 </span><br><span class="line">6 8 9</span><br></pre></td></tr></table></figure>
-<p>这里把每个文件的最小值先加载到内存，内存中就是三个数值的数组 a[3]（0 1 2分表保存当前每个文件队列的当前最小值，当前最小值判定为所有文件最小值之后，将最小值pop之后继续读本文件下一行的最小值）。这里可以假设内存只能容下三个数字，每个利用readline一行一行往下读。</p>
+<p>这里把每个文件的最小值先加载到内存，内存中就是三个数值的数组 a[3]（0 1 2分别保存当前每个文件队列的当前最小值，当前最小值判定为所有文件最小值之后，将最小值pop之后继续读本文件下一行的最小值）。这里可以假设内存只能容下三个数字，每个利用readline一行一行往下读。</p>
+<h4 id="分布式事务如何保证一致性"><a href="#分布式事务如何保证一致性" class="headerlink" title="分布式事务如何保证一致性"></a>分布式事务如何保证一致性</h4><p>面试记录，曾经在公司内部topic中讨论过这个主题，面试的时候竟然忘了，这里列举几种保证分布式事务一致性的方案。</p>
+<h5 id="两阶段提交-XA方案"><a href="#两阶段提交-XA方案" class="headerlink" title="两阶段提交/XA方案"></a>两阶段提交/XA方案</h5><p>Spring+JTA两阶段提交保证一致性，这里有一个事务管理器的概念，</p>
 
       
     </div>
@@ -583,7 +585,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">49</span>
+                  <span class="site-state-item-count">51</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -596,7 +598,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-count">13</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -664,7 +666,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#搜车的手写代码"><span class="nav-number">1.</span> <span class="nav-text">搜车的手写代码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2018-10-24-天猫笔试"><span class="nav-number">2.</span> <span class="nav-text">2018-10-24 天猫笔试</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#蚂蚁金服面试两个线程交替打印1-100的整数"><span class="nav-number">2.1.</span> <span class="nav-text">蚂蚁金服面试两个线程交替打印1-100的整数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#字符串反转"><span class="nav-number">2.2.</span> <span class="nav-text">字符串反转</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#如何快速定位线上cpu飙升（linux环境）"><span class="nav-number">3.</span> <span class="nav-text">如何快速定位线上cpu飙升（linux环境）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#大文件排序"><span class="nav-number">4.</span> <span class="nav-text">大文件排序</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#搜车的手写代码"><span class="nav-number">1.</span> <span class="nav-text">搜车的手写代码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2018-10-24-天猫笔试"><span class="nav-number">2.</span> <span class="nav-text">2018-10-24 天猫笔试</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#蚂蚁金服面试两个线程交替打印1-100的整数"><span class="nav-number">2.1.</span> <span class="nav-text">蚂蚁金服面试两个线程交替打印1-100的整数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#字符串反转"><span class="nav-number">2.2.</span> <span class="nav-text">字符串反转</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#如何快速定位线上cpu飙升（linux环境）"><span class="nav-number">3.</span> <span class="nav-text">如何快速定位线上cpu飙升（linux环境）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#大文件排序"><span class="nav-number">4.</span> <span class="nav-text">大文件排序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分布式事务如何保证一致性"><span class="nav-number">5.</span> <span class="nav-text">分布式事务如何保证一致性</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#两阶段提交-XA方案"><span class="nav-number">5.1.</span> <span class="nav-text">两阶段提交/XA方案</span></a></li></ol></li></ol></div>
             
 
           </div>
