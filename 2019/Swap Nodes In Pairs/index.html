@@ -137,7 +137,7 @@
 <meta property="og:image" content="https://arthornye.github.io/images/swappingonce.jpg">
 <meta property="og:image" content="https://arthornye.github.io/images/swappingtwice.jpg">
 <meta property="og:image" content="https://arthornye.github.io/images/swappingtwicefinished.jpg">
-<meta property="og:updated_time" content="2019-05-08T03:16:47.181Z">
+<meta property="og:updated_time" content="2019-05-08T03:30:45.865Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Swap Nodes In Pairs">
 <meta name="twitter:description" content="题目描述（难度中等）Given a linked list, swap every two adjacent nodes and return its head. You may not modify the values in the list’s nodes, only nodes itself may be changed. Example: 1Given 1-&amp;gt;2-&amp;gt;3-&amp;gt">
@@ -453,6 +453,8 @@
 <p><img src="https://arthornye.github.io/images/swappingtwice.jpg" alt="cmd-markdown-logo"></p>
 <p><strong>得到循环赋值结果：</strong></p>
 <p><img src="https://arthornye.github.io/images/swappingtwicefinished.jpg" alt="cmd-markdown-logo"></p>
+<h3 id="方法一代码"><a href="#方法一代码" class="headerlink" title="方法一代码"></a>方法一代码</h3><p>分析了上图之后，代码实现较为简单：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> ListNode <span class="title">swapPairsMoreClear</span><span class="params">(ListNode head)</span></span>&#123;</span><br><span class="line">        ListNode current = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line">        current.next = head;</span><br><span class="line">        ListNode newHead = current;</span><br><span class="line">        <span class="keyword">while</span> (current.next !=<span class="keyword">null</span> &amp;&amp; current.next.next!=<span class="keyword">null</span>)&#123;</span><br><span class="line">            ListNode first = current.next;</span><br><span class="line">            ListNode second = current.next.next;</span><br><span class="line"></span><br><span class="line">            current.next = second;</span><br><span class="line">            first.next= second.next;</span><br><span class="line">            second.next=first;</span><br><span class="line"></span><br><span class="line">            current = first;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> newHead.next;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -663,7 +665,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目描述（难度中等）"><span class="nav-number">1.</span> <span class="nav-text">题目描述（难度中等）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法一：遍历一遍链表"><span class="nav-number">2.</span> <span class="nav-text">方法一：遍历一遍链表</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目描述（难度中等）"><span class="nav-number">1.</span> <span class="nav-text">题目描述（难度中等）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法一：遍历一遍链表"><span class="nav-number">2.</span> <span class="nav-text">方法一：遍历一遍链表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法一代码"><span class="nav-number">3.</span> <span class="nav-text">方法一代码</span></a></li></ol></div>
             
 
           </div>
