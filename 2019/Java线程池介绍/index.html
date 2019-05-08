@@ -134,7 +134,7 @@
 <meta property="og:description" content="线程池线程池主要用于管理线程资源，在Java中，线程资源映射到操作系统层面，占用的是操作提供层面的资源。如果不进行良好的管理，可能会快速耗尽系统的线程资源。你可以编写多线程并行的代码，将任务提交给线程池的实例执行。线程池会管理线程的生命周期，以及会将任务维护在一个内部的队列中，完成任务的调度。  Java中的线程池Executor+Executors+ExecutorService我们通常会用到这">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://arthornye.github.io/images/threadpool.png">
-<meta property="og:updated_time" content="2019-04-12T08:13:48.223Z">
+<meta property="og:updated_time" content="2019-04-30T12:08:14.333Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java线程池介绍">
 <meta name="twitter:description" content="线程池线程池主要用于管理线程资源，在Java中，线程资源映射到操作系统层面，占用的是操作提供层面的资源。如果不进行良好的管理，可能会快速耗尽系统的线程资源。你可以编写多线程并行的代码，将任务提交给线程池的实例执行。线程池会管理线程的生命周期，以及会将任务维护在一个内部的队列中，完成任务的调度。  Java中的线程池Executor+Executors+ExecutorService我们通常会用到这">
@@ -472,6 +472,7 @@
 <p>上面初始化了一个核心线程为5，最大线程为5，并且超出线程生命周期为0s的线程池，等待500ms之后执行任务。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">CountDownLatch lock = <span class="keyword">new</span> CountDownLatch(<span class="number">3</span>);</span><br><span class="line"> </span><br><span class="line">ScheduledExecutorService executor = Executors.newScheduledThreadPool(<span class="number">5</span>);</span><br><span class="line">ScheduledFuture&lt;?&gt; future = executor.scheduleAtFixedRate(() -&gt; &#123;</span><br><span class="line">    System.out.println(<span class="string">"Hello World"</span>);</span><br><span class="line">    lock.countDown();</span><br><span class="line">&#125;, <span class="number">500</span>, <span class="number">100</span>, TimeUnit.MILLISECONDS);</span><br><span class="line"> </span><br><span class="line">lock.await(<span class="number">1000</span>, TimeUnit.MILLISECONDS);</span><br><span class="line">future.cancel(<span class="keyword">true</span>);</span><br></pre></td></tr></table></figure>
 <p>上面等待500ms后开始执行任务，并且没100ms执行一次任务，知道所有的任务都执行完成，再执行主线程。</p>
+<p><strong><em>注意点：维护了等待队列会出现线程复用的情况，如果是直传队列也会出现线程复用的情况。</em></strong></p>
 <h4 id="ForkJoinPool"><a href="#ForkJoinPool" class="headerlink" title="ForkJoinPool"></a>ForkJoinPool</h4><p>主要用于在递归算法（分治）中，多个子任务可能产生过多的线程，造成系统资源耗尽，fork / join框架的好处是它不会为每个任务或子任务创建一个新线程。这里贴一个简单的实例：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">TreeNode</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> value;</span><br><span class="line">    Set&lt;TreeNode&gt; children;</span><br><span class="line">    TreeNode(<span class="keyword">int</span> value, TreeNode... children) &#123;</span><br><span class="line">        <span class="keyword">this</span>.value = value;</span><br><span class="line">        <span class="keyword">this</span>.children = Sets.newHashSet(children);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">CountingTask</span> <span class="keyword">extends</span> <span class="title">RecursiveTask</span>&lt;<span class="title">Integer</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> TreeNode node;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">CountingTask</span><span class="params">(TreeNode node)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.node = node;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> Integer <span class="title">compute</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> node.value + node.children.stream()</span><br><span class="line">          .map(childNode -&gt; <span class="keyword">new</span> CountingTask(childNode).fork())</span><br><span class="line">          .collect(Collectors.summingInt(ForkJoinTask::join));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -620,7 +621,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">54</span>
+                  <span class="site-state-item-count">55</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -633,7 +634,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-count">14</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
