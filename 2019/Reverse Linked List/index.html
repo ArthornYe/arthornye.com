@@ -136,7 +136,7 @@
 <meta property="og:image" content="https://arthornye.github.io/images/reverseone.jpg">
 <meta property="og:image" content="https://arthornye.github.io/images/reversetwo.jpg">
 <meta property="og:image" content="https://arthornye.github.io/images/reversethree.jpg">
-<meta property="og:updated_time" content="2019-05-09T02:20:42.178Z">
+<meta property="og:updated_time" content="2019-05-09T02:36:00.172Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Reverse Linked List">
 <meta name="twitter:description" content="题目描述（难度简单）Reverse a singly linked list. Example: 12Input: 1-&amp;gt;2-&amp;gt;3-&amp;gt;4-&amp;gt;5-&amp;gt;NULLOutput: 5-&amp;gt;4-&amp;gt;3-&amp;gt;2-&amp;gt;1-&amp;gt;NULL Follow up: A linked list can be reversed either iteratively or re">
@@ -446,14 +446,13 @@
 <p><strong>Follow up:</strong></p>
 <p>A linked list can be reversed either iteratively or recursively. Could you implement both?</p>
 <h3 id="方法一：一遍遍历"><a href="#方法一：一遍遍历" class="headerlink" title="方法一：一遍遍历"></a>方法一：一遍遍历</h3><p>一遍遍历，定义一个初始值为null的pre节点，一个current为head的当前节点，nextTemp为current的下一个节点。</p>
-<p><strong>首先定义好pre和current两个个节点，将首节点指向current节点，中间虚线表示原来链表存在的指向：</strong></p>
+<p><strong>首先定义好pre和current两个节点，中间虚线表示原来链表存在的指向，红色表示当前pre节点位置，绿色表示已经被倒转的节点，蓝色为待倒转节点：</strong></p>
 <p><img src="https://arthornye.github.io/images/reverseone.jpg" alt="cmd-markdown-logo"></p>
-<p>### </p>
-<p><strong>然后将建立一个temp，赋值为current，然后current继续往后遍历（主要为了防止改变当前current的next之后丢失后续链表）：</strong></p>
 <p><img src="https://arthornye.github.io/images/reversetwo.jpg" alt="cmd-markdown-logo"></p>
-<p><strong>然后将temp的下一个节点设置为pre节点：</strong></p>
 <p><img src="https://arthornye.github.io/images/reversethree.jpg" alt="cmd-markdown-logo"></p>
-<p><strong>最后只需要将temp设置为pre节点也就完成了一次遍历。</strong></p>
+<p><strong>最后只需要pre返回也就完成了一次遍历。返回的链表也就是倒转之后的链表。</strong></p>
+<h3 id="方法一代码："><a href="#方法一代码：" class="headerlink" title="方法一代码："></a>方法一代码：</h3><p>在自己写的过程中发现代码并没有这么简洁，算法设计上没有这么完善，针对链表的题目还是需要画出来指向关系，写出优雅。这里循环结束的条件我们可以看到是current=null，然后直接返回pre。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> ListNode <span class="title">reverseListOneScanMoreClear</span><span class="params">(ListNode head)</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        ListNode prev = <span class="keyword">null</span>;</span><br><span class="line">        ListNode curr = head;</span><br><span class="line">        <span class="keyword">while</span> (curr != <span class="keyword">null</span>) &#123;</span><br><span class="line">            ListNode nextTemp = curr.next;</span><br><span class="line">            curr.next = prev;</span><br><span class="line">            prev = curr;</span><br><span class="line">            curr = nextTemp;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> prev;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -664,7 +663,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目描述（难度简单）"><span class="nav-number">1.</span> <span class="nav-text">题目描述（难度简单）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法一：一遍遍历"><span class="nav-number">2.</span> <span class="nav-text">方法一：一遍遍历</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目描述（难度简单）"><span class="nav-number">1.</span> <span class="nav-text">题目描述（难度简单）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法一：一遍遍历"><span class="nav-number">2.</span> <span class="nav-text">方法一：一遍遍历</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法一代码："><span class="nav-number">3.</span> <span class="nav-text">方法一代码：</span></a></li></ol></div>
             
 
           </div>
