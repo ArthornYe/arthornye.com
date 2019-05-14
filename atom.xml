@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://jianghao.wang/"/>
-  <updated>2019-05-13T06:14:45.502Z</updated>
+  <updated>2019-05-14T03:42:41.972Z</updated>
   <id>http://jianghao.wang/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Median of Two Sorted Arrays</title>
+    <link href="http://jianghao.wang/2019/Median%20of%20Two%20Sorted%20Arrays/"/>
+    <id>http://jianghao.wang/2019/Median of Two Sorted Arrays/</id>
+    <published>2019-05-14T03:22:24.489Z</published>
+    <updated>2019-05-14T03:42:41.972Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="问题描述（难度困难）"><a href="#问题描述（难度困难）" class="headerlink" title="问题描述（难度困难）"></a>问题描述（难度困难）</h3><p>There are two sorted arrays <strong>nums1</strong> and <strong>nums2</strong> of size m and n respectively.</p><p>Find the median of the two sorted arrays. The overall run time complexity should be O(log (m+n)).</p><p>You may assume <strong>nums1</strong> and <strong>nums2</strong> cannot be both empty.</p><p><strong>Example 1:</strong></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">nums1 = [1, 3]</span><br><span class="line">nums2 = [2]</span><br><span class="line"></span><br><span class="line">The median is 2.0</span><br></pre></td></tr></table></figure><p><strong>Example 2:</strong></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">nums1 = [1, 2]</span><br><span class="line">nums2 = [3, 4]</span><br><span class="line"></span><br><span class="line">The median is (2 + 3)/2 = 2.5</span><br></pre></td></tr></table></figure><h3 id="方法一：归并排序思想"><a href="#方法一：归并排序思想" class="headerlink" title="方法一：归并排序思想"></a>方法一：归并排序思想</h3><p>归并排序在merge之后会将各个有序的子数组合并为一个数组，这里采用归并排序sort的思想。<strong>用两个index去遍历，每次将最小的整合到一个新的list中，直到整个都遍历完成。</strong>整合的流程如下：</p><p>![cmd-markdown-logo](<a href="https://arthornye.github.io/images/circle.jpg" target="_blank" rel="noopener">https://arthornye.github.io/images/circle.jpg</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h3 id=&quot;问题描述（难度困难）&quot;&gt;&lt;a href=&quot;#问题描述（难度困难）&quot; class=&quot;headerlink&quot; title=&quot;问题描述（难度困难）&quot;&gt;&lt;/a&gt;问题描述（难度困难）&lt;/h3&gt;&lt;p&gt;There are two sorted arrays &lt;strong&gt;nu
+      
+    
+    </summary>
+    
+    
+      <category term="leetCode算法" scheme="http://jianghao.wang/tags/leetCode%E7%AE%97%E6%B3%95/"/>
+    
+  </entry>
   
   <entry>
     <title>Linked List Cycle II</title>
@@ -453,29 +476,6 @@
       
         &lt;p&gt;mysql在读写分离的场景下，可能是一主一从，一主都从。但是在实际应用场景中需要解决一个重要的问题就是&lt;strong&gt;“过期读”&lt;/strong&gt;。本篇主要介读写分离可能的架构方式以及如何解决该问题。&lt;/p&gt;
 &lt;h4 id=&quot;强制从主库读取&quot;&gt;&lt;a href=&quot;#强制从主库
-      
-    
-    </summary>
-    
-    
-      <category term="mysql" scheme="http://jianghao.wang/tags/mysql/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>mysql排序工作原理</title>
-    <link href="http://jianghao.wang/2019/mysql%E6%8E%92%E5%BA%8F%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86/"/>
-    <id>http://jianghao.wang/2019/mysql排序工作原理/</id>
-    <published>2019-01-12T08:44:08.453Z</published>
-    <updated>2019-01-12T14:46:45.470Z</updated>
-    
-    <content type="html"><![CDATA[<p>mysql排序主要针对order by指令，本篇主要介绍mysql是如何进行排序以及性能优化的。我们从全字段排序和rowid排序两种排序方式介绍，当然这两种排序都基于基本的排序算法，归并排序。归并排序主要应用于大文件排序，内存有限的情况下，先将文件分为多个有序的小文件，然后将小文件进行排序，时间复杂度nlogn，当然文件的存储形式还有io的时间消耗，这也是数据库性能优化的主要目标，尽量减少磁盘io。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE `words` (</span><br><span class="line">  `id` int(11) NOT NULL AUTO_INCREMENT,</span><br><span class="line">  `word` varchar(64) DEFAULT NULL,</span><br><span class="line">  PRIMARY KEY (`id`)</span><br><span class="line">) ENGINE=InnoDB AUTO_INCREMENT=2800001 DEFAULT CHARSET=utf8;</span><br></pre></td></tr></table></figure><h4 id="全字段排序-vs-rowId排序"><a href="#全字段排序-vs-rowId排序" class="headerlink" title="全字段排序 vs rowId排序"></a>全字段排序 vs rowId排序</h4><p>顾名思义，全字段排序的意思是将记录的所有行都放到内存中进行排序，排序成功之后取固定的字段或者数量返回给客户端。mysql将所有的排序记录都优先考虑放在内存中，我们通过查询指令可以查到配置：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">-- sql query</span><br><span class="line">use souche_study;</span><br><span class="line">show variables like &quot;%sort%&quot;</span><br><span class="line"></span><br><span class="line">-- result</span><br><span class="line">innodb_disable_sort_file_cacheOFF</span><br><span class="line">innodb_ft_sort_pll_degree2</span><br><span class="line">innodb_sort_buffer_size1048576//innodb默认的排序大小</span><br><span class="line">max_length_for_sort_data1024</span><br><span class="line">max_sort_length1024</span><br><span class="line">myisam_max_sort_file_size9223372036853727232</span><br><span class="line">myisam_sort_buffer_size8388608</span><br><span class="line">sort_buffer_size262144 //默认的排序内存大小</span><br></pre></td></tr></table></figure><p>排序的过程如下：</p><p><img src="https://arthornye.github.io/images/orderby.jpg" alt="cmd-markdown-logo"></p><h4 id="analyze-table-命令"><a href="#analyze-table-命令" class="headerlink" title="analyze table 命令"></a>analyze table 命令</h4><p>检测和重组表的关键字分布情况。用来分析和存储表的关键字的分布，使得系统获得准确的统计信息。在执行查询计划的时候可能会错误估计要扫描的条数，导致应用不到索引，通过analyze table命令可以使估计值更加准确。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">analyze table table_name;//analyze+表名</span><br></pre></td></tr></table></figure>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;mysql排序主要针对order by指令，本篇主要介绍mysql是如何进行排序以及性能优化的。我们从全字段排序和rowid排序两种排序方式介绍，当然这两种排序都基于基本的排序算法，归并排序。归并排序主要应用于大文件排序，内存有限的情况下，先将文件分为多个有序的小文件，然后
       
     
     </summary>
