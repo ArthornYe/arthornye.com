@@ -133,7 +133,7 @@
 <meta property="og:site_name" content="TizzyT&#39;s Blog">
 <meta property="og:description" content="CountDownLatch和CyclicBarrier都是给予AQS队列同步器实现的共享锁。 CountDownLatch是单纯通过维持一个state的计数数值，这个数值在线程调用countDownLatch.countDown()的时候会减1，当计数器的值为零的时候，等待的线程会向前执行。假如我们需要保证在主线程继续往前执行的时候，子任务都已经被启动，可以通过CountDownLatch来进行">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-04-04T06:59:44.000Z">
+<meta property="og:updated_time" content="2019-06-26T02:22:43.725Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CountDownLatch和CyclicBarrier">
 <meta name="twitter:description" content="CountDownLatch和CyclicBarrier都是给予AQS队列同步器实现的共享锁。 CountDownLatch是单纯通过维持一个state的计数数值，这个数值在线程调用countDownLatch.countDown()的时候会减1，当计数器的值为零的时候，等待的线程会向前执行。假如我们需要保证在主线程继续往前执行的时候，子任务都已经被启动，可以通过CountDownLatch来进行">
@@ -460,8 +460,9 @@
 <p>整个执行的过程，线程在调用了await方法之后，会通过lock方式上锁，然后线程将计数器的值减1。如果计数器的值到达0，说明conditon维护的等待队列已满，调用nextGeneration唤醒condition等待队列上的所有线程。加入到同步队列中，然后返回index，释放锁，之后同步队列中的节点线程就可以被唤醒了。如果线程的计数器没有到达0，那更简单，这个时候其他线程会调用condition的await方法进入等待队列。</p>
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>这里总结下两者的主要区别：</p>
 <ol>
-<li>CountDownLatch用完之后就不能再次使用了，CyclicBarrier用完之后可以再次使用，CyclicBarrier还可以做reset操作</li>
-<li>CountDownLatch底层使用的是共享锁，CyclicBarrier底层使用的是ReentrantLock和这个lock的条件对象Condition</li>
+<li>CountDownLatch用完之后就不能再次使用了，CyclicBarrier用完之后可以通过reset再次使用。例如在多线程计算的时候如果失败了，CyclicBarrier可以重新计算。</li>
+<li>CountDownLatch底层使用的是共享锁，CyclicBarrier底层使用的是ReentrantLock和这个lock的条件对象Condition，通过等待通知机制（同步队列+等待队列）实现。</li>
+<li>CyclicBarrier可以通过isBroken方法查看阻塞的线程是否被中断。</li>
 </ol>
 
       
@@ -596,7 +597,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">61</span>
+                  <span class="site-state-item-count">62</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -609,7 +610,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
