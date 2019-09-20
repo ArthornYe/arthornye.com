@@ -134,7 +134,7 @@
 <meta property="og:description" content="线程池线程池主要用于管理线程资源，在Java中，线程资源映射到操作系统层面，占用的是操作提供层面的资源。如果不进行良好的管理，可能会快速耗尽系统的线程资源。你可以编写多线程并行的代码，将任务提交给线程池的实例执行。线程池会管理线程的生命周期，以及会将任务维护在一个内部的队列中，完成任务的调度。  Java中的线程池Executor+Executors+ExecutorService我们通常会用到这">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://arthornye.github.io/images/threadpool.png">
-<meta property="og:updated_time" content="2019-07-04T11:33:42.932Z">
+<meta property="og:updated_time" content="2019-07-30T11:01:13.099Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java线程池介绍">
 <meta name="twitter:description" content="线程池线程池主要用于管理线程资源，在Java中，线程资源映射到操作系统层面，占用的是操作提供层面的资源。如果不进行良好的管理，可能会快速耗尽系统的线程资源。你可以编写多线程并行的代码，将任务提交给线程池的实例执行。线程池会管理线程的生命周期，以及会将任务维护在一个内部的队列中，完成任务的调度。  Java中的线程池Executor+Executors+ExecutorService我们通常会用到这">
@@ -464,9 +464,9 @@
 <p>通过Executors.newCachedThreadPool()获取的线程池就是通过SynchronousQueue直传队列，零队列无限池，通常适用于很多的短期任务。通过Executors.newFixedThreadPool()获取的线程池是LinkedBlockingQueue无界队列，也就是零最大池无限队列，只能指定核心线程数，也可以通过Executors.newSingleThreadPool()获取到无界队列，但是只有一个消费者线程，而且不能被强制转换为ThreadPoolExecutor类型。</p>
 <h4 id="核心线程数什么时候被回收？"><a href="#核心线程数什么时候被回收？" class="headerlink" title="核心线程数什么时候被回收？"></a>核心线程数什么时候被回收？</h4><p>当消费者线程一直从任务队列里拿任务进行消费，最后队列为空的时候，会循环等待线程池的参数keepAliveTime时间，如果在这段时间内还是没有新的任务可以获取，线程会被销毁。当然这个默认情况下不包括核心线程数。那么核心线程什么时候进行回收？</p>
 <ul>
-<li><h4 id="线程池的拒绝策略"><a href="#线程池的拒绝策略" class="headerlink" title="线程池的拒绝策略"></a>线程池的拒绝策略</h4></li>
+<li><strong>通过函数allowCoreThreadTimeOut设置核心线程数在keepAliveTime时间内进行回收，不然核心线程只有在线程池被关闭的时候被回收。</strong></li>
 </ul>
-<p>线程池的拒绝策略主要通过实现<strong>RejectedExecutionHandler中的rejectedExecution函数。</strong>下面主要介绍下几种拒绝策略：</p>
+<h4 id="线程池的拒绝策略"><a href="#线程池的拒绝策略" class="headerlink" title="线程池的拒绝策略"></a>线程池的拒绝策略</h4><p>线程池的拒绝策略主要通过实现<strong>RejectedExecutionHandler中的rejectedExecution函数。</strong>下面主要介绍下几种拒绝策略：</p>
 <ul>
 <li><strong>ThreadPoolExecutor.AbortPolicy，退出策略，直接抛出一个运行时异常（RejectedExecutionException）。业务有损，响应较快，保护服务器资源。</strong></li>
 <li><strong>ThreadPoolExecutor.CallerRunsPolicy，调用者运行策略，只要当前线程池不处于shutdown的状态，都将这个任务交给当前调用的线程去执行。业务无损，响应较快，服务器资源无保护。</strong></li>
@@ -475,7 +475,7 @@
 <li><p><strong>ThreadPoolExecutor.DiscardOldestPolicy，淘汰策略，淘汰任务队列中头部的一个任务，然后提交到线程池中，当然有可能再次失败再次就行重试。业务无损，响应较慢，服务器资源无保护（线程一直重试）。</strong></p>
 </li>
 </ul>
-<p>其中，线程池默认的策略是退出策略，直接抛出异常的方式可以保护服务器资源，当然这样的处理方式始终是不够优雅的，我们可以通过set方法根据实际场景去选择对应的拒绝策略。</p>
+<p>其中，线程池默认的策略是退出策略，直接抛出异常的方式可以保护服务器资源，当然这样的处理方式始终是不够优雅的，我们可以通过set方法根据实际场景去选择对应的拒绝策略。值得注意的是我们可以重写<strong>RejectExecutionHandler接口</strong>自定义拒绝策略，一种更可行的方式是<strong>记录日志或者持久化到磁盘</strong>。可以自定义拒绝策略初始化线程池。</p>
 <h4 id="ScheduledThreadPoolExecutor"><a href="#ScheduledThreadPoolExecutor" class="headerlink" title="ScheduledThreadPoolExecutor"></a>ScheduledThreadPoolExecutor</h4><p><strong><em>Executors.newScheduledThreadPool</em></strong>可以获取到一个<strong><em>ScheduledThreadPoolExecutor</em></strong>继承了<strong><em>ThreadPoolExecutor</em></strong>实现了<strong><em>ScheduledExecutorService</em></strong>接口，提供了一些控制调用时间的方法：</p>
 <ul>
 <li><em>schedule</em> 方法允许在指定的延迟后执行一次任务。</li>
@@ -635,7 +635,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">63</span>
+                  <span class="site-state-item-count">66</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -648,7 +648,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-count">16</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>

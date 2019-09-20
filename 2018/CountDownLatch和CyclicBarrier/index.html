@@ -125,18 +125,18 @@
 
 
 
-<meta name="description" content="CountDownLatch和CyclicBarrier都是给予AQS队列同步器实现的共享锁。(傻叉) CountDownLatch是单纯通过维持一个state的计数数值，这个数值在线程调用countDownLatch.countDown()的时候会减1，当计数器的值为零的时候，等待的线程会向前执行。假如我们需要保证在主线程继续往前执行的时候，子任务都已经被启动，可以通过CountDownLatc">
+<meta name="description" content="CountDownLatch是基于AQS队列同步器实现的共享锁。CyclicBarrier是基于同步/等待队列实现。 CountDownLatch是单纯通过维持一个state的计数数值，这个数值在线程调用countDownLatch.countDown()的时候会减1，当计数器的值为零的时候，等待的线程会向前执行。假如我们需要保证在主线程继续往前执行的时候，子任务都已经被启动，可以通过CountD">
 <meta name="keywords" content="源码学习">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CountDownLatch和CyclicBarrier">
 <meta property="og:url" content="http://jianghao.wang/2018/CountDownLatch和CyclicBarrier/index.html">
 <meta property="og:site_name" content="TizzyT&#39;s Blog">
-<meta property="og:description" content="CountDownLatch和CyclicBarrier都是给予AQS队列同步器实现的共享锁。(傻叉) CountDownLatch是单纯通过维持一个state的计数数值，这个数值在线程调用countDownLatch.countDown()的时候会减1，当计数器的值为零的时候，等待的线程会向前执行。假如我们需要保证在主线程继续往前执行的时候，子任务都已经被启动，可以通过CountDownLatc">
+<meta property="og:description" content="CountDownLatch是基于AQS队列同步器实现的共享锁。CyclicBarrier是基于同步/等待队列实现。 CountDownLatch是单纯通过维持一个state的计数数值，这个数值在线程调用countDownLatch.countDown()的时候会减1，当计数器的值为零的时候，等待的线程会向前执行。假如我们需要保证在主线程继续往前执行的时候，子任务都已经被启动，可以通过CountD">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-07-18T02:17:58.586Z">
+<meta property="og:updated_time" content="2019-07-30T13:06:32.372Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CountDownLatch和CyclicBarrier">
-<meta name="twitter:description" content="CountDownLatch和CyclicBarrier都是给予AQS队列同步器实现的共享锁。(傻叉) CountDownLatch是单纯通过维持一个state的计数数值，这个数值在线程调用countDownLatch.countDown()的时候会减1，当计数器的值为零的时候，等待的线程会向前执行。假如我们需要保证在主线程继续往前执行的时候，子任务都已经被启动，可以通过CountDownLatc">
+<meta name="twitter:description" content="CountDownLatch是基于AQS队列同步器实现的共享锁。CyclicBarrier是基于同步/等待队列实现。 CountDownLatch是单纯通过维持一个state的计数数值，这个数值在线程调用countDownLatch.countDown()的时候会减1，当计数器的值为零的时候，等待的线程会向前执行。假如我们需要保证在主线程继续往前执行的时候，子任务都已经被启动，可以通过CountD">
 
 
 
@@ -436,9 +436,9 @@
       
 
       
-        <p>CountDownLatch和CyclicBarrier都是给予AQS队列同步器实现的共享锁。(傻叉)</p>
+        <p>CountDownLatch是基于AQS队列同步器实现的共享锁。CyclicBarrier是基于同步/等待队列实现。</p>
 <p>CountDownLatch是单纯通过维持一个state的计数数值，这个数值在线程调用countDownLatch.countDown()的时候会减1，当计数器的值为零的时候，等待的线程会向前执行。假如我们需要保证在主线程继续往前执行的时候，子任务都已经被启动，可以通过CountDownLatch来进行控制。实际上和ReetrantLock是基于同样的原理实现，不过是实现和覆盖了tryAccquireShare和tryReleaseShare的区别。</p>
-<p>CyclicBarrier则和CountDownLatch以及ReetrantLock不相同，它是通过lock和等待／通知机制实现的，在CountDownLatch实现的多线程模型中，各个线程之间是没办法进行通信的，只能保证一个happens-before，但是CyclicBarrier通过lock+Condition来维持一个同步队列和等待队列（通常将等待在同步块外面的队列称之为同步队列，将等待在某个对象上的队列称之为等待队列），lock中的Condition对象可以有多个，也就是维护多个等待队列。我们观察CyclicBarrier的实现可以看到它的内部只维持了一个等待队列。</p>
+<p>CyclicBarrier则和CountDownLatch不相同，它是通过Lock和Condition等待／通知机制实现的。在CountDownLatch实现的多线程模型中，各个线程之间是通过同步状态进行通信。CyclicBarrier通过lock+Condition来维持一个同步队列和等待队列（通常将等待在同步块外面的队列称之为同步队列，将等待在某个对象上的队列称之为等待队列），Lock中的Condition对象可以有多个，也就是维护多个等待队列。我们观察CyclicBarrier的实现可以看到它的内部只维持了一个等待队列。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/** The lock for guarding barrier entry */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> ReentrantLock lock = <span class="keyword">new</span> ReentrantLock();</span><br><span class="line">    <span class="comment">/** Condition to wait on until tripped */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Condition trip = lock.newCondition();<span class="comment">//维持了一个等待队列，可以通过trip.signal唤醒等待队列中所有的节点加入到同步队列中。</span></span><br><span class="line">    <span class="comment">/** The number of parties */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">int</span> parties;</span><br><span class="line">    <span class="comment">/* The command to run when tripped */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Runnable barrierCommand;</span><br><span class="line">    <span class="comment">/** The current generation */</span></span><br><span class="line">    <span class="keyword">private</span> Generation generation = <span class="keyword">new</span> Generation();</span><br></pre></td></tr></table></figure>
 <h3 id="CountDownLatch的使用"><a href="#CountDownLatch的使用" class="headerlink" title="CountDownLatch的使用"></a>CountDownLatch的使用</h3><p>我们通过一段代码查看CountDownLatch的主要使用方式，我们定义一个woker线程，作为子任务：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> CountDownLatch;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.CountDownLatch;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Created by yqz on 4/3/18.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Worker</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String workerName;</span><br><span class="line">    <span class="keyword">private</span> CountDownLatch countDownLatch;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Worker</span><span class="params">(String workerName,CountDownLatch countDownLatch)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.workerName=workerName;</span><br><span class="line">        <span class="keyword">this</span>.countDownLatch=countDownLatch;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        doWorker();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">doWorker</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Thread.sleep(<span class="number">5000</span>);</span><br><span class="line"></span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;<span class="keyword">finally</span> &#123;</span><br><span class="line">            System.out.println(<span class="keyword">this</span>.getWorkerName()+<span class="string">"释放一次共享锁"</span>);</span><br><span class="line">            countDownLatch.countDown();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getWorkerName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> workerName;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setWorkerName</span><span class="params">(String workerName)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.workerName = workerName;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -460,9 +460,14 @@
 <p>整个执行的过程，线程在调用了await方法之后，会通过lock方式上锁，然后线程将计数器的值减1。如果计数器的值到达0，说明conditon维护的等待队列已满，调用nextGeneration唤醒condition等待队列上的所有线程。加入到同步队列中，然后返回index，释放锁，之后同步队列中的节点线程就可以被唤醒了。如果线程的计数器没有到达0，那更简单，这个时候其他线程会调用condition的await方法进入等待队列。</p>
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>这里总结下两者的主要区别：</p>
 <ol>
-<li>CountDownLatch用完之后就不能再次使用了，CyclicBarrier用完之后可以通过reset再次使用。例如在多线程计算的时候如果失败了，CyclicBarrier可以重新计算。</li>
-<li>CountDownLatch底层使用的是共享锁，CyclicBarrier底层使用的是ReentrantLock和这个lock的条件对象Condition，通过等待通知机制（同步队列+等待队列）实现。</li>
-<li>CyclicBarrier可以通过isBroken方法查看阻塞的线程是否被中断。</li>
+<li><p><strong>使用方式：</strong>CountDownLatch使用时主线程等待子线程将同步状态置为0，CyclicBarrier所有线程在等待队列上等待被通知。</p>
+</li>
+<li><p><strong>实现方式：</strong>CountDownLatch底层使用的是共享锁，CyclicBarrier底层使用的是ReentrantLock和这个lock的条件对象Condition，通过等待通知机制（同步队列+等待队列）实现。</p>
+</li>
+<li><p><strong>主要用途：</strong>CountDownLatch用完之后就不能再次使用了，CyclicBarrier用完之后可以通过reset再次使用。例如在多线程计算的时候如果失败了，CyclicBarrier可以重新计算。</p>
+</li>
+<li><p><strong>API：</strong>CyclicBarrier可以通过isBroken方法查看阻塞的线程是否被中断。</p>
+</li>
 </ol>
 
       
@@ -597,7 +602,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">63</span>
+                  <span class="site-state-item-count">66</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -610,7 +615,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-count">16</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
