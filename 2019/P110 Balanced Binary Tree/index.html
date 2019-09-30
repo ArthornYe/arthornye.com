@@ -125,18 +125,18 @@
 
 
 
-<meta name="description" content="问题描述（难度简单-136）Given a non-empty array of integers, every element appears twice except for one. Find that single one. Note: Your algorithm should have a linear runtime complexity. Could you implement i">
+<meta name="description" content="问题描述（难度简单-110）Given a binary tree, determine if it is height-balanced. For this problem, a height-balanced binary tree is defined as:  a binary tree in which the depth of the two subtrees of every nod">
 <meta name="keywords" content="leetCode算法">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Single Number">
-<meta property="og:url" content="http://jianghao.wang/2019/P136 Swap Nodes In Pairs/index.html">
+<meta property="og:title" content="Balanced Binary Tree">
+<meta property="og:url" content="http://jianghao.wang/2019/P110 Balanced Binary Tree/index.html">
 <meta property="og:site_name" content="TizzyT&#39;s Blog">
-<meta property="og:description" content="问题描述（难度简单-136）Given a non-empty array of integers, every element appears twice except for one. Find that single one. Note: Your algorithm should have a linear runtime complexity. Could you implement i">
+<meta property="og:description" content="问题描述（难度简单-110）Given a binary tree, determine if it is height-balanced. For this problem, a height-balanced binary tree is defined as:  a binary tree in which the depth of the two subtrees of every nod">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-09-20T07:18:03.844Z">
+<meta property="og:updated_time" content="2019-09-30T06:56:29.390Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Single Number">
-<meta name="twitter:description" content="问题描述（难度简单-136）Given a non-empty array of integers, every element appears twice except for one. Find that single one. Note: Your algorithm should have a linear runtime complexity. Could you implement i">
+<meta name="twitter:title" content="Balanced Binary Tree">
+<meta name="twitter:description" content="问题描述（难度简单-110）Given a binary tree, determine if it is height-balanced. For this problem, a height-balanced binary tree is defined as:  a binary tree in which the depth of the two subtrees of every nod">
 
 
 
@@ -166,13 +166,13 @@
 
 
 
-  <link rel="canonical" href="http://jianghao.wang/2019/P136 Swap Nodes In Pairs/"/>
+  <link rel="canonical" href="http://jianghao.wang/2019/P110 Balanced Binary Tree/"/>
 
 
 
 
 
-  <title>Single Number | TizzyT's Blog</title>
+  <title>Balanced Binary Tree | TizzyT's Blog</title>
   
 
 
@@ -358,7 +358,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://jianghao.wang/2019/P136 Swap Nodes In Pairs/">
+    <link itemprop="mainEntityOfPage" href="http://jianghao.wang/2019/P110 Balanced Binary Tree/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="yeqiaozhu">
@@ -375,7 +375,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Single Number</h1>
+          <h1 class="post-title" itemprop="name headline">Balanced Binary Tree</h1>
         
 
         <div class="post-meta">
@@ -387,8 +387,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-09-20T15:00:07+08:00">
-                2019-09-20
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-09-30T14:09:52+08:00">
+                2019-09-30
               </time>
             
 
@@ -406,9 +406,9 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/P136 Swap Nodes In Pairs/#comments" itemprop="discussionUrl">
+                <a href="/2019/P110 Balanced Binary Tree/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2019/P136 Swap Nodes In Pairs/" itemprop="commentCount"></span>
+                        data-disqus-identifier="2019/P110 Balanced Binary Tree/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -436,26 +436,26 @@
       
 
       
-        <h3 id="问题描述（难度简单-136）"><a href="#问题描述（难度简单-136）" class="headerlink" title="问题描述（难度简单-136）"></a>问题描述（难度简单-136）</h3><p>Given a <strong>non-empty</strong> array of integers, every element appears <em>twice</em> except for one. Find that single one.</p>
-<p><strong>Note:</strong></p>
-<p>Your algorithm should have a linear runtime complexity. Could you implement it without using extra memory?</p>
+        <h3 id="问题描述（难度简单-110）"><a href="#问题描述（难度简单-110）" class="headerlink" title="问题描述（难度简单-110）"></a>问题描述（难度简单-110）</h3><p>Given a binary tree, determine if it is height-balanced.</p>
+<p>For this problem, a height-balanced binary tree is defined as:</p>
+<blockquote>
+<p>a binary tree in which the depth of the two subtrees of <em>every</em> node never differ by more than 1.</p>
+</blockquote>
 <p><strong>Example 1:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Input: [2,2,1]</span><br><span class="line">Output: 1</span><br></pre></td></tr></table></figure>
+<p>Given the following tree <code>[3,9,20,null,null,15,7]</code>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">  3</span><br><span class="line"> / \</span><br><span class="line">9  20</span><br><span class="line">  /  \</span><br><span class="line"> 15   7</span><br></pre></td></tr></table></figure>
+<p>Return true.</p>
 <p><strong>Example 2:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Input: [4,1,2,1,2]</span><br><span class="line">Output: 4</span><br></pre></td></tr></table></figure>
-<h3 id="XOR（异或）"><a href="#XOR（异或）" class="headerlink" title="XOR（异或）"></a>XOR（异或）</h3><p>如果a、b两个值不相同，则异或结果为1。如果a、b两个值相同，异或结果为0。</p>
-<h3 id="方法一：一边遍历Map"><a href="#方法一：一边遍历Map" class="headerlink" title="方法一：一边遍历Map"></a>方法一：一边遍历Map</h3><p>一遍遍历保留只出现一次的数字。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">singleNumber</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">        Map&lt;Integer,Integer&gt; map= <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; nums.length; i++) &#123;</span><br><span class="line">            <span class="keyword">if</span>(map.get(nums[i])==<span class="keyword">null</span>)&#123;</span><br><span class="line">                map.put(nums[i],<span class="number">1</span>);</span><br><span class="line">            &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">                map.remove(nums[i]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> (Integer) map.keySet().toArray()[<span class="number">0</span>];</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<h3 id="方法二：XOR"><a href="#方法二：XOR" class="headerlink" title="方法二：XOR"></a>方法二：XOR</h3><p>first , we have to know the bitwise XOR in java:</p>
+<p>Given the following tree <code>[1,2,2,3,3,null,null,4,4]</code>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">      1</span><br><span class="line">     / \</span><br><span class="line">    2   2</span><br><span class="line">   / \</span><br><span class="line">  3   3</span><br><span class="line"> / \</span><br><span class="line">4   4</span><br></pre></td></tr></table></figure>
+<p>Return false.</p>
+<h3 id="方法一：递归（Recursive）"><a href="#方法一：递归（Recursive）" class="headerlink" title="方法一：递归（Recursive）"></a>方法一：递归（Recursive）</h3><p>判断平衡树是否平衡的标准：</p>
 <ul>
-<li><strong>0 ^ N = N</strong></li>
-<li><strong>N ^ N = 0</strong></li>
+<li><strong>左右子树的高度差不大于1。这里的高度值得是树的最大高度。</strong></li>
 </ul>
-<p>So….. if N is the single number:</p>
-<p>N1 ^ N1 ^ N2 ^ N2 ^…………..^ Nx ^ Nx ^ N= (N1^N1) ^ (N2^N2) ^…………..^ (Nx^Nx) ^ N= 0 ^ 0 ^ ……….^ 0 ^ N</p>
-<p>= N</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">singleNumber</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> ans =<span class="number">0</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> len = nums.length;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i!=len;i++)</span><br><span class="line">        ans ^= nums[i];</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>采用XOR（异或）的方式，相同的数字都相互抵消了，最后留下单一的不同的数字。也就是方法二的精髓。</p>
+<p>根据标准得到一个递归公式（没有好的作图工具，直接看height函数的递归实现）：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isBalanced</span><span class="params">(TreeNode root)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">if</span> (root == <span class="keyword">null</span>) &#123;</span><br><span class="line">           <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">return</span> height(root)==-<span class="number">1</span>?<span class="keyword">false</span>:<span class="keyword">true</span>;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">height</span><span class="params">(TreeNode treeNode)</span></span>&#123;</span><br><span class="line">       <span class="keyword">if</span> (treeNode == <span class="keyword">null</span>) &#123;</span><br><span class="line">           <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">int</span> leftHeight=height(treeNode.left);</span><br><span class="line">       <span class="keyword">int</span> rightHeight=height(treeNode.right);</span><br><span class="line">       <span class="keyword">if</span>(leftHeight==-<span class="number">1</span> || rightHeight==-<span class="number">1</span> || Math.abs(leftHeight-rightHeight)&gt;<span class="number">1</span>)</span><br><span class="line">           <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">       <span class="keyword">return</span> Math.max(leftHeight,rightHeight)+<span class="number">1</span>;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>首先掌握平衡树的判断标准，不能用最大深度减去最小深度来进行计算。需要递归判断左右子树的高度差，当递归到高度差大于1的时候递归往上返回-1值。递归到null时，说明到达了叶子结点的下的空节点，返回0。其他情况都返回左右节点的最大高度加1。</p>
 
       
     </div>
@@ -486,8 +486,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/并发学习/Java中的阻塞队列/" rel="next" title="Java中的阻塞队列">
-                <i class="fa fa-chevron-left"></i> Java中的阻塞队列
+              <a href="/2019/P136 Single Number/" rel="next" title="Single Number">
+                <i class="fa fa-chevron-left"></i> Single Number
               </a>
             
           </div>
@@ -585,7 +585,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">66</span>
+                  <span class="site-state-item-count">67</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -666,7 +666,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#问题描述（难度简单-136）"><span class="nav-number">1.</span> <span class="nav-text">问题描述（难度简单-136）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#XOR（异或）"><span class="nav-number">2.</span> <span class="nav-text">XOR（异或）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法一：一边遍历Map"><span class="nav-number">3.</span> <span class="nav-text">方法一：一边遍历Map</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法二：XOR"><span class="nav-number">4.</span> <span class="nav-text">方法二：XOR</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#问题描述（难度简单-110）"><span class="nav-number">1.</span> <span class="nav-text">问题描述（难度简单-110）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法一：递归（Recursive）"><span class="nav-number">2.</span> <span class="nav-text">方法一：递归（Recursive）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
             
 
           </div>
@@ -849,9 +849,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'http://jianghao.wang/2019/P136 Swap Nodes In Pairs/';
-          this.page.identifier = '2019/P136 Swap Nodes In Pairs/';
-          this.page.title = 'Single Number';
+          this.page.url = 'http://jianghao.wang/2019/P110 Balanced Binary Tree/';
+          this.page.identifier = '2019/P110 Balanced Binary Tree/';
+          this.page.title = 'Balanced Binary Tree';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://tizzy323.disqus.com/embed.js';
