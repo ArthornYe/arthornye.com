@@ -112,7 +112,7 @@
 
 
 
-  <meta name="keywords" content="-mysql," />
+  <meta name="keywords" content="mysql," />
 
 
 
@@ -125,20 +125,20 @@
 
 
 
-<meta name="description" content="索引的几种数据模型数据库引擎在设计索引结构的时候首先需要数据结构，怎样的数据结构能够兼容查询和更新，在不同的场景下选择也有所不同。下面主要介绍几种模型以及数据结构上的利弊。 哈希索引哈希索引数据模型类似HashMap，KV结构，通过数组+链表的方式去存储。利于等值查询（单值查询），不利于多值查询（范围查询），利于更新。 应用：主要是应用在memcache，nosql等。主要为单值查询比较多的场景，">
-<meta name="keywords" content="-mysql">
+<meta name="description" content="###  索引的几种数据模型数据库引擎在设计索引结构的时候首先需要数据结构，怎样的数据结构能够兼容查询和更新，在不同的场景下选择也有所不同。下面主要介绍几种模型以及数据结构上的利弊。 哈希索引哈希索引数据模型类似HashMap，KV结构，通过数组+链表的方式去存储。利于等值查询（单值查询），不利于多值查询（范围查询），利于更新。 应用：主要是应用在memcache，nosql等。主要为单值查询比较">
+<meta name="keywords" content="mysql">
 <meta property="og:type" content="article">
 <meta property="og:title" content="mysql索引介绍">
 <meta property="og:url" content="http://jianghao.wang/2018/mysql索引介绍/index.html">
 <meta property="og:site_name" content="TizzyT&#39;s Blog">
-<meta property="og:description" content="索引的几种数据模型数据库引擎在设计索引结构的时候首先需要数据结构，怎样的数据结构能够兼容查询和更新，在不同的场景下选择也有所不同。下面主要介绍几种模型以及数据结构上的利弊。 哈希索引哈希索引数据模型类似HashMap，KV结构，通过数组+链表的方式去存储。利于等值查询（单值查询），不利于多值查询（范围查询），利于更新。 应用：主要是应用在memcache，nosql等。主要为单值查询比较多的场景，">
+<meta property="og:description" content="###  索引的几种数据模型数据库引擎在设计索引结构的时候首先需要数据结构，怎样的数据结构能够兼容查询和更新，在不同的场景下选择也有所不同。下面主要介绍几种模型以及数据结构上的利弊。 哈希索引哈希索引数据模型类似HashMap，KV结构，通过数组+链表的方式去存储。利于等值查询（单值查询），不利于多值查询（范围查询），利于更新。 应用：主要是应用在memcache，nosql等。主要为单值查询比较">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://arthornye.github.io/images/mysql.png">
 <meta property="og:image" content="https://arthornye.github.io/images/changebuffer.jpg">
-<meta property="og:updated_time" content="2019-01-22T10:02:35.428Z">
+<meta property="og:updated_time" content="2019-10-16T09:18:16.938Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="mysql索引介绍">
-<meta name="twitter:description" content="索引的几种数据模型数据库引擎在设计索引结构的时候首先需要数据结构，怎样的数据结构能够兼容查询和更新，在不同的场景下选择也有所不同。下面主要介绍几种模型以及数据结构上的利弊。 哈希索引哈希索引数据模型类似HashMap，KV结构，通过数组+链表的方式去存储。利于等值查询（单值查询），不利于多值查询（范围查询），利于更新。 应用：主要是应用在memcache，nosql等。主要为单值查询比较多的场景，">
+<meta name="twitter:description" content="###  索引的几种数据模型数据库引擎在设计索引结构的时候首先需要数据结构，怎样的数据结构能够兼容查询和更新，在不同的场景下选择也有所不同。下面主要介绍几种模型以及数据结构上的利弊。 哈希索引哈希索引数据模型类似HashMap，KV结构，通过数组+链表的方式去存储。利于等值查询（单值查询），不利于多值查询（范围查询），利于更新。 应用：主要是应用在memcache，nosql等。主要为单值查询比较">
 <meta name="twitter:image" content="http://arthornye.github.io/images/mysql.png">
 
 
@@ -439,7 +439,8 @@
       
 
       
-        <h4 id="索引的几种数据模型"><a href="#索引的几种数据模型" class="headerlink" title="索引的几种数据模型"></a>索引的几种数据模型</h4><p>数据库引擎在设计索引结构的时候首先需要数据结构，怎样的数据结构能够兼容查询和更新，在不同的场景下选择也有所不同。下面主要介绍几种模型以及数据结构上的利弊。</p>
+        <p>### </p>
+<h4 id="索引的几种数据模型"><a href="#索引的几种数据模型" class="headerlink" title="索引的几种数据模型"></a>索引的几种数据模型</h4><p>数据库引擎在设计索引结构的时候首先需要数据结构，怎样的数据结构能够兼容查询和更新，在不同的场景下选择也有所不同。下面主要介绍几种模型以及数据结构上的利弊。</p>
 <h5 id="哈希索引"><a href="#哈希索引" class="headerlink" title="哈希索引"></a>哈希索引</h5><p>哈希索引数据模型类似HashMap，KV结构，通过数组+链表的方式去存储。<strong>利于等值查询（单值查询），不利于多值查询（范围查询），利于更新。</strong></p>
 <p>应用：主要是应用在memcache，nosql等。主要为单值查询比较多的场景，更新性能也不差，不考虑IO。</p>
 <h5 id="有序数组索引"><a href="#有序数组索引" class="headerlink" title="有序数组索引"></a>有序数组索引</h5><p>有序数组数据模型类比数组，有序的记录。<strong>利于查询（单值查询和多值查询表现都比较优秀），复杂度O(log n)，不利于更新（需要移动位置）。</strong></p>
@@ -492,7 +493,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/mysql/" rel="tag"># -mysql</a>
+            <a href="/tags/mysql/" rel="tag"># mysql</a>
           
         </div>
       

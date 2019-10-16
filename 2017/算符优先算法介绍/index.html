@@ -112,7 +112,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="JVM," />
 
 
 
@@ -125,20 +125,21 @@
 
 
 
-<meta name="description" content="title: 算符优先算法介绍 基于之前博文对java虚拟机栈的介绍，相信多数同学会想深入了解操作数栈是如何处理复杂运算的。接触过编译原理的应该对算符优先文法，逆波兰表达式（后缀表达式），中缀表达式这些定义不陌生。本篇文章主要介绍算符优先算法是如何通过栈进行复杂运算的。 中缀表达式中缀表达式即我们输入的需要被计算的一个字符串，这里以四则运算为例：a-b*c+(d+e)/f,根据算符优先算法主要有以">
+<meta name="description" content="基于之前博文对java虚拟机栈的介绍，相信多数同学会想深入了解操作数栈是如何处理复杂运算的。接触过编译原理的应该对算符优先文法，逆波兰表达式（后缀表达式），中缀表达式这些定义不陌生。本篇文章主要介绍算符优先算法是如何通过栈进行复杂运算的。 中缀表达式中缀表达式即我们输入的需要被计算的一个字符串，这里以四则运算为例：a-b*c+(d+e)/f,根据算符优先算法主要有以下几个数据结构：   算法优先级">
+<meta name="keywords" content="JVM">
 <meta property="og:type" content="article">
-<meta property="og:title" content="TizzyT&#39;s Blog">
+<meta property="og:title" content="算符优先算法介绍">
 <meta property="og:url" content="http://jianghao.wang/2017/算符优先算法介绍/index.html">
 <meta property="og:site_name" content="TizzyT&#39;s Blog">
-<meta property="og:description" content="title: 算符优先算法介绍 基于之前博文对java虚拟机栈的介绍，相信多数同学会想深入了解操作数栈是如何处理复杂运算的。接触过编译原理的应该对算符优先文法，逆波兰表达式（后缀表达式），中缀表达式这些定义不陌生。本篇文章主要介绍算符优先算法是如何通过栈进行复杂运算的。 中缀表达式中缀表达式即我们输入的需要被计算的一个字符串，这里以四则运算为例：a-b*c+(d+e)/f,根据算符优先算法主要有以">
+<meta property="og:description" content="基于之前博文对java虚拟机栈的介绍，相信多数同学会想深入了解操作数栈是如何处理复杂运算的。接触过编译原理的应该对算符优先文法，逆波兰表达式（后缀表达式），中缀表达式这些定义不陌生。本篇文章主要介绍算符优先算法是如何通过栈进行复杂运算的。 中缀表达式中缀表达式即我们输入的需要被计算的一个字符串，这里以四则运算为例：a-b*c+(d+e)/f,根据算符优先算法主要有以下几个数据结构：   算法优先级">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://arthornye.github.io/images/%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%AE%97%E6%B3%95%E4%BB%8B%E7%BB%8D/%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E8%A1%A8.png">
 <meta property="og:image" content="http://arthornye.github.io/images/%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%AE%97%E6%B3%95%E4%BB%8B%E7%BB%8D/%E4%B8%AD%E7%BC%80%E8%A1%A8%E8%BE%BE%E5%BC%8F%E8%AE%A1%E7%AE%97%E8%BF%87%E7%A8%8B1.png">
 <meta property="og:image" content="http://arthornye.github.io/images/%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%AE%97%E6%B3%95%E4%BB%8B%E7%BB%8D/%E4%B8%AD%E7%BC%80%E8%A1%A8%E8%BE%BE%E5%BC%8F%E8%AE%A1%E7%AE%97%E8%BF%87%E7%A8%8B2.png">
-<meta property="og:updated_time" content="2019-01-02T07:08:42.972Z">
+<meta property="og:updated_time" content="2019-10-16T09:18:51.516Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="TizzyT&#39;s Blog">
-<meta name="twitter:description" content="title: 算符优先算法介绍 基于之前博文对java虚拟机栈的介绍，相信多数同学会想深入了解操作数栈是如何处理复杂运算的。接触过编译原理的应该对算符优先文法，逆波兰表达式（后缀表达式），中缀表达式这些定义不陌生。本篇文章主要介绍算符优先算法是如何通过栈进行复杂运算的。 中缀表达式中缀表达式即我们输入的需要被计算的一个字符串，这里以四则运算为例：a-b*c+(d+e)/f,根据算符优先算法主要有以">
+<meta name="twitter:title" content="算符优先算法介绍">
+<meta name="twitter:description" content="基于之前博文对java虚拟机栈的介绍，相信多数同学会想深入了解操作数栈是如何处理复杂运算的。接触过编译原理的应该对算符优先文法，逆波兰表达式（后缀表达式），中缀表达式这些定义不陌生。本篇文章主要介绍算符优先算法是如何通过栈进行复杂运算的。 中缀表达式中缀表达式即我们输入的需要被计算的一个字符串，这里以四则运算为例：a-b*c+(d+e)/f,根据算符优先算法主要有以下几个数据结构：   算法优先级">
 <meta name="twitter:image" content="http://arthornye.github.io/images/%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%AE%97%E6%B3%95%E4%BB%8B%E7%BB%8D/%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E8%A1%A8.png">
 
 
@@ -175,7 +176,7 @@
 
 
 
-  <title> | TizzyT's Blog</title>
+  <title>算符优先算法介绍 | TizzyT's Blog</title>
   
 
 
@@ -378,7 +379,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline"></h1>
+          <h1 class="post-title" itemprop="name headline">算符优先算法介绍</h1>
         
 
         <div class="post-meta">
@@ -439,8 +440,7 @@
       
 
       
-        <p>title: 算符优先算法介绍</p>
-<p>基于之前博文对java虚拟机栈的介绍，相信多数同学会想深入了解操作数栈是如何处理复杂运算的。接触过编译原理的应该对算符优先文法，逆波兰表达式（后缀表达式），中缀表达式这些定义不陌生。本篇文章主要介绍算符优先算法是如何通过栈进行复杂运算的。</p>
+        <p>基于之前博文对java虚拟机栈的介绍，相信多数同学会想深入了解操作数栈是如何处理复杂运算的。接触过编译原理的应该对算符优先文法，逆波兰表达式（后缀表达式），中缀表达式这些定义不陌生。本篇文章主要介绍算符优先算法是如何通过栈进行复杂运算的。</p>
 <h3 id="中缀表达式"><a href="#中缀表达式" class="headerlink" title="中缀表达式"></a>中缀表达式</h3><p>中缀表达式即我们输入的需要被计算的一个字符串，这里以四则运算为例：a-b*c+(d+e)/f,根据算符优先算法主要有以下几个数据结构：</p>
 <blockquote>
 <ul>
@@ -478,6 +478,12 @@
     
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JVM/" rel="tag"># JVM</a>
+          
+        </div>
       
 
       
@@ -857,7 +863,7 @@
         var disqus_config = function () {
           this.page.url = 'http://jianghao.wang/2017/算符优先算法介绍/';
           this.page.identifier = '2017/算符优先算法介绍/';
-          this.page.title = '';
+          this.page.title = '算符优先算法介绍';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://tizzy323.disqus.com/embed.js';
