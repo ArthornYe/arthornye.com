@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="default">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="科技," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="TizzyT's Blog" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="区块链可以去中心化，很大程度上依赖于自建的“共识机制”。Paxos是古代希腊的一个城邦，城邦中有众多议员，议员会对法律提案进行决议，提案通过通讯员进行提交。当某个提案者的提案获得大部分议员的赞同时，代表议案通过。这里涉及到的三个角色，议员，提案者，通讯员，可以对应到区块链网络。每个节点可以去计算hash值，将其作为一个提案，提交给区块链网络中其他的所有节点，这个过程中每个节点都在进行计算和提交：">
+<meta name="keywords" content="科技">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Paxos算法和BFT问题">
+<meta property="og:url" content="http://jianghao.wang/2018/分布式/Paxos算法和BFT问题/index.html">
+<meta property="og:site_name" content="TizzyT&#39;s Blog">
+<meta property="og:description" content="区块链可以去中心化，很大程度上依赖于自建的“共识机制”。Paxos是古代希腊的一个城邦，城邦中有众多议员，议员会对法律提案进行决议，提案通过通讯员进行提交。当某个提案者的提案获得大部分议员的赞同时，代表议案通过。这里涉及到的三个角色，议员，提案者，通讯员，可以对应到区块链网络。每个节点可以去计算hash值，将其作为一个提案，提交给区块链网络中其他的所有节点，这个过程中每个节点都在进行计算和提交：">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-10-16T09:14:47.582Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Paxos算法和BFT问题">
+<meta name="twitter:description" content="区块链可以去中心化，很大程度上依赖于自建的“共识机制”。Paxos是古代希腊的一个城邦，城邦中有众多议员，议员会对法律提案进行决议，提案通过通讯员进行提交。当某个提案者的提案获得大部分议员的赞同时，代表议案通过。这里涉及到的三个角色，议员，提案者，通讯员，可以对应到区块链网络。每个节点可以去计算hash值，将其作为一个提案，提交给区块链网络中其他的所有节点，这个过程中每个节点都在进行计算和提交：">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://jianghao.wang/2018/分布式/Paxos算法和BFT问题/"/>
+
+
+
+
+
+  <title>Paxos算法和BFT问题 | TizzyT's Blog</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-62782471-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?50c15455e37f70aea674ff4a663eef27";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">TizzyT's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">即使是拖后腿的，拼死努力的话，也是可以超越精英的。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            Schedule
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            Sitemap
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            Commonweal 404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://jianghao.wang/2018/分布式/Paxos算法和BFT问题/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yeqiaozhu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="TizzyT's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Paxos算法和BFT问题</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-05T18:18:04+08:00">
+                2018-02-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/分布式/Paxos算法和BFT问题/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/分布式/Paxos算法和BFT问题/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>区块链可以去中心化，很大程度上依赖于自建的“共识机制”。Paxos是古代希腊的一个城邦，城邦中有众多议员，议员会对法律提案进行决议，提案通过通讯员进行提交。当某个提案者的提案获得大部分议员的赞同时，代表议案通过。这里涉及到的三个角色，议员，提案者，通讯员，可以对应到区块链网络。每个节点可以去计算hash值，将其作为一个提案，提交给区块链网络中其他的所有节点，这个过程中每个节点都在进行计算和提交：</p>
+<p>1.Paxos问题保证这样的分布式网络中节点可能存在故障的情况下在最快的时间内达成共识。</p>
+<p>2.BFT保证允许少数节点作恶（企图伪造消息）场景下的一致性达成问题。</p>
+<h2 id="Paxos算法"><a href="#Paxos算法" class="headerlink" title="Paxos算法"></a>Paxos算法</h2><h3 id="什么是Paxos算法"><a href="#什么是Paxos算法" class="headerlink" title="什么是Paxos算法"></a>什么是Paxos算法</h3><p>Paxos问题是指分布式系统中存在故障（fault），但是不存在恶意（corrupt）节点场景（消息可能重复或者丢失但是没有错误消息）下的共识达成（consensus）问题。最早是Leslise Lamport用Paxos岛的故事模型来进行描述而命名。</p>
+<p>Paxos可以保证在一半正常节点存在时，系统能达成共识。</p>
+<h4 id="单个提案者-多个接收者"><a href="#单个提案者-多个接收者" class="headerlink" title="单个提案者+多个接收者"></a>单个提案者+多个接收者</h4><p>系统中只指定某个特定的节点时提案者，那么一致性肯定可以达成（只有一个方案，要么达成要么失败）。提案者只要收到了来自多数接收者的投票即可认为是通过，因为系统中不存在其他的提案。</p>
+<h4 id="多个提案者-单个接收者"><a href="#多个提案者-单个接收者" class="headerlink" title="多个提案者+单个接收者"></a>多个提案者+单个接收者</h4><p>限定某个节点作为接收者。这种情况下，共识也很容易达成，接收者接收到多个提案，选择第一个提案作为决议，拒绝掉后续的提案。</p>
+<p>缺陷也是容易发生单点故障，包括接受者故障或者首个提案节点发生故障。</p>
+<p>上面这两种情形实际上类似主从模式，虽然并不是很可靠，但是原理十分简单，在zookeeper等应用中广泛存在。这里主要介绍提案者和接收者扩展到多个的情形。</p>
+<h4 id="多个提案者-多个接受者"><a href="#多个提案者-多个接受者" class="headerlink" title="多个提案者+多个接受者"></a>多个提案者+多个接受者</h4><p>这种情况最接近于区块链共识机制，在区块链的所有节点中每个节点都可以去计算hash值，并发布给网络中的所有节点，当某个值获得大部分节点的赞同（校验hash值，可参考上篇文章）时，通过并写入数据库。</p>
+<p>像这样的场景下，同一个时间片段内可能会有多个节点会去提交自己算出的hash值，企图通过大部分节点的校验。那么当同一个节点收到多个提案的时候如何进行区分？如果只接受第一个这样的方式，也会造成节点对提案的混乱。所以我们需要定一个意见领袖，也就是先来后到，当某个节点已经有提案被提交的时候，后续提交的节点可以广播这个节点的提案，这样不断扩散，也加速了达成共识的速度。</p>
+<p>我们为每个提交的hash记录根据时间分配一个序号？我们可以尝试为每个节点进行编号，配合在前面加上时间戳来达到递增的目的。</p>
+<h4 id="两阶段提交"><a href="#两阶段提交" class="headerlink" title="两阶段提交"></a>两阶段提交</h4><p>想象节点在发出自己的提案的时候，收到一些反馈。一种结果是自己的提案被大多数接收，另一种结果是没被接收。但是即便收到了来自大多数的反馈，也不能认为就是最终确认，因为这些接收者并不知道自己刚才反馈的就是全局的大多数，也就是意见领袖。</p>
+<p>那么我们引入一个新的阶段，提案者在前一阶段拿到所有的反馈之后，判断这个提案是可能被大多数接受的提案，需要对其进行最终确认。</p>
+<p>将Paxos分为准备（prepare）和提交（commit）两个阶段。准备阶段解决大家对哪个提案进行投票的问题（统一意见领袖），提交阶段解决确认最终值的问题。</p>
+<h5 id="准备阶段"><a href="#准备阶段" class="headerlink" title="准备阶段"></a>准备阶段</h5><p>接受者时刻保留收到过的提案的最大编号和接受过的最大提案编号。如果收到的提案号比目前保留的最大的提案号还大，则返回自己已接受的提案值（如果还未收到过任何提案，则为空）给提案者，更新当前最大提案号，并说明不再接收小于最大提案号的提案。提案者以这样的方式去锁定大部分节点的支持。</p>
+<h5 id="提交阶段"><a href="#提交阶段" class="headerlink" title="提交阶段"></a>提交阶段</h5><p>提案者如果收到大多数的回复(表示大部分人听到它的请求)，则可准备发出带有刚才<br>提案号的接受消息。如果收到的回复中不带有新的提案，说明锁定成功，则使用自己的提案内容（hash值）;如果返回中有提案内容，则替换提案值为返回中编号最大的提案值。接受者收到接受消息后，如果发现提案号不小于已接受的最大提案号，则接受该提案，  并更新接受的最大提案。</p>
+<p>一旦多数接受了共同的提案值，则形成决议，成为最终确认的提案。</p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>区块链网络模型在对hash值达成共识的过程中可以类比多个提案者+多个接受者模型。当某个节点A计算出了某个hash值，会根据时间戳生成一个唯一的编号，然后将这个hash值提交给网络中其他节点进行审核。当然这个过程中可能也有别的节点B尝试进行提交。为了统一对某个hash值进行共识判断，我们首先要统一意见领袖，也就是尽量让整个系统统一对某个hash值进行判断。当统一之后再对这个hash值进行提交，这时系统中所有节点在准备阶段都已经保留了接受的提案编号，从而辨识当前提交的提案是否为意见领袖也就是第一阶段大家统一要处理的提案。在大多数节点统一之后这个hash值便会被直接写入数据库。</p>
+<h2 id="BFT（Byzantine-Generals-Problem）拜占庭问题"><a href="#BFT（Byzantine-Generals-Problem）拜占庭问题" class="headerlink" title="BFT（Byzantine Generals Problem）拜占庭问题"></a>BFT（Byzantine Generals Problem）拜占庭问题</h2><p>拜占庭问题更为广泛，讨论的是允许少数节点作恶的（消息被伪造）场景下的一致性达成问题。拜占庭算法讨论的是最坏情况下的保障。</p>
+<h4 id="中国将军问题"><a href="#中国将军问题" class="headerlink" title="中国将军问题"></a>中国将军问题</h4><p>拜占庭将军问题之前，就已经存在中国将军问题:两个将军要通过信使来达成进攻还是撤退的约定，但信使可能迷路或被敌军阻拦(消息丢失或伪造)，如何达成一致。</p>
+<h4 id="拜占庭问题"><a href="#拜占庭问题" class="headerlink" title="拜占庭问题"></a>拜占庭问题</h4><p>拜占庭将军(Byzantine Generals Problem)问题，是 Leslie Lamport 1982 年提出用来解释一致性问题的一个虚构模型。拜占庭是古代东罗马帝国的首都，由于地域宽广，守卫边境的多个将军(系统中的多个节点)需要通过信使来传递消息，达成某些一致的决定。但由于将军中可能存在叛徒(系统中节点出错)，这些叛徒将努力向不同的将军发送不同的消息，试图会干扰一致性的达成。</p>
+<p>拜占庭问题即为在此情况下，如何让忠诚的将军们能达成行动的一致。</p>
+<p>对于拜占庭问题，如果节点总数为N，叛变的将军数为F，那么当N和F呈现怎样的分布时会让忠诚的将军们保证正确的决策。</p>
+<p>我们很容易可以推理到N&gt;2F，当某个忠诚的节点希望得到正确的决策，会有F个篡改节点进行干扰，那么需要满足N-F&gt;F才能保证忠诚的一方可以胜利。</p>
+<h4 id="PoW（Proof-of-Work）算法"><a href="#PoW（Proof-of-Work）算法" class="headerlink" title="PoW（Proof of Work）算法"></a>PoW（Proof of Work）算法</h4><p>比特币区块链网络在设计之初提出了创新的PoW（Proof of Work）算法思路。一个限制了一段时间内整个网络中出现的提案个数（增加提案成本，减少坏节点对系统的干扰）另外一个是放宽对最终一致性确认的需求，约定好大家都确认并沿着已知最长的链进行拓宽。这样，如果有人试图去篡改一条链，那么他的计算速度永远要大于网络中节点的计算速度。</p>
+<p>这里的话个人理解，如果有人试图篡改一条链，在主链上生产一个分支链，是不是意味着他需要自己编写自己的账本数据计算hash值然后不断添加伪造链，那么这样的链是永远不可能被读到的。因为总是默认读最长的链，伪造的速度不可能大于真实存在的链的增长速度，因为算力上的差距是很大的。而且即使伪造链的长度要大于真实链，那么根据大多数原则，这条链也肯定会立即被系统中所共识的链取代。</p>
+<h4 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h4><p>BFT和PoW算法为区块链的共识机制奠定了算法基础。这部分的东西个人觉得理解起来还是比较抽象的，需要具体化到很多现实的场景下可能会更好理解。我将Paxos共识的准备阶段类比为拿票，提案者先扫描所有决策者的队列去拿票（每个决策者只有一张票），先来的人（如果当前没人拿票）先拿到票，后来的人没办法拿票，只能查看当前票被谁拿走了，然后帮那个人先提交提案。<br>​<br>​<br>​<br>​<br>​    </p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/科技/" rel="tag"># 科技</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/大搜车点滴记录/工作问题记录/" rel="next" title="工作问题记录">
+                <i class="fa fa-chevron-left"></i> 工作问题记录
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/大搜车点滴记录/搭建本地SonarQube服务/" rel="prev" title="搭建本地SonarQube服务">
+                搭建本地SonarQube服务 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/avatar.jpg"
+                alt="yeqiaozhu" />
+            
+              <p class="site-author-name" itemprop="name">yeqiaozhu</p>
+              <p class="site-description motion-element" itemprop="description">Walk steps step by step</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">76</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/ArthornYe" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="http://www.linkedin.com/profile/view?id=137337693" target="_blank" title="Lindedin">
+                    
+                      <i class="fa fa-fw fa-globe"></i>Lindedin</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="http://www.zhihu.com/people/wang-jiang-hao-51" target="_blank" title="ZhiHu">
+                    
+                      <i class="fa fa-fw fa-globe"></i>ZhiHu</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+            <div class="cc-license motion-element" itemprop="license">
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" target="_blank">
+                <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+              </a>
+            </div>
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Paxos算法"><span class="nav-number">1.</span> <span class="nav-text">Paxos算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是Paxos算法"><span class="nav-number">1.1.</span> <span class="nav-text">什么是Paxos算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#单个提案者-多个接收者"><span class="nav-number">1.1.1.</span> <span class="nav-text">单个提案者+多个接收者</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多个提案者-单个接收者"><span class="nav-number">1.1.2.</span> <span class="nav-text">多个提案者+单个接收者</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多个提案者-多个接受者"><span class="nav-number">1.1.3.</span> <span class="nav-text">多个提案者+多个接受者</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#两阶段提交"><span class="nav-number">1.1.4.</span> <span class="nav-text">两阶段提交</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#准备阶段"><span class="nav-number">1.1.4.1.</span> <span class="nav-text">准备阶段</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#提交阶段"><span class="nav-number">1.1.4.2.</span> <span class="nav-text">提交阶段</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#总结"><span class="nav-number">1.1.5.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BFT（Byzantine-Generals-Problem）拜占庭问题"><span class="nav-number">2.</span> <span class="nav-text">BFT（Byzantine Generals Problem）拜占庭问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#中国将军问题"><span class="nav-number">2.0.1.</span> <span class="nav-text">中国将军问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#拜占庭问题"><span class="nav-number">2.0.2.</span> <span class="nav-text">拜占庭问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PoW（Proof-of-Work）算法"><span class="nav-number">2.0.3.</span> <span class="nav-text">PoW（Proof of Work）算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#总结-1"><span class="nav-number">2.0.4.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yeqiaozhu</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://tizzy323.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://jianghao.wang/2018/分布式/Paxos算法和BFT问题/';
+          this.page.identifier = '2018/分布式/Paxos算法和BFT问题/';
+          this.page.title = 'Paxos算法和BFT问题';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://tizzy323.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

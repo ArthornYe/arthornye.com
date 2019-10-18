@@ -357,7 +357,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://jianghao.wang/2019/Find All Numbers Disappeared/">
+    <link itemprop="mainEntityOfPage" href="http://jianghao.wang/2019/并发学习/CopyOnWriteArrayList介绍/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="yeqiaozhu">
@@ -376,7 +376,145 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/Find All Numbers Disappeared/" itemprop="url">Find All Numbers Disappeared in an Array</a></h1>
+                <a class="post-title-link" href="/2019/并发学习/CopyOnWriteArrayList介绍/" itemprop="url">CopyOnWriteArrayList</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-01T15:56:26+08:00">
+                2019-07-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/并发学习/CopyOnWriteArrayList介绍/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/并发学习/CopyOnWriteArrayList介绍/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          本篇主要介绍juc内部针对数组提供的并发容器CopyOnWriteArrayList，主要的思想是针对增删改等修改操作都将原数组拷贝一份新数组，然后做完修改操作后，通过原子的方式写入到原数组的引用，通知到其他线程。
+CopyOnWriteArrayList实现设计一个线程安全的容器主要针对改（增删改
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/并发学习/CopyOnWriteArrayList介绍/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://jianghao.wang/2019/leetCode算法/Find All Numbers Disappeared/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yeqiaozhu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="TizzyT's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/leetCode算法/Find All Numbers Disappeared/" itemprop="url">Find All Numbers Disappeared in an Array</a></h1>
         
 
         <div class="post-meta">
@@ -407,9 +545,9 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/Find All Numbers Disappeared/#comments" itemprop="discussionUrl">
+                <a href="/2019/leetCode算法/Find All Numbers Disappeared/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2019/Find All Numbers Disappeared/" itemprop="commentCount"></span>
+                        data-disqus-identifier="2019/leetCode算法/Find All Numbers Disappeared/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -444,7 +582,7 @@ Find all the elem
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/Find All Numbers Disappeared/#more" rel="contents">
+            <a class="btn" href="/2019/leetCode算法/Find All Numbers Disappeared/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -495,7 +633,7 @@ Find all the elem
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://jianghao.wang/2019/Pow(x, n)/">
+    <link itemprop="mainEntityOfPage" href="http://jianghao.wang/2019/leetCode算法/Median of Two Sorted Arrays/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="yeqiaozhu">
@@ -514,148 +652,7 @@ Find all the elem
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/Pow(x, n)/" itemprop="url">Pow(x, n)</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-05-16T19:44:47+08:00">
-                2019-05-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2019/Pow(x, n)/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2019/Pow(x, n)/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          问题描述（难度中等）Implement pow(x, n), which calculates x raised to the power n (xn).
-Example 1:
-12Input: 2.00000, 10Output: 1024.00000
-Example 2:
-12Input: 2.
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/Pow(x, n)/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://jianghao.wang/2019/Median of Two Sorted Arrays/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yeqiaozhu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="TizzyT's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/Median of Two Sorted Arrays/" itemprop="url">Median of Two Sorted Arrays</a></h1>
+                <a class="post-title-link" href="/2019/leetCode算法/Median of Two Sorted Arrays/" itemprop="url">Median of Two Sorted Arrays</a></h1>
         
 
         <div class="post-meta">
@@ -686,9 +683,9 @@ Example 2:
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/Median of Two Sorted Arrays/#comments" itemprop="discussionUrl">
+                <a href="/2019/leetCode算法/Median of Two Sorted Arrays/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2019/Median of Two Sorted Arrays/" itemprop="commentCount"></span>
+                        data-disqus-identifier="2019/leetCode算法/Median of Two Sorted Arrays/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -723,7 +720,7 @@ Find the median of the two sorted arrays. The overall run time com
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/Median of Two Sorted Arrays/#more" rel="contents">
+            <a class="btn" href="/2019/leetCode算法/Median of Two Sorted Arrays/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -774,7 +771,7 @@ Find the median of the two sorted arrays. The overall run time com
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://jianghao.wang/2019/Linked List Cycle II/">
+    <link itemprop="mainEntityOfPage" href="http://jianghao.wang/2019/leetCode算法/Linked List Cycle II/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="yeqiaozhu">
@@ -793,7 +790,7 @@ Find the median of the two sorted arrays. The overall run time com
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/Linked List Cycle II/" itemprop="url">Linked List Cycle II</a></h1>
+                <a class="post-title-link" href="/2019/leetCode算法/Linked List Cycle II/" itemprop="url">Linked List Cycle II</a></h1>
         
 
         <div class="post-meta">
@@ -824,9 +821,9 @@ Find the median of the two sorted arrays. The overall run time com
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/Linked List Cycle II/#comments" itemprop="discussionUrl">
+                <a href="/2019/leetCode算法/Linked List Cycle II/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2019/Linked List Cycle II/" itemprop="commentCount"></span>
+                        data-disqus-identifier="2019/leetCode算法/Linked List Cycle II/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -861,7 +858,7 @@ To represent a cycle in the given linked lis
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/Linked List Cycle II/#more" rel="contents">
+            <a class="btn" href="/2019/leetCode算法/Linked List Cycle II/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -912,7 +909,7 @@ To represent a cycle in the given linked lis
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://jianghao.wang/2019/Kth Largest Element in a Stream/">
+    <link itemprop="mainEntityOfPage" href="http://jianghao.wang/2019/leetCode算法/Kth Largest Element in a Stream/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="yeqiaozhu">
@@ -931,7 +928,7 @@ To represent a cycle in the given linked lis
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/Kth Largest Element in a Stream/" itemprop="url">Kth Largest Element in a Stream</a></h1>
+                <a class="post-title-link" href="/2019/leetCode算法/Kth Largest Element in a Stream/" itemprop="url">Kth Largest Element in a Stream</a></h1>
         
 
         <div class="post-meta">
@@ -962,9 +959,9 @@ To represent a cycle in the given linked lis
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/Kth Largest Element in a Stream/#comments" itemprop="discussionUrl">
+                <a href="/2019/leetCode算法/Kth Largest Element in a Stream/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2019/Kth Largest Element in a Stream/" itemprop="commentCount"></span>
+                        data-disqus-identifier="2019/leetCode算法/Kth Largest Element in a Stream/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -998,7 +995,7 @@ To represent a cycle in the given linked lis
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/Kth Largest Element in a Stream/#more" rel="contents">
+            <a class="btn" href="/2019/leetCode算法/Kth Largest Element in a Stream/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
