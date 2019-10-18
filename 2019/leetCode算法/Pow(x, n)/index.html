@@ -112,7 +112,7 @@
 
 
 
-  <meta name="keywords" content="mysql," />
+  <meta name="keywords" content="leetCode算法," />
 
 
 
@@ -125,18 +125,20 @@
 
 
 
-<meta name="description" content="mysql什么时候使用到内部临时表，通过explain可以看到extra信息里面会显示using temporary。我们知道针对mysql的order by操作，维护了一个内存空间sort_buffer，超出这个内存之后会采用磁盘辅助排序，extra信息中会有using filesort。那么mysql什么时候会有using temporary并且如何进行优化。 内部临时表，存储过程类似sort">
-<meta name="keywords" content="mysql">
+<meta name="description" content="问题描述（难度中等）Implement pow(x, n), which calculates x raised to the power n (xn). Example 1: 12Input: 2.00000, 10Output: 1024.00000 Example 2: 12Input: 2.10000, 3Output: 9.26100 Example 3: 123Input: 2.000">
+<meta name="keywords" content="leetCode算法">
 <meta property="og:type" content="article">
-<meta property="og:title" content="mysql内部临时表和分组优化">
-<meta property="og:url" content="http://jianghao.wang/2019/mysql/mysql内部临时表和分组优化/index.html">
+<meta property="og:title" content="Pow(x, n)">
+<meta property="og:url" content="http://jianghao.wang/2019/leetCode算法/Pow(x, n)/index.html">
 <meta property="og:site_name" content="TizzyT&#39;s Blog">
-<meta property="og:description" content="mysql什么时候使用到内部临时表，通过explain可以看到extra信息里面会显示using temporary。我们知道针对mysql的order by操作，维护了一个内存空间sort_buffer，超出这个内存之后会采用磁盘辅助排序，extra信息中会有using filesort。那么mysql什么时候会有using temporary并且如何进行优化。 内部临时表，存储过程类似sort">
+<meta property="og:description" content="问题描述（难度中等）Implement pow(x, n), which calculates x raised to the power n (xn). Example 1: 12Input: 2.00000, 10Output: 1024.00000 Example 2: 12Input: 2.10000, 3Output: 9.26100 Example 3: 123Input: 2.000">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-10-16T09:17:54.615Z">
+<meta property="og:image" content="https://arthornye.github.io/images/recursion.jpg">
+<meta property="og:updated_time" content="2019-10-18T03:46:43.078Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="mysql内部临时表和分组优化">
-<meta name="twitter:description" content="mysql什么时候使用到内部临时表，通过explain可以看到extra信息里面会显示using temporary。我们知道针对mysql的order by操作，维护了一个内存空间sort_buffer，超出这个内存之后会采用磁盘辅助排序，extra信息中会有using filesort。那么mysql什么时候会有using temporary并且如何进行优化。 内部临时表，存储过程类似sort">
+<meta name="twitter:title" content="Pow(x, n)">
+<meta name="twitter:description" content="问题描述（难度中等）Implement pow(x, n), which calculates x raised to the power n (xn). Example 1: 12Input: 2.00000, 10Output: 1024.00000 Example 2: 12Input: 2.10000, 3Output: 9.26100 Example 3: 123Input: 2.000">
+<meta name="twitter:image" content="https://arthornye.github.io/images/recursion.jpg">
 
 
 
@@ -166,13 +168,13 @@
 
 
 
-  <link rel="canonical" href="http://jianghao.wang/2019/mysql/mysql内部临时表和分组优化/"/>
+  <link rel="canonical" href="http://jianghao.wang/2019/leetCode算法/Pow(x, n)/"/>
 
 
 
 
 
-  <title>mysql内部临时表和分组优化 | TizzyT's Blog</title>
+  <title>Pow(x, n) | TizzyT's Blog</title>
   
 
 
@@ -358,7 +360,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://jianghao.wang/2019/mysql/mysql内部临时表和分组优化/">
+    <link itemprop="mainEntityOfPage" href="http://jianghao.wang/2019/leetCode算法/Pow(x, n)/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="yeqiaozhu">
@@ -375,7 +377,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">mysql内部临时表和分组优化</h1>
+          <h1 class="post-title" itemprop="name headline">Pow(x, n)</h1>
         
 
         <div class="post-meta">
@@ -387,8 +389,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-16T20:54:41+08:00">
-                2019-02-16
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-05-16T19:44:47+08:00">
+                2019-05-16
               </time>
             
 
@@ -406,9 +408,9 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/mysql/mysql内部临时表和分组优化/#comments" itemprop="discussionUrl">
+                <a href="/2019/leetCode算法/Pow(x, n)/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2019/mysql/mysql内部临时表和分组优化/" itemprop="commentCount"></span>
+                        data-disqus-identifier="2019/leetCode算法/Pow(x, n)/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -436,34 +438,27 @@
       
 
       
-        <p>mysql什么时候使用到内部临时表，通过explain可以看到extra信息里面会显示using temporary。我们知道针对mysql的order by操作，维护了一个内存空间sort_buffer，超出这个内存之后会采用磁盘辅助排序，extra信息中会有using filesort。那么mysql什么时候会有using temporary并且如何进行优化。</p>
-<p>内部临时表，存储过程类似sort_buffer的进化过程，先存内存，后退化到磁盘辅助。可以查看到mysql为内部临时表分配的内存大小：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-- 查看配置temp_table_size大小</span><br><span class="line">show variables like &quot;tmp_table%&quot;</span><br><span class="line">-- result 1KB 超过1KB之后用磁盘存储</span><br><span class="line">tmp_table_size	1024</span><br><span class="line">-- 可以设定temp_table_size内存的大小,global去除只对当前session生效</span><br><span class="line">set global tmp_table_size=1024</span><br></pre></td></tr></table></figure>
-<h4 id="union操作using-temporary"><a href="#union操作using-temporary" class="headerlink" title="union操作using temporary"></a>union操作using temporary</h4><p>union操作的语义，将两个结果集整合到一个结果集，union操作会有using temporary，用到内部临时表。主要由于union操作需要去重，如果是union all操作会直接将结果返回给客户端，不在内部临时表做去重操作。</p>
-<h4 id="group-by操作using-temporary"><a href="#group-by操作using-temporary" class="headerlink" title="group by操作using temporary"></a>group by操作using temporary</h4><p>group by操作的过程：</p>
+        <h3 id="问题描述（难度中等）"><a href="#问题描述（难度中等）" class="headerlink" title="问题描述（难度中等）"></a>问题描述（难度中等）</h3><p>Implement <a href="http://www.cplusplus.com/reference/valarray/pow/" target="_blank" rel="noopener">pow(<em>x</em>, <em>n</em>)</a>, which calculates <em>x</em> raised to the power <em>n</em> (xn).</p>
+<p><strong>Example 1:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Input: 2.00000, 10</span><br><span class="line">Output: 1024.00000</span><br></pre></td></tr></table></figure>
+<p><strong>Example 2:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Input: 2.10000, 3</span><br><span class="line">Output: 9.26100</span><br></pre></td></tr></table></figure>
+<p><strong>Example 3:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Input: 2.00000, -2</span><br><span class="line">Output: 0.25000</span><br><span class="line">Explanation: 2-2 = 1/22 = 1/4 = 0.25</span><br></pre></td></tr></table></figure>
+<p><strong>Note:</strong></p>
 <ul>
-<li>1.根据结果集的字段建立内部临时表，分组id，count两个字段。</li>
-<li>2.全表扫描需要分组的表，如果内部临时表没有对应的分组id，新增一条记录。</li>
-<li>3.如果内部临时表有对应的分组id，直接count++累加。</li>
-<li>4.根据id进行排序order by将结果存在内存或者持久化到临时磁盘表。</li>
+<li>-100.0 &lt; <em>x</em> &lt; 100.0</li>
+<li><em>n</em> is a 32-bit signed integer, within the range [−231, 231 − 1]</li>
 </ul>
-<h4 id="group-by操作索引优化"><a href="#group-by操作索引优化" class="headerlink" title="group by操作索引优化"></a>group by操作索引优化</h4><p>group by操作explain如果extra信息中有using temporary和using filesort，在数据量比较大的情况下会造成慢查询。mysql 5.7以上版本提供关联列更新操作，<strong>generated column关联某列数据的更新。</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-- 增加一列，列的值为id % 100（分组字段） ，然后为该列建立索引（建立索引避免了排序）。generated column操作会关联列，继续新增一条记录即使没有制定值也会通过关联的列的值计算。</span><br><span class="line">alter table t1 add column z int generated always as (id % 100),add index z_index(z);</span><br></pre></td></tr></table></figure>
-<p>通过加索引，避免了使用临时表，同时避免了使用排序（取出来即为有序），也就是extra中不会出现using temporary和using filesort。那么这个过程为什么避免了？</p>
-<ul>
-<li>没有索引的情况下，需要临时表来记录，因为过程无序，并且最终需要排序。</li>
-<li>有索引的情况下本身有序，不需要记录累加的结果，结果在扫描过过程中得到并且是有序的。</li>
-</ul>
-<h4 id="group-by操作存储优化"><a href="#group-by操作存储优化" class="headerlink" title="group by操作存储优化"></a>group by操作存储优化</h4><p>内存临时表容量，也就是tmp_table_size不够大的时候，会退化为磁盘存储，在数据量大的时候直接指定使用磁盘存储。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-- 通过SQL_BIG_RESULT这种方式指定不走内存内存临时表，直接用磁盘临时表。</span><br><span class="line">select SQL_BIG_RESULT id%100 as m, count(*) as c from t1 group by m;</span><br></pre></td></tr></table></figure>
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><ul>
-<li><p>sort_buffer是有序数组，tmp_table_size临时表是二维表结构，具备表的语义，join_buffer是无序数组，均可查看配置大小。</p>
-</li>
-<li><p>执行过程中需要使用二维表结构语义的，优先使用临时表。union操作需要检验唯一约束，需要使用临时表存储。group by需要在过程中用另一个字段计算累加结果。</p>
-</li>
-<li><p>扫描过程中可以直接得到结果的，不需要使用临时表，需要计算的要使用临时表。</p>
-</li>
-</ul>
+<h3 id="递归经典范式"><a href="#递归经典范式" class="headerlink" title="递归经典范式"></a>递归经典范式</h3><p>递归的写法主要包括四个部分，第一个<strong>recursion terminater终止条件</strong>，第二个<strong>process logic in current level当前level需要执行的逻辑</strong>，第三个<strong>drill down进入到下一层</strong>，第四个<strong>reverse the current level status if needed内层结束后继续执行。</strong></p>
+<p><img src="https://arthornye.github.io/images/recursion.jpg" alt="cmd-markdown-logo"></p>
+<h3 id="方法一：递归方式一"><a href="#方法一：递归方式一" class="headerlink" title="方法一：递归方式一"></a>方法一：递归方式一</h3><p>通过递归的方式将n次方的问题拆分成n/2的子问题，时间复杂度减少到logn。<strong>x的n次转换为x^2的n/2次子问题。</strong></p>
+<h3 id="方法一代码"><a href="#方法一代码" class="headerlink" title="方法一代码"></a>方法一代码</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">myPow</span><span class="params">(<span class="keyword">double</span> x, <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(n == <span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">//偶数直接转化为子问题</span></span><br><span class="line">            <span class="keyword">if</span>((n &amp; <span class="number">1</span>)==<span class="number">0</span>)&#123;</span><br><span class="line">                <span class="keyword">return</span> myPow(x*x,n/<span class="number">2</span>);</span><br><span class="line">            &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">return</span> n&lt;<span class="number">0</span>?<span class="number">1</span>/x*myPow(<span class="number">1</span>/x*<span class="number">1</span>/x,n/<span class="number">2</span>):x*myPow(x*x,n/<span class="number">2</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="方法二：递归方式二"><a href="#方法二：递归方式二" class="headerlink" title="方法二：递归方式二"></a>方法二：递归方式二</h3><p>利用递归范式的第四步，<strong>子问题返回的结果乘以自身。</strong></p>
+<h3 id="方法二代码"><a href="#方法二代码" class="headerlink" title="方法二代码"></a>方法二代码</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">myPow1</span><span class="params">(<span class="keyword">double</span> x, <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    	<span class="comment">//</span></span><br><span class="line">        <span class="keyword">if</span>(n == <span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">double</span> temp=myPow(x,n/<span class="number">2</span>);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//偶数直接转化为子问题</span></span><br><span class="line">            <span class="keyword">if</span>((n &amp; <span class="number">1</span>)==<span class="number">0</span>)&#123;</span><br><span class="line">                <span class="keyword">return</span> temp*temp;</span><br><span class="line">            &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">return</span> n&lt;<span class="number">0</span>?<span class="number">1</span>/x*temp*temp:x*temp*temp;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="方法三：非递归方式"><a href="#方法三：非递归方式" class="headerlink" title="方法三：非递归方式"></a>方法三：非递归方式</h3><p>不采用递归的方式。</p>
+<h3 id="方法三代码"><a href="#方法三代码" class="headerlink" title="方法三代码"></a>方法三代码</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">myPow</span><span class="params">(<span class="keyword">double</span> x, <span class="keyword">int</span> n)</span> </span>&#123; </span><br><span class="line">    <span class="keyword">if</span>(n==<span class="number">0</span>) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">if</span>(n&lt;<span class="number">0</span>) &#123;</span><br><span class="line">        n = -n;</span><br><span class="line">        x = <span class="number">1</span>/x;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">double</span> ans = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span>(n&gt;<span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">if</span>(n&amp;<span class="number">1</span>) ans *= x;</span><br><span class="line">        x *= x;</span><br><span class="line">        n &gt;&gt;= <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>这道题主要是理解递归的范式，递归虽然简洁还是需要灵活运用。</p>
 
       
     </div>
@@ -481,7 +476,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/mysql/" rel="tag"># mysql</a>
+            <a href="/tags/leetCode算法/" rel="tag"># leetCode算法</a>
           
         </div>
       
@@ -494,8 +489,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/Java/Java-8异步处理/" rel="next" title="Java 8中异步处理">
-                <i class="fa fa-chevron-left"></i> Java 8中异步处理
+              <a href="/2019/leetCode算法/Median of Two Sorted Arrays/" rel="next" title="Median of Two Sorted Arrays">
+                <i class="fa fa-chevron-left"></i> Median of Two Sorted Arrays
               </a>
             
           </div>
@@ -504,8 +499,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/mysql/mysql中的join操作/" rel="prev" title="mysql中的join操作算法介绍">
-                mysql中的join操作算法介绍 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/leetCode算法/Find All Numbers Disappeared/" rel="prev" title="Find All Numbers Disappeared in an Array">
+                Find All Numbers Disappeared in an Array <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -678,7 +673,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#union操作using-temporary"><span class="nav-number">1.</span> <span class="nav-text">union操作using temporary</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#group-by操作using-temporary"><span class="nav-number">2.</span> <span class="nav-text">group by操作using temporary</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#group-by操作索引优化"><span class="nav-number">3.</span> <span class="nav-text">group by操作索引优化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#group-by操作存储优化"><span class="nav-number">4.</span> <span class="nav-text">group by操作存储优化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#总结"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#问题描述（难度中等）"><span class="nav-number">1.</span> <span class="nav-text">问题描述（难度中等）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#递归经典范式"><span class="nav-number">2.</span> <span class="nav-text">递归经典范式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法一：递归方式一"><span class="nav-number">3.</span> <span class="nav-text">方法一：递归方式一</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法一代码"><span class="nav-number">4.</span> <span class="nav-text">方法一代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法二：递归方式二"><span class="nav-number">5.</span> <span class="nav-text">方法二：递归方式二</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法二代码"><span class="nav-number">6.</span> <span class="nav-text">方法二代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法三：非递归方式"><span class="nav-number">7.</span> <span class="nav-text">方法三：非递归方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法三代码"><span class="nav-number">8.</span> <span class="nav-text">方法三代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">9.</span> <span class="nav-text">总结</span></a></li></ol></div>
             
 
           </div>
@@ -861,9 +856,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'http://jianghao.wang/2019/mysql/mysql内部临时表和分组优化/';
-          this.page.identifier = '2019/mysql/mysql内部临时表和分组优化/';
-          this.page.title = 'mysql内部临时表和分组优化';
+          this.page.url = 'http://jianghao.wang/2019/leetCode算法/Pow(x, n)/';
+          this.page.identifier = '2019/leetCode算法/Pow(x, n)/';
+          this.page.title = 'Pow(x, n)';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://tizzy323.disqus.com/embed.js';
