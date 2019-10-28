@@ -134,7 +134,8 @@
 <meta property="og:description" content="问题描述（难度中等）Given a binary tree, find the lowest common ancestor (LCA) of two given nodes in the tree. According to the definition of LCA on Wikipedia: “The lowest common ancestor is defined between two">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://assets.leetcode.com/uploads/2018/12/14/binarytree.png">
-<meta property="og:updated_time" content="2019-10-28T03:22:07.375Z">
+<meta property="og:image" content="https://arthornye.github.io/images/lowest.jpg">
+<meta property="og:updated_time" content="2019-10-28T03:38:20.817Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Lowest Common Ancestor of a Binary Tree">
 <meta name="twitter:description" content="问题描述（难度中等）Given a binary tree, find the lowest common ancestor (LCA) of two given nodes in the tree. According to the definition of LCA on Wikipedia: “The lowest common ancestor is defined between two">
@@ -453,6 +454,8 @@
 </ul>
 <h3 id="方法一：递归实现"><a href="#方法一：递归实现" class="headerlink" title="方法一：递归实现"></a>方法一：递归实现</h3><p>递归的方式，左右子树递归，返回一个符合条件的节点。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> P236;</span><br><span class="line"><span class="keyword">import</span> CommonUtils.TreeNodeUtils;</span><br><span class="line"><span class="keyword">import</span> P104.TreeNode;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"> * public class TreeNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     TreeNode left;</span></span><br><span class="line"><span class="comment"> *     TreeNode right;</span></span><br><span class="line"><span class="comment"> *     TreeNode(int x) &#123; val = x; &#125;</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> TreeNode <span class="title">lowestCommonAncestor</span><span class="params">(TreeNode root, TreeNode p, TreeNode q)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(root==<span class="keyword">null</span> || root.val==p.val || root.val==q.val)&#123;</span><br><span class="line">            <span class="keyword">return</span> root;</span><br><span class="line">        &#125;</span><br><span class="line">        TreeNode left=lowestCommonAncestor(root.left,p,q);</span><br><span class="line">        TreeNode right=lowestCommonAncestor(root.right,p,q);</span><br><span class="line">        <span class="keyword">if</span> (left!=<span class="keyword">null</span> &amp;&amp; right!=<span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> root;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> left!=<span class="keyword">null</span>?left:right;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span>[] ints=&#123;<span class="number">3</span>,<span class="number">5</span>,<span class="number">1</span>,<span class="number">6</span>,<span class="number">2</span>,<span class="number">0</span>,<span class="number">8</span>,<span class="number">7</span>,<span class="number">4</span>&#125;;</span><br><span class="line">        TreeNode treeNode=TreeNodeUtils.buildTreeNodeUsingArray(ints);</span><br><span class="line">        <span class="keyword">new</span> Solution().lowestCommonAncestor(treeNode,treeNode.left.left,treeNode.right);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>算法参考左序遍历：</p>
+<p><img src="https://arthornye.github.io/images/lowest.jpg" alt="cmd-markdown-logo"></p>
 
       
     </div>
@@ -492,6 +495,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/leetCode算法/P647 Palindromic Substrings/" rel="prev" title="Palindromic Substrings">
+                Palindromic Substrings <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -582,7 +589,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">83</span>
+                  <span class="site-state-item-count">84</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
