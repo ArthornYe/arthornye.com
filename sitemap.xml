@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://jianghao.wang/2019/leetCode%E7%AE%97%E6%B3%95/P543%20Diameter%20of%20Binary%20Tree/</loc>
+    
+    <lastmod>2019-10-29T13:50:44.352Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://jianghao.wang/2019/leetCode%E7%AE%97%E6%B3%95/P338%20Counting%20Bits/</loc>
+    
+    <lastmod>2019-10-29T05:40:42.133Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://jianghao.wang/2019/leetCode%E7%AE%97%E6%B3%95/P647%20Palindromic%20Substrings/</loc>
     
     <lastmod>2019-10-28T15:01:32.305Z</lastmod>
