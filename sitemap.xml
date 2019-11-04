@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://jianghao.wang/2019/leetCode%E7%AE%97%E6%B3%95/Sliding%20Window%E7%AE%97%E6%B3%95%E9%80%9A%E7%94%A8%E6%80%BB%E7%BB%93/</loc>
+    
+    <lastmod>2019-11-04T14:49:08.176Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://jianghao.wang/2019/leetCode%E7%AE%97%E6%B3%95/P560%20Subarray%20Sum%20Equals%20K/</loc>
     
     <lastmod>2019-10-31T14:13:06.243Z</lastmod>

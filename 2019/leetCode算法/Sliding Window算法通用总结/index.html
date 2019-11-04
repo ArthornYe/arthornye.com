@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="default">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="leetCode算法," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="TizzyT's Blog" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="本文主要针对Sliding Window类型的算法进行总结归纳解题模板，适用于大部分解决字符串子问题的算法。这里将列举一下比较有代表性的，在每个解题的代码中都标注了一些具体的模版规则。 Sliding Window Template（解题模板）Sliding Window问题模板代码： 12345678910111213141516171819202122232425262728293031323">
+<meta name="keywords" content="leetCode算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Sliding Window算法通用总结">
+<meta property="og:url" content="http://jianghao.wang/2019/leetCode算法/Sliding Window算法通用总结/index.html">
+<meta property="og:site_name" content="TizzyT&#39;s Blog">
+<meta property="og:description" content="本文主要针对Sliding Window类型的算法进行总结归纳解题模板，适用于大部分解决字符串子问题的算法。这里将列举一下比较有代表性的，在每个解题的代码中都标注了一些具体的模版规则。 Sliding Window Template（解题模板）Sliding Window问题模板代码： 12345678910111213141516171819202122232425262728293031323">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-11-04T14:49:08.176Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Sliding Window算法通用总结">
+<meta name="twitter:description" content="本文主要针对Sliding Window类型的算法进行总结归纳解题模板，适用于大部分解决字符串子问题的算法。这里将列举一下比较有代表性的，在每个解题的代码中都标注了一些具体的模版规则。 Sliding Window Template（解题模板）Sliding Window问题模板代码： 12345678910111213141516171819202122232425262728293031323">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://jianghao.wang/2019/leetCode算法/Sliding Window算法通用总结/"/>
+
+
+
+
+
+  <title>Sliding Window算法通用总结 | TizzyT's Blog</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-62782471-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?50c15455e37f70aea674ff4a663eef27";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">TizzyT's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">即使是拖后腿的，拼死努力的话，也是可以超越精英的。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            Schedule
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            Sitemap
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            Commonweal 404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://jianghao.wang/2019/leetCode算法/Sliding Window算法通用总结/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yeqiaozhu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="TizzyT's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Sliding Window算法通用总结</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-11-01T17:23:05+08:00">
+                2019-11-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/leetCode算法/Sliding Window算法通用总结/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/leetCode算法/Sliding Window算法通用总结/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>本文主要针对Sliding Window类型的算法进行总结归纳解题模板，适用于大部分解决字符串子问题的算法。这里将列举一下比较有代表性的，在每个解题的代码中都标注了一些具体的模版规则。</p>
+<h3 id="Sliding-Window-Template（解题模板）"><a href="#Sliding-Window-Template（解题模板）" class="headerlink" title="Sliding Window Template（解题模板）"></a>Sliding Window Template（解题模板）</h3><p>Sliding Window问题模板代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;Integer&gt; <span class="title">slidingWindowTemplate</span><span class="params">(String s, String t)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//初始化返回的结果集</span></span><br><span class="line">        List&lt;Integer&gt; result = <span class="keyword">new</span> LinkedList&lt;&gt;();</span><br><span class="line">        <span class="keyword">if</span>(t.length()&gt; s.length()) <span class="keyword">return</span> result;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//通过hashmap存储目标子串的所有字符</span></span><br><span class="line">        <span class="comment">//(K, V) = (Character, 字符出现的次数/频率)</span></span><br><span class="line">        Map&lt;Character, Integer&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">char</span> c : t.toCharArray())&#123;</span><br><span class="line">            map.put(c, map.getOrDefault(c, <span class="number">0</span>) + <span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//维护一个标志位，标记当前窗口(begin,end)是否包含hashmap中目标子串</span></span><br><span class="line">        <span class="keyword">int</span> counter = map.size();<span class="comment">//一定要是map的长度，因为可能会有重复字符</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment">//双指针，一个开头一个结尾</span></span><br><span class="line">        <span class="keyword">int</span> begin = <span class="number">0</span>, end = <span class="number">0</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//辅助判断条件.</span></span><br><span class="line">        <span class="keyword">int</span> len = Integer.MAX_VALUE; </span><br><span class="line">        </span><br><span class="line">        <span class="comment">//开始循环sliding window 移动end右窗口的位置</span></span><br><span class="line">        <span class="keyword">while</span>(end &lt; s.length())&#123;</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">char</span> c = s.charAt(end);<span class="comment">//获取一个字符</span></span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span>( map.containsKey(c) )&#123;</span><br><span class="line">                map.put(c, map.get(c)-<span class="number">1</span>);<span class="comment">//减少key对应value的值</span></span><br><span class="line">                <span class="keyword">if</span>(map.get(c) == <span class="number">0</span>) counter--;<span class="comment">//如果hashmap中的key的value全部消耗完，减少counter</span></span><br><span class="line">            &#125;</span><br><span class="line">            end++;</span><br><span class="line">            </span><br><span class="line">            <span class="comment">//当counter标志位符合要求的时候 移动begin左窗口的位置</span></span><br><span class="line">            <span class="keyword">while</span>(counter == <span class="number">0</span> <span class="comment">/* counter condition. different question may have different condition */</span>)&#123;</span><br><span class="line">                </span><br><span class="line">                <span class="keyword">char</span> tempc = s.charAt(begin);<span class="comment">//选择左窗口begin当前位置的字符</span></span><br><span class="line">                <span class="keyword">if</span>(map.containsKey(tempc))&#123;</span><br><span class="line">                    map.put(tempc, map.get(tempc) + <span class="number">1</span>);<span class="comment">//如果当前的begin所在的字符在map中存在，更新对应key位置value+1</span></span><br><span class="line">                    <span class="keyword">if</span>(map.get(tempc) &gt; <span class="number">0</span>) counter++;<span class="comment">//如果当前map中的key对应value大于0，counter标志位增加，跳出循环，让end继续往后滑</span></span><br><span class="line">                &#125;</span><br><span class="line">                </span><br><span class="line">                <span class="comment">//判断当前的窗口是否满足其他条件，不同的问题主要是这里不同</span></span><br><span class="line">                <span class="comment">//如果是最小子串，那么判断当前的窗口是否更小 存下更小的</span></span><br><span class="line">                <span class="comment">//如果是包含子串的列表 那么保存每个窗口</span></span><br><span class="line">           </span><br><span class="line">                begin++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="P438-Find-All-Anagrams-in-a-String"><a href="#P438-Find-All-Anagrams-in-a-String" class="headerlink" title="P438. Find All Anagrams in a String"></a><strong>P438. Find All Anagrams in a String</strong></h3><h4 id="问题描述（难度中等）"><a href="#问题描述（难度中等）" class="headerlink" title="问题描述（难度中等）"></a>问题描述（难度中等）</h4><p>Given a string <strong>s</strong> and a <strong>non-empty</strong> string <strong>p</strong>, find all the start indices of <strong>p</strong>‘s anagrams in <strong>s</strong>.</p>
+<p>Strings consists of lowercase English letters only and the length of both strings <strong>s</strong> and <strong>p</strong> will not be larger than 20,100.</p>
+<p>The order of output does not matter.</p>
+<p><strong>Example 1:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Input:</span><br><span class="line">s: &quot;cbaebabacd&quot; p: &quot;abc&quot;</span><br><span class="line"></span><br><span class="line">Output:</span><br><span class="line">[0, 6]</span><br><span class="line"></span><br><span class="line">Explanation:</span><br><span class="line">The substring with start index = 0 is &quot;cba&quot;, which is an anagram of &quot;abc&quot;.</span><br><span class="line">The substring with start index = 6 is &quot;bac&quot;, which is an anagram of &quot;abc&quot;.</span><br></pre></td></tr></table></figure>
+<p><strong>Example 2:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Input:</span><br><span class="line">s: &quot;abab&quot; p: &quot;ab&quot;</span><br><span class="line"></span><br><span class="line">Output:</span><br><span class="line">[0, 1, 2]</span><br><span class="line"></span><br><span class="line">Explanation:</span><br><span class="line">The substring with start index = 0 is &quot;ab&quot;, which is an anagram of &quot;ab&quot;.</span><br><span class="line">The substring with start index = 1 is &quot;ba&quot;, which is an anagram of &quot;ab&quot;.</span><br><span class="line">The substring with start index = 2 is &quot;ab&quot;, which is an anagram of &quot;ab&quot;.</span><br></pre></td></tr></table></figure>
+<h4 id="解题代码"><a href="#解题代码" class="headerlink" title="解题代码"></a>解题代码</h4><p>利用Sliding Window算法。代码如下，备注部分思路模板。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> P438;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="keyword">import</span> java.util.HashMap;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"><span class="keyword">import</span> java.util.Map;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * using slide window</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;Integer&gt; <span class="title">findAnagrams</span><span class="params">(String s, String p)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> begin=<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> end=<span class="number">0</span>;</span><br><span class="line">        List&lt;Integer&gt; result=<span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        <span class="comment">//构造子串的map</span></span><br><span class="line">        Map&lt;Character,Integer&gt; pMap=<span class="keyword">new</span> HashMap&lt;&gt;(<span class="number">128</span>,<span class="number">0.75f</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; p.length(); i++) &#123;</span><br><span class="line">            pMap.put(p.charAt(i),pMap.getOrDefault(p.charAt(i),<span class="number">0</span>)+<span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> count=pMap.size();</span><br><span class="line">        <span class="keyword">while</span> (end&lt;s.length())&#123;</span><br><span class="line">            Character currentChar=s.charAt(end);</span><br><span class="line">            <span class="comment">//如果当前key在pMap中</span></span><br><span class="line">            <span class="keyword">if</span> (pMap.containsKey(currentChar)) &#123;</span><br><span class="line">                <span class="comment">//pMap值-1</span></span><br><span class="line">                pMap.put(currentChar,pMap.get(currentChar)-<span class="number">1</span>);</span><br><span class="line">                <span class="comment">//当前key全部减完 count更新</span></span><br><span class="line">                <span class="keyword">if</span> (pMap.get(currentChar)==<span class="number">0</span>) &#123;</span><br><span class="line">                    count--;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            end++;</span><br><span class="line">            <span class="comment">//如果count目标减为0 从begin开始加回去</span></span><br><span class="line">            <span class="keyword">while</span> (count==<span class="number">0</span>) &#123;</span><br><span class="line">                Character c=s.charAt(begin);</span><br><span class="line">                <span class="keyword">if</span> (pMap.containsKey(c)) &#123;</span><br><span class="line">                    pMap.put(c,pMap.get(c)+<span class="number">1</span>);</span><br><span class="line">                    <span class="keyword">if</span> (pMap.get(c)&gt;<span class="number">0</span>) &#123;</span><br><span class="line">                        count++;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">//记录当前的begin的位置之后继续遍历</span></span><br><span class="line">                <span class="comment">//这里可以判断下当前是否满足条件</span></span><br><span class="line">                <span class="keyword">if</span> ((end-begin)==p.length()) &#123;</span><br><span class="line">                    result.add(begin);</span><br><span class="line">                &#125;</span><br><span class="line">                begin++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">new</span> Solution().findAnagrams(<span class="string">"cbaebabacd"</span>,<span class="string">"abc"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="P76-Minimum-Window-Substring"><a href="#P76-Minimum-Window-Substring" class="headerlink" title="P76. Minimum Window Substring"></a>P76. Minimum Window Substring</h3><p>####问题描述（难度偏难）</p>
+<p>Given a string S and a string T, find the minimum window in S which will contain all the characters in T in complexity O(n).</p>
+<p><strong>Example:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Input: S = &quot;ADOBECODEBANC&quot;, T = &quot;ABC&quot;</span><br><span class="line">Output: &quot;BANC&quot;</span><br></pre></td></tr></table></figure>
+<p><strong>Note:</strong></p>
+<ul>
+<li>If there is no such window in S that covers all characters in T, return the empty string <code>&quot;&quot;</code>.</li>
+<li>If there is such window, you are guaranteed that there will always be only one unique minimum window in S.</li>
+</ul>
+<h4 id="解题代码-1"><a href="#解题代码-1" class="headerlink" title="解题代码"></a>解题代码</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> P76;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.HashMap;</span><br><span class="line"><span class="keyword">import</span> java.util.Map;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * sliding window</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">minWindow</span><span class="params">(String s, String t)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//定义sliding begin位置 end位置 结束标记counter计数器</span></span><br><span class="line">        <span class="keyword">int</span> begin=<span class="number">0</span>,end=<span class="number">0</span>,counter;</span><br><span class="line">        Integer len=s.length();</span><br><span class="line">        String target=<span class="string">""</span>;</span><br><span class="line">        Map&lt;Character,Integer&gt; tMap=<span class="keyword">new</span> HashMap&lt;&gt;(<span class="number">129</span>,<span class="number">0.75f</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; t.length(); i++) &#123;</span><br><span class="line">            tMap.put(t.charAt(i),tMap.getOrDefault(t.charAt(i),<span class="number">0</span>)+<span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        counter=tMap.size();</span><br><span class="line">        <span class="comment">//开始主循环</span></span><br><span class="line">        <span class="keyword">while</span> (end&lt;s.length())&#123;</span><br><span class="line">            <span class="comment">//判断当前的end位置是否在tmap中存在</span></span><br><span class="line">            <span class="keyword">if</span> (tMap.containsKey(s.charAt(end))) &#123;</span><br><span class="line">                <span class="comment">//如果存在的话就从tmap中踢掉一个</span></span><br><span class="line">                tMap.put(s.charAt(end),tMap.get(s.charAt(end))-<span class="number">1</span>);</span><br><span class="line">                <span class="comment">//如果当前位置减掉之后变成零了 就更新counter计数器</span></span><br><span class="line">                <span class="keyword">if</span> (tMap.get(s.charAt(end))==<span class="number">0</span>) &#123;</span><br><span class="line">                    counter--;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//继续执行遍历哟</span></span><br><span class="line">            end++;</span><br><span class="line">            <span class="comment">//每次都可以判断下counter是否等于零 等于0的话说明当前的begin和end位置是符合条件的（t中所有元素在当前窗口都存在）</span></span><br><span class="line">            <span class="comment">//确定到这个窗口之后，需要将begin往前推，也就是窗口继续向前滑动</span></span><br><span class="line">            <span class="keyword">while</span> (counter==<span class="number">0</span>)&#123;</span><br><span class="line">                <span class="keyword">if</span> (tMap.containsKey(s.charAt(begin))) &#123;</span><br><span class="line">                    tMap.put(s.charAt(begin),tMap.get(s.charAt(begin))+<span class="number">1</span>);</span><br><span class="line">                    <span class="keyword">if</span> (tMap.get(s.charAt(begin))&gt;<span class="number">0</span>) &#123;</span><br><span class="line">                        counter++;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">//判断下当前的窗口是否满足条件，这里的话只需要满足完全存在的条件也就是如果当前窗口定位到的是abcde 但是目标窗口是abe也可以返回</span></span><br><span class="line">                <span class="keyword">if</span> (end-begin&lt;=len) &#123;</span><br><span class="line">                    len=end-begin;</span><br><span class="line">                    target=s.substring(begin,end);</span><br><span class="line">                &#125;</span><br><span class="line">                begin++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> target;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">new</span> Solution().minWindow(<span class="string">"ADOBECODEBANC"</span>,<span class="string">"ABC"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="P30-Substring-with-Concatenation-of-All-Words"><a href="#P30-Substring-with-Concatenation-of-All-Words" class="headerlink" title="P30. Substring with Concatenation of All Words"></a>P30. Substring with Concatenation of All Words</h3><h4 id="问题描述（难度偏难）"><a href="#问题描述（难度偏难）" class="headerlink" title="问题描述（难度偏难）"></a>问题描述（难度偏难）</h4><p>You are given a string, <strong>s</strong>, and a list of words, <strong>words</strong>, that are all of the same length. Find all starting indices of substring(s) in <strong>s</strong> that is a concatenation of each word in <strong>words</strong> exactly once and without any intervening characters.</p>
+<p><strong>Example 1:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Input:</span><br><span class="line">  s = &quot;barfoothefoobarman&quot;,</span><br><span class="line">  words = [&quot;foo&quot;,&quot;bar&quot;]</span><br><span class="line">Output: [0,9]</span><br><span class="line">Explanation: Substrings starting at index 0 and 9 are &quot;barfoo&quot; and &quot;foobar&quot; respectively.</span><br><span class="line">The output order does not matter, returning [9,0] is fine too.</span><br></pre></td></tr></table></figure>
+<p><strong>Example 2:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Input:</span><br><span class="line">  s = &quot;wordgoodgoodgoodbestword&quot;,</span><br><span class="line">  words = [&quot;word&quot;,&quot;good&quot;,&quot;best&quot;,&quot;word&quot;]</span><br><span class="line">Output: []</span><br></pre></td></tr></table></figure>
+<h4 id="解题代码-2"><a href="#解题代码-2" class="headerlink" title="解题代码"></a>解题代码</h4><p>这道题关键点是words的数组中单词的长度是一致的，实际上演变为sliding window的变型，时间复杂度依旧是O(N)。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> P30;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="keyword">import</span> java.util.HashMap;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"><span class="keyword">import</span> java.util.Map;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * sliding window template</span></span><br><span class="line"><span class="comment"> * 时间复杂度O(N)</span></span><br><span class="line"><span class="comment"> * 空间复杂度O(N)</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;Integer&gt; <span class="title">findSubstring</span><span class="params">(String s, String[] words)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//定义存结果的list</span></span><br><span class="line">        List&lt;Integer&gt; result=<span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        <span class="keyword">if</span> (s==<span class="keyword">null</span> || s.length()==<span class="number">0</span> || words==<span class="keyword">null</span> || words.length==<span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> result;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//定义位置 起点 终点 每次跳动的距离 定义一个counter标志</span></span><br><span class="line">        <span class="keyword">int</span> begin=<span class="number">0</span>,end=<span class="number">0</span>,step=words[<span class="number">0</span>].length(),counter;</span><br><span class="line">        <span class="comment">//将word的列表存到map中</span></span><br><span class="line">        Map&lt;String,Integer&gt; wordsMap=<span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">        <span class="keyword">for</span> (String word : words) &#123;</span><br><span class="line">            wordsMap.put(word,wordsMap.getOrDefault(word,<span class="number">0</span>)+<span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//设置counter默认值</span></span><br><span class="line">        counter=wordsMap.size();</span><br><span class="line">        <span class="comment">//sliding template 循环</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; step; i++) &#123;</span><br><span class="line">            begin=i;end=i;</span><br><span class="line">            <span class="keyword">while</span> (end+step&lt;=s.length())&#123;</span><br><span class="line">                String curString=s.substring(end,end+step);</span><br><span class="line">                <span class="keyword">if</span> (wordsMap.containsKey(curString)) &#123;</span><br><span class="line">                    wordsMap.put(curString,wordsMap.get(curString)-<span class="number">1</span>);</span><br><span class="line">                    <span class="keyword">if</span> (wordsMap.get(curString)==<span class="number">0</span>) &#123;</span><br><span class="line">                        counter--;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                end+=step;</span><br><span class="line">                <span class="keyword">while</span> (counter==<span class="number">0</span>)&#123;</span><br><span class="line">                    String beginS=s.substring(begin,begin+step);</span><br><span class="line">                    <span class="keyword">if</span> (wordsMap.containsKey(beginS)) &#123;</span><br><span class="line">                        wordsMap.put(beginS,wordsMap.get(beginS)+<span class="number">1</span>);</span><br><span class="line">                        <span class="keyword">if</span> (wordsMap.get(beginS)&gt;<span class="number">0</span>) &#123;</span><br><span class="line">                            counter++;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="comment">//满足条件的存下来</span></span><br><span class="line">                    <span class="keyword">if</span> (end-begin==step*words.length) &#123;</span><br><span class="line">                        result.add(begin);</span><br><span class="line">                    &#125;</span><br><span class="line">                    begin+=step;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            wordsMap.clear();</span><br><span class="line">            <span class="keyword">for</span> (String word : words) &#123;</span><br><span class="line">                wordsMap.put(word,wordsMap.getOrDefault(word,<span class="number">0</span>)+<span class="number">1</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            counter=wordsMap.size();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        String[] words=&#123;<span class="string">"ab"</span>,<span class="string">"ba"</span>,<span class="string">"ba"</span>&#125;;</span><br><span class="line">        String s=<span class="string">"ababaab"</span>;</span><br><span class="line">        <span class="keyword">new</span> Solution().findSubstring(s,words);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="P567-Permutation-in-String"><a href="#P567-Permutation-in-String" class="headerlink" title="P567. Permutation in String"></a>P567. Permutation in String</h3><p>####问题描述（难度中等）</p>
+<p>Given two strings <strong>s1</strong> and <strong>s2</strong>, write a function to return true if <strong>s2</strong> contains the permutation of <strong>s1</strong>. In other words, one of the first string’s permutations is the <strong>substring</strong> of the second string.</p>
+<p><strong>Example 1:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Input: s1 = &quot;ab&quot; s2 = &quot;eidbaooo&quot;</span><br><span class="line">Output: True</span><br><span class="line">Explanation: s2 contains one permutation of s1 (&quot;ba&quot;).</span><br></pre></td></tr></table></figure>
+<p><strong>Example 2:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Input:s1= &quot;ab&quot; s2 = &quot;eidboaoo&quot;</span><br><span class="line">Output: False</span><br></pre></td></tr></table></figure>
+<p><strong>Note:</strong></p>
+<ol>
+<li>The input strings only contain lower case letters.</li>
+<li>The length of both given strings is in range [1, 10,000].</li>
+</ol>
+<h4 id="解题代码-3"><a href="#解题代码-3" class="headerlink" title="解题代码"></a>解题代码</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> P567;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.HashMap;</span><br><span class="line"><span class="keyword">import</span> java.util.Map;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * sliding window</span></span><br><span class="line"><span class="comment"> * begin和end中间的部分为窗口 注意不包括begin和end</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">checkInclusion</span><span class="params">(String s1, String s2)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//定义前后窗口</span></span><br><span class="line">        <span class="keyword">int</span> begin=<span class="number">0</span>,end=<span class="number">0</span>,counter;</span><br><span class="line">        <span class="keyword">if</span> (s1==<span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (s2==<span class="keyword">null</span> || s1.length()&gt;s2.length()) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//将s1字符存到map</span></span><br><span class="line">        Map&lt;Character,Integer&gt; sMap=<span class="keyword">new</span> HashMap&lt;&gt;(s1.length()*<span class="number">2</span>,<span class="number">0.75f</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; s1.length(); i++) &#123;</span><br><span class="line">            <span class="keyword">char</span> charC=s1.charAt(i);</span><br><span class="line">            sMap.put(charC,sMap.getOrDefault(charC,<span class="number">0</span>)+<span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        counter=sMap.size();</span><br><span class="line">        <span class="comment">//开始循环</span></span><br><span class="line">        <span class="keyword">while</span> (end&lt;s2.length())&#123;</span><br><span class="line">            <span class="keyword">char</span> endChar=s2.charAt(end);</span><br><span class="line">            <span class="keyword">if</span> (sMap.containsKey(endChar)) &#123;</span><br><span class="line">                sMap.put(endChar,sMap.get(endChar)-<span class="number">1</span>);</span><br><span class="line">                <span class="keyword">if</span> (sMap.get(s2.charAt(end))==<span class="number">0</span>) &#123;</span><br><span class="line">                    counter--;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            end++;</span><br><span class="line">            <span class="keyword">while</span> (counter==<span class="number">0</span>)&#123;</span><br><span class="line">                <span class="keyword">char</span> beginChar=s2.charAt(begin);</span><br><span class="line">                <span class="keyword">if</span> (sMap.containsKey(beginChar)) &#123;</span><br><span class="line">                    sMap.put(beginChar,sMap.get(beginChar)+<span class="number">1</span>);</span><br><span class="line">                    <span class="keyword">if</span> (sMap.get(beginChar)&gt;<span class="number">0</span>) &#123;</span><br><span class="line">                        counter++;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">//判断满足条件返回</span></span><br><span class="line">                <span class="keyword">if</span> ((end-begin)==s1.length()) &#123;</span><br><span class="line">                    <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                begin++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="keyword">new</span> Solution().checkInclusion(<span class="string">"ab"</span>,<span class="string">"eidbaooo"</span>));</span><br><span class="line">        System.out.println(<span class="keyword">new</span> Solution().checkInclusion(<span class="string">"ab"</span>,<span class="string">"eeidboaoo"</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="P424-Longest-Repeating-Character-Replacement"><a href="#P424-Longest-Repeating-Character-Replacement" class="headerlink" title="P424. Longest Repeating Character Replacement"></a>P424. Longest Repeating Character Replacement</h3><p>####问题描述（难度中等）</p>
+<p>Given a string <code>s</code> that consists of only uppercase English letters, you can perform at most <code>k</code> operations on that string.</p>
+<p>In one operation, you can choose <strong>any</strong> character of the string and change it to any other uppercase English character.</p>
+<p>Find the length of the longest sub-string containing all repeating letters you can get after performing the above operations.</p>
+<p><strong>Note:</strong><br>Both the string’s length and <em>k</em> will not exceed 104.</p>
+<p><strong>Example 1:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Input:</span><br><span class="line">s = &quot;ABAB&quot;, k = 2</span><br><span class="line"></span><br><span class="line">Output:</span><br><span class="line">4</span><br><span class="line"></span><br><span class="line">Explanation:</span><br><span class="line">Replace the two &apos;A&apos;s with two &apos;B&apos;s or vice versa.</span><br></pre></td></tr></table></figure>
+<p><strong>Example 2:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Input:</span><br><span class="line">s = &quot;AABABBA&quot;, k = 1</span><br><span class="line"></span><br><span class="line">Output:</span><br><span class="line">4</span><br><span class="line"></span><br><span class="line">Explanation:</span><br><span class="line">Replace the one &apos;A&apos; in the middle with &apos;B&apos; and form &quot;AABBBBA&quot;.</span><br><span class="line">The substring &quot;BBBB&quot; has the longest repeating letters, which is 4.</span><br></pre></td></tr></table></figure>
+<h4 id="解题代码-4"><a href="#解题代码-4" class="headerlink" title="解题代码"></a>解题代码</h4><h5 id="方法一：HashMap-N-2"><a href="#方法一：HashMap-N-2" class="headerlink" title="方法一：HashMap(N^2)"></a>方法一：HashMap(N^2)</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> P424;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">characterReplacement</span><span class="params">(String s, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//定义滑动窗口左窗口和右窗口</span></span><br><span class="line">        <span class="keyword">int</span> begin=<span class="number">0</span>,end=<span class="number">0</span>;</span><br><span class="line">        <span class="comment">//定义一个hashmap用于存储滑动窗口中的key value统计值</span></span><br><span class="line">        Map&lt;Character,Integer&gt; countMap=<span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">        <span class="comment">//定义返回的最大值</span></span><br><span class="line">        <span class="keyword">int</span> maxResult=<span class="number">0</span>;</span><br><span class="line">        <span class="comment">//开始循环右窗口</span></span><br><span class="line">        <span class="keyword">while</span> (end&lt;s.length())&#123;</span><br><span class="line">            countMap.put(s.charAt(end),countMap.getOrDefault(s.charAt(end),<span class="number">0</span>)+<span class="number">1</span>);</span><br><span class="line">            end++;</span><br><span class="line">            <span class="comment">//如果当前的窗口已经超出了满足条件的返回 也就是maxCount+k&gt;end-begin</span></span><br><span class="line">            <span class="keyword">while</span> ((end-begin)-getMax(countMap)&gt;k)&#123;</span><br><span class="line">                <span class="keyword">char</span> begingChar=s.charAt(begin);</span><br><span class="line">                countMap.put(begingChar,countMap.get(begingChar)-<span class="number">1</span>);</span><br><span class="line">                begin++;</span><br><span class="line">            &#125;</span><br><span class="line">            maxResult=end-begin&gt;maxResult?end-begin:maxResult;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> maxResult;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getMax</span><span class="params">(Map&lt;Character,Integer&gt; map)</span></span>&#123;</span><br><span class="line">        <span class="keyword">int</span> max=<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (Integer value : map.values()) &#123;</span><br><span class="line">            max=value&gt;max?value:max;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> max;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">new</span> Solution().characterReplacement(<span class="string">"AABABBA"</span>,<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="方法二：一遍遍历-N"><a href="#方法二：一遍遍历-N" class="headerlink" title="方法二：一遍遍历(N)"></a>方法二：一遍遍历(N)</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">characterReplacement</span><span class="params">(String s, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> len = s.length();</span><br><span class="line">        <span class="keyword">int</span>[] count = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">26</span>];</span><br><span class="line">        <span class="keyword">int</span> start = <span class="number">0</span>, maxCount = <span class="number">0</span>, maxLength = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> end = <span class="number">0</span>; end &lt; len; end++) &#123;</span><br><span class="line">            maxCount = Math.max(maxCount, ++count[s.charAt(end) - <span class="string">'A'</span>]);</span><br><span class="line">            <span class="keyword">while</span> (end - start + <span class="number">1</span> - maxCount &gt; k) &#123;</span><br><span class="line">                count[s.charAt(start) - <span class="string">'A'</span>]--;</span><br><span class="line">                start++;</span><br><span class="line">            &#125;</span><br><span class="line">            maxLength = Math.max(maxLength, end - start + <span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> maxLength;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>主要总结下Sliding Window的模板。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/leetCode算法/" rel="tag"># leetCode算法</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/并发学习/HashMap的ConcurrentModificationException/" rel="next" title="">
+                <i class="fa fa-chevron-left"></i> 
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/avatar.jpg"
+                alt="yeqiaozhu" />
+            
+              <p class="site-author-name" itemprop="name">yeqiaozhu</p>
+              <p class="site-description motion-element" itemprop="description">Walk steps step by step</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">89</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/ArthornYe" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="http://www.linkedin.com/profile/view?id=137337693" target="_blank" title="Lindedin">
+                    
+                      <i class="fa fa-fw fa-globe"></i>Lindedin</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="http://www.zhihu.com/people/wang-jiang-hao-51" target="_blank" title="ZhiHu">
+                    
+                      <i class="fa fa-fw fa-globe"></i>ZhiHu</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+            <div class="cc-license motion-element" itemprop="license">
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" target="_blank">
+                <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+              </a>
+            </div>
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Sliding-Window-Template（解题模板）"><span class="nav-number">1.</span> <span class="nav-text">Sliding Window Template（解题模板）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#P438-Find-All-Anagrams-in-a-String"><span class="nav-number">2.</span> <span class="nav-text">P438. Find All Anagrams in a String</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#问题描述（难度中等）"><span class="nav-number">2.1.</span> <span class="nav-text">问题描述（难度中等）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#解题代码"><span class="nav-number">2.2.</span> <span class="nav-text">解题代码</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#P76-Minimum-Window-Substring"><span class="nav-number">3.</span> <span class="nav-text">P76. Minimum Window Substring</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#解题代码-1"><span class="nav-number">3.1.</span> <span class="nav-text">解题代码</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#P30-Substring-with-Concatenation-of-All-Words"><span class="nav-number">4.</span> <span class="nav-text">P30. Substring with Concatenation of All Words</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#问题描述（难度偏难）"><span class="nav-number">4.1.</span> <span class="nav-text">问题描述（难度偏难）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#解题代码-2"><span class="nav-number">4.2.</span> <span class="nav-text">解题代码</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#P567-Permutation-in-String"><span class="nav-number">5.</span> <span class="nav-text">P567. Permutation in String</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#解题代码-3"><span class="nav-number">5.1.</span> <span class="nav-text">解题代码</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#P424-Longest-Repeating-Character-Replacement"><span class="nav-number">6.</span> <span class="nav-text">P424. Longest Repeating Character Replacement</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#解题代码-4"><span class="nav-number">6.1.</span> <span class="nav-text">解题代码</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#方法一：HashMap-N-2"><span class="nav-number">6.1.1.</span> <span class="nav-text">方法一：HashMap(N^2)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#方法二：一遍遍历-N"><span class="nav-number">6.1.2.</span> <span class="nav-text">方法二：一遍遍历(N)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">7.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yeqiaozhu</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://tizzy323.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://jianghao.wang/2019/leetCode算法/Sliding Window算法通用总结/';
+          this.page.identifier = '2019/leetCode算法/Sliding Window算法通用总结/';
+          this.page.title = 'Sliding Window算法通用总结';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://tizzy323.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
