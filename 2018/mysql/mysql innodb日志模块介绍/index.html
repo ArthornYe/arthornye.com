@@ -135,7 +135,7 @@
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://arthornye.github.io/images/twostep.png">
 <meta property="og:image" content="http://arthornye.github.io/images/pointmove.png">
-<meta property="og:updated_time" content="2018-11-18T02:52:35.993Z">
+<meta property="og:updated_time" content="2020-03-11T08:53:03.449Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="mysql innodb日志模块介绍">
 <meta name="twitter:description" content="简单介绍一下mysql的日志系统。我们都知道在数据库的生产环境上，可能会发生一些事故。例如之前有个同事在执行数据订正的时候，不小心将很多的订单数据中的凭证数据覆盖成了空。这样的操作第一时间肯定是想通过数据库备份的形式将数据恢复出来，这个时候你的DBA可能会告诉你，有一周的数据的备份。不幸的是，这个事故发生的情况并没有在一星期之内定位到原因。所幸，有一份较久的备份，DBA可以根据这个备份恢复到丢失前">
@@ -453,6 +453,13 @@
 <p><strong>redo log更新成功，binlog更新的时候mysql重启，重启机制检测到之后回滚该事务。redo log更新和bin log更新都成功，提交的时候mysql重启，重启之后检测到该事务已经完成自动提交。那么两个日志模块的数据是始终一致的。</strong></p>
 <p>如果不进行两阶段提交，数据库在异常重启之后恢复的正是库可能和通过bin log恢复的备份数据是不一致的。</p>
 <h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>主要介绍了mysql innodb在更新操作的时候是如果记录日志，防止突然的重启以及后续的数据备份恢复。即时突然重启，redo log也记录了原始的物理修改信息。当然如果想要恢复到历史的某一个点，也可以通过bin log的形式在历史某一个版本的数据上进行迭代执行。两个日志模块通过了中间状态进行两阶段提交，同时也保证了数据的一致性（这里如果是分各自提交会有问题，数据不一致）。</p>
+<ol>
+<li>Date current = new Date();</li>
+<li>Calendar calendar = new GregorianCalendar();</li>
+<li>calendar.setTime(current);</li>
+<li>calendar.add(calendar.DATE, 1);</li>
+<li></li>
+</ol>
 
       
     </div>
@@ -586,7 +593,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">95</span>
+                  <span class="site-state-item-count">98</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -599,7 +606,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-count">21</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
