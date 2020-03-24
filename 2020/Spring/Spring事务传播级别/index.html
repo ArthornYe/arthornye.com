@@ -125,18 +125,20 @@
 
 
 
-<meta name="description" content="本文记录几种主要的Spring事务传播级别。 1.PROPAGATION_REQUIRED（默认）在外围方法开启事务的情况下Propagation.REQUIRED修饰的内部方法会加入到外围方法的事务中，所有Propagation.REQUIRED修饰的内部方法和外围方法均属于同一事务，只要一个方法回滚，整个事务均回滚。 2.PROPAGATION_NESTED（嵌套子事务）在外围方法开启事务的情">
+<meta name="description" content="本文记录几种主要的Spring事务传播行为。 1.PROPAGATION_REQUIRED（默认）在外围方法开启事务的情况下Propagation.REQUIRED修饰的内部方法会加入到外围方法的事务中，所有Propagation.REQUIRED修饰的内部方法和外围方法均属于同一事务，只要一个方法回滚，整个事务均回滚。 2.PROPAGATION_NESTED（嵌套子事务）在外围方法开启事务的情">
 <meta name="keywords" content="Spring">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Spring事务传播级别">
+<meta property="og:title" content="Spring事务传播行为">
 <meta property="og:url" content="http://jianghao.wang/2020/Spring/Spring事务传播级别/index.html">
 <meta property="og:site_name" content="TizzyT&#39;s Blog">
-<meta property="og:description" content="本文记录几种主要的Spring事务传播级别。 1.PROPAGATION_REQUIRED（默认）在外围方法开启事务的情况下Propagation.REQUIRED修饰的内部方法会加入到外围方法的事务中，所有Propagation.REQUIRED修饰的内部方法和外围方法均属于同一事务，只要一个方法回滚，整个事务均回滚。 2.PROPAGATION_NESTED（嵌套子事务）在外围方法开启事务的情">
+<meta property="og:description" content="本文记录几种主要的Spring事务传播行为。 1.PROPAGATION_REQUIRED（默认）在外围方法开启事务的情况下Propagation.REQUIRED修饰的内部方法会加入到外围方法的事务中，所有Propagation.REQUIRED修饰的内部方法和外围方法均属于同一事务，只要一个方法回滚，整个事务均回滚。 2.PROPAGATION_NESTED（嵌套子事务）在外围方法开启事务的情">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2020-03-24T16:21:56.703Z">
+<meta property="og:image" content="http://arthornye.github.io/images/事务传播行为.jpg">
+<meta property="og:updated_time" content="2020-03-24T16:24:40.118Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Spring事务传播级别">
-<meta name="twitter:description" content="本文记录几种主要的Spring事务传播级别。 1.PROPAGATION_REQUIRED（默认）在外围方法开启事务的情况下Propagation.REQUIRED修饰的内部方法会加入到外围方法的事务中，所有Propagation.REQUIRED修饰的内部方法和外围方法均属于同一事务，只要一个方法回滚，整个事务均回滚。 2.PROPAGATION_NESTED（嵌套子事务）在外围方法开启事务的情">
+<meta name="twitter:title" content="Spring事务传播行为">
+<meta name="twitter:description" content="本文记录几种主要的Spring事务传播行为。 1.PROPAGATION_REQUIRED（默认）在外围方法开启事务的情况下Propagation.REQUIRED修饰的内部方法会加入到外围方法的事务中，所有Propagation.REQUIRED修饰的内部方法和外围方法均属于同一事务，只要一个方法回滚，整个事务均回滚。 2.PROPAGATION_NESTED（嵌套子事务）在外围方法开启事务的情">
+<meta name="twitter:image" content="http://arthornye.github.io/images/事务传播行为.jpg">
 
 
 
@@ -172,7 +174,7 @@
 
 
 
-  <title>Spring事务传播级别 | TizzyT's Blog</title>
+  <title>Spring事务传播行为 | TizzyT's Blog</title>
   
 
 
@@ -375,7 +377,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Spring事务传播级别</h1>
+          <h1 class="post-title" itemprop="name headline">Spring事务传播行为</h1>
         
 
         <div class="post-meta">
@@ -436,7 +438,7 @@
       
 
       
-        <p>本文记录几种主要的Spring事务传播级别。</p>
+        <p>本文记录几种主要的Spring事务传播行为。</p>
 <h3 id="1-PROPAGATION-REQUIRED（默认）"><a href="#1-PROPAGATION-REQUIRED（默认）" class="headerlink" title="1.PROPAGATION_REQUIRED（默认）"></a>1.PROPAGATION_REQUIRED（默认）</h3><p><strong>在外围方法开启事务的情况下<code>Propagation.REQUIRED</code>修饰的内部方法会加入到外围方法的事务中，所有<code>Propagation.REQUIRED</code>修饰的内部方法和外围方法均属于同一事务，只要一个方法回滚，整个事务均回滚。</strong></p>
 <h3 id="2-PROPAGATION-NESTED（嵌套子事务）"><a href="#2-PROPAGATION-NESTED（嵌套子事务）" class="headerlink" title="2.PROPAGATION_NESTED（嵌套子事务）"></a>2.PROPAGATION_NESTED（嵌套子事务）</h3><p><strong>在外围方法开启事务的情况下<code>Propagation.NESTED</code>修饰的内部方法属于外部事务的子事务，外围主事务回滚，子事务一定回滚，而内部子事务可以单独回滚而不影响外围主事务和其他子事务。</strong></p>
 <h3 id="3-PROPAGATION-REQUIRES-NEW-（独立新事务）"><a href="#3-PROPAGATION-REQUIRES-NEW-（独立新事务）" class="headerlink" title="3.PROPAGATION_REQUIRES_NEW （独立新事务）"></a>3.PROPAGATION_REQUIRES_NEW （独立新事务）</h3><p><strong>在外围方法开启事务的情况下<code>Propagation.REQUIRES_NEW</code>修饰的内部方法依然会单独开启独立事务，且与外部方法事务也独立，内部方法之间、内部方法和外部方法事务均相互独立，互不干扰。</strong></p>
@@ -446,6 +448,7 @@
 <p>###6.PROPAGATION_NEVER</p>
 <p><strong>如果没有，就以非事务方式执行</strong>（如果发现方法A没有开启事务，则方法B也不开启事务）；<strong>如果有，就抛出异常</strong>（如果发现方法A有开启事务，则方法B直接抛出异常）。这就是 <strong>PROPAGATION_NEVER</strong>，这种方式更猛，没有就没有，有了反而报错，确实够牛的，它说：我从不支持事务！</p>
 <h3 id="7-PROPAGATION-MANDATORY"><a href="#7-PROPAGATION-MANDATORY" class="headerlink" title="7.PROPAGATION_MANDATORY"></a>7.PROPAGATION_MANDATORY</h3><p>如果没有，就抛出异常；如果有，就使用当前事务。这就是 <strong><code>PROPAGATION_MANDATORY</code></strong>，这种方式可以说是牛逼中的牛逼了，没有事务直接就报错，确实够狠的，它说：我必须要有事务！</p>
+<p><img src="http://arthornye.github.io/images/事务传播行为.jpg" alt="cmd-markdown-logo"></p>
 
       
     </div>
@@ -841,7 +844,7 @@
         var disqus_config = function () {
           this.page.url = 'http://jianghao.wang/2020/Spring/Spring事务传播级别/';
           this.page.identifier = '2020/Spring/Spring事务传播级别/';
-          this.page.title = 'Spring事务传播级别';
+          this.page.title = 'Spring事务传播行为';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://tizzy323.disqus.com/embed.js';
