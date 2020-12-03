@@ -125,18 +125,18 @@
 
 
 
-<meta name="description" content="工作问题记录安装nacos出现问题/nacos/conf/cluster.conf (No such file or directory)启动日志报错。查询发现是以集群的方式启动了，改成以单机的方式启动。 1sh startup.sh -m standalone">
+<meta name="description" content="工作问题记录安装nacos出现问题/nacos/conf/cluster.conf (No such file or directory)启动日志报错。查询发现是以集群的方式启动了，改成以单机的方式启动。 1sh startup.sh -m standalone 为什么要加@Transactional(rollbackFor = Exception.class)1这种设置是因为Spring的默认回">
 <meta name="keywords" content="乐其工作记录">
 <meta property="og:type" content="article">
 <meta property="og:title" content="乐其工作记录">
 <meta property="og:url" content="http://jianghao.wang/2020/大搜车点滴记录/乐其工作记录/index.html">
 <meta property="og:site_name" content="TizzyT&#39;s Blog">
-<meta property="og:description" content="工作问题记录安装nacos出现问题/nacos/conf/cluster.conf (No such file or directory)启动日志报错。查询发现是以集群的方式启动了，改成以单机的方式启动。 1sh startup.sh -m standalone">
+<meta property="og:description" content="工作问题记录安装nacos出现问题/nacos/conf/cluster.conf (No such file or directory)启动日志报错。查询发现是以集群的方式启动了，改成以单机的方式启动。 1sh startup.sh -m standalone 为什么要加@Transactional(rollbackFor = Exception.class)1这种设置是因为Spring的默认回">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2020-03-24T15:34:40.158Z">
+<meta property="og:updated_time" content="2020-10-15T07:15:36.185Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="乐其工作记录">
-<meta name="twitter:description" content="工作问题记录安装nacos出现问题/nacos/conf/cluster.conf (No such file or directory)启动日志报错。查询发现是以集群的方式启动了，改成以单机的方式启动。 1sh startup.sh -m standalone">
+<meta name="twitter:description" content="工作问题记录安装nacos出现问题/nacos/conf/cluster.conf (No such file or directory)启动日志报错。查询发现是以集群的方式启动了，改成以单机的方式启动。 1sh startup.sh -m standalone 为什么要加@Transactional(rollbackFor = Exception.class)1这种设置是因为Spring的默认回">
 
 
 
@@ -438,6 +438,24 @@
       
         <h4 id="工作问题记录"><a href="#工作问题记录" class="headerlink" title="工作问题记录"></a>工作问题记录</h4><h3 id="安装nacos出现问题"><a href="#安装nacos出现问题" class="headerlink" title="安装nacos出现问题"></a>安装nacos出现问题</h3><p>/nacos/conf/cluster.conf (No such file or directory)启动日志报错。查询发现是以集群的方式启动了，改成以单机的方式启动。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sh startup.sh -m standalone</span><br></pre></td></tr></table></figure>
+<h3 id="为什么要加-Transactional-rollbackFor-Exception-class"><a href="#为什么要加-Transactional-rollbackFor-Exception-class" class="headerlink" title="为什么要加@Transactional(rollbackFor = Exception.class)"></a>为什么要加@Transactional(rollbackFor = Exception.class)</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">这种设置是因为Spring的默认回滚RuntimeException，如果想要回滚Exception时，要设置<span class="meta">@Transactional</span>(rollbackFor = Exception.class)，而且Exception还要抛出。</span><br></pre></td></tr></table></figure>
+<h4 id="产品运营反馈问题"><a href="#产品运营反馈问题" class="headerlink" title="产品运营反馈问题"></a>产品运营反馈问题</h4><p>某商品库存被单据占有无法分配，提供barcode进行排查。</p>
+<ul>
+<li><p>1.根据barcode查到商品id，观察qty_total和qty_available判断可能是哪个order_goods_id</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">select * from wms.product_location pl inner join wms.product p on pl.product_id=p.product_id </span><br><span class="line">where p.barcode=&apos;pxp001&apos;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>2.查到order_goods_id</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">select count(1), order_goods_id from (</span><br><span class="line">(select order_goods_id</span><br><span class="line">from wms.order_goods where order_id in (select distinct op.order_id from wms.product_location_detail pld</span><br><span class="line">inner join wms.task t on pld.task_id = t.task_id</span><br><span class="line">inner join wms.order_process op on t.batch_pick_id = op.batch_pick_id</span><br><span class="line">where pld.pl_id in (</span><br><span class="line">select pl.pl_id from wms.product_location pl</span><br><span class="line">inner join wms.location l on pl.location_id = l.location_id</span><br><span class="line">where product_id = 73172 and l.location_type = &apos;TRANSIT_LOCATION&apos; and pl.physical_warehouse_id=1164 and pl.customer_id=1087)) and product_id =  73172)</span><br><span class="line">union all </span><br><span class="line">(select og.order_goods_id from wms.order_goods og </span><br><span class="line">inner join wms.product_location_detail pld on og.order_goods_id = pld.order_goods_id</span><br><span class="line">inner join wms.product_location pl on pld.pl_id = pl.pl_id</span><br><span class="line">inner join wms.location l on pl.location_id = l.location_id</span><br><span class="line">where og.product_id = 73172 and l.location_type = &apos;TRANSIT_LOCATION&apos; and pl.physical_warehouse_id=1164 and pl.customer_id=1087) ) as ob</span><br><span class="line">group by order_goods_id </span><br><span class="line">having count(1) = 1;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>3.排查该订单的订单轨迹</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">select * from wms.user_action_order where order_id=4381294</span><br><span class="line">select * from wms.order_goods where order_id=2351367  </span><br><span class="line">select * from wms.order_inventory_return where order_id=2351367</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="RequestParam接收不到前端参数"><a href="#RequestParam接收不到前端参数" class="headerlink" title="@RequestParam接收不到前端参数"></a>@RequestParam接收不到前端参数</h4><p>application/x-www-form-urlencoded是以表格的形式请求，而application/json则将数据序列化后才进行传递，如果使用了@RequestParam会在Content里面查找对应的数据，结果因为传递的数据已经被序列化所以不能找到，所以当要使用@RequestParam注解时候应当使用application/x-www-form-urlencoded，而如果想要使用application/json则应当使用@RequestBody获取被序列化的参数。</p>
+<h4 id="git-cherry-pick"><a href="#git-cherry-pick" class="headerlink" title="git cherry-pick "></a>git cherry-pick <commithash></commithash></h4><p>在公共分支上不小心提交了开发分支的代码，可以查看当前提交的id，从开发分支上cherry-pick这个提交。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git cherry-pick &lt;commitHash&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="java-lang-ClassNotFoundException"><a href="#java-lang-ClassNotFoundException" class="headerlink" title="java.lang.ClassNotFoundException:"></a>java.lang.ClassNotFoundException:</h2><p>集成支付宝时候，启动时候发现报了这个错误，java.lang.NoClassDefFoundError: com/alipay/api/AlipayApiException</p>
+<p>百思不得其解，lib已经导入了，然后发现在tomcat的war包里面的lib没有阿里爸爸的包,用的是idea工具，因为已经添加了alipay的jar包所以重新模拟下。右键打开modul设置，Arifacts—&gt;选择自己项目—&gt;lib—&gt;Add Copy of–&gt;Libray Files 选择alipay.jar包即可。</p>
 
       
     </div>
@@ -571,7 +589,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">101</span>
+                  <span class="site-state-item-count">102</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -652,7 +670,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#工作问题记录"><span class="nav-number">1.</span> <span class="nav-text">工作问题记录</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装nacos出现问题"><span class="nav-number"></span> <span class="nav-text">安装nacos出现问题</span></a></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#工作问题记录"><span class="nav-number">1.</span> <span class="nav-text">工作问题记录</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装nacos出现问题"><span class="nav-number"></span> <span class="nav-text">安装nacos出现问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么要加-Transactional-rollbackFor-Exception-class"><span class="nav-number"></span> <span class="nav-text">为什么要加@Transactional(rollbackFor = Exception.class)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#产品运营反馈问题"><span class="nav-number">1.</span> <span class="nav-text">产品运营反馈问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RequestParam接收不到前端参数"><span class="nav-number">2.</span> <span class="nav-text">@RequestParam接收不到前端参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#git-cherry-pick"><span class="nav-number">3.</span> <span class="nav-text">git cherry-pick </span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#java-lang-ClassNotFoundException"><span class="nav-number"></span> <span class="nav-text">java.lang.ClassNotFoundException:</span></a></div>
             
 
           </div>

@@ -357,6 +357,144 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://jianghao.wang/2020/Spring/Spring事务注解失效的几种场景/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yeqiaozhu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="TizzyT's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/Spring/Spring事务注解失效的几种场景/" itemprop="url">Spring事务注解失效的几种场景</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-07-30T15:30:51+08:00">
+                2020-07-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/Spring/Spring事务注解失效的几种场景/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2020/Spring/Spring事务注解失效的几种场景/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          Spring中事务注解@Transactional在一些情况下会失效，主要介绍几种可能导致事务注解失效的场景。
+场景一：同类方法嵌套调用Spring可以通过动态代理进行类增强，A类中A方法未加注解，A类中B方法加了@Transactional注解，那么如果从A入口调用B方法，会导致事务注解失效。伪代
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/Spring/Spring事务注解失效的几种场景/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://jianghao.wang/2020/leetCode算法/二分通用总结/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -720,7 +858,7 @@
         
           
           本文记录几种主要的Spring事务传播行为。
-1.PROPAGATION_REQUIRED（默认）在外围方法开启事务的情况下Propagation.REQUIRED修饰的内部方法会加入到外围方法的事务中，所有Propagation.REQUIRED修饰的内部方法和外围方法均属于同一事务，只要一个方法
+Spring事务传播行为1.PROPAGATION_REQUIRED（默认）在外围方法开启事务的情况下Propagation.REQUIRED修饰的内部方法会加入到外围方法的事务中，所有Propagation.REQUIRED修饰的内部方法和外围方法均属
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -859,151 +997,11 @@
           
           工作问题记录安装nacos出现问题/nacos/conf/cluster.conf (No such file or directory)启动日志报错。查询发现是以集群的方式启动了，改成以单机的方式启动。
 1sh startup.sh -m standalone
-
-          
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2020/大搜车点滴记录/乐其工作记录/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://jianghao.wang/2020/Untitled/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yeqiaozhu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="TizzyT's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/Untitled/" itemprop="url">Untitled</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-02-19T13:43:42+08:00">
-                2020-02-19
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2020/Untitled/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2020/Untitled/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          Step1
-调用接口/wms/web/inside/process/management/info/exception/save
-入参：
-12345678910111213141516171819202122&#123;  "exceptionTypes": [    &#123;      "ex
+为什么要加@Transactiona
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2020/Untitled/#more" rel="contents">
+            <a class="btn" href="/2020/大搜车点滴记录/乐其工作记录/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -1095,7 +1093,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">101</span>
+                  <span class="site-state-item-count">102</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

@@ -125,19 +125,19 @@
 
 
 
-<meta name="description" content="本文记录几种主要的Spring事务传播行为。 1.PROPAGATION_REQUIRED（默认）在外围方法开启事务的情况下Propagation.REQUIRED修饰的内部方法会加入到外围方法的事务中，所有Propagation.REQUIRED修饰的内部方法和外围方法均属于同一事务，只要一个方法回滚，整个事务均回滚。 2.PROPAGATION_NESTED（嵌套子事务）在外围方法开启事务的情">
+<meta name="description" content="本文记录几种主要的Spring事务传播行为。 Spring事务传播行为1.PROPAGATION_REQUIRED（默认）在外围方法开启事务的情况下Propagation.REQUIRED修饰的内部方法会加入到外围方法的事务中，所有Propagation.REQUIRED修饰的内部方法和外围方法均属于同一事务，只要一个方法回滚，整个事务均回滚。 2.PROPAGATION_NESTED（嵌套子事务">
 <meta name="keywords" content="Spring">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Spring事务传播行为">
 <meta property="og:url" content="http://jianghao.wang/2020/Spring/Spring事务传播级别/index.html">
 <meta property="og:site_name" content="TizzyT&#39;s Blog">
-<meta property="og:description" content="本文记录几种主要的Spring事务传播行为。 1.PROPAGATION_REQUIRED（默认）在外围方法开启事务的情况下Propagation.REQUIRED修饰的内部方法会加入到外围方法的事务中，所有Propagation.REQUIRED修饰的内部方法和外围方法均属于同一事务，只要一个方法回滚，整个事务均回滚。 2.PROPAGATION_NESTED（嵌套子事务）在外围方法开启事务的情">
+<meta property="og:description" content="本文记录几种主要的Spring事务传播行为。 Spring事务传播行为1.PROPAGATION_REQUIRED（默认）在外围方法开启事务的情况下Propagation.REQUIRED修饰的内部方法会加入到外围方法的事务中，所有Propagation.REQUIRED修饰的内部方法和外围方法均属于同一事务，只要一个方法回滚，整个事务均回滚。 2.PROPAGATION_NESTED（嵌套子事务">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://arthornye.github.io/images/事务传播行为.jpg">
-<meta property="og:updated_time" content="2020-03-24T16:24:40.118Z">
+<meta property="og:updated_time" content="2020-12-03T09:29:50.732Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spring事务传播行为">
-<meta name="twitter:description" content="本文记录几种主要的Spring事务传播行为。 1.PROPAGATION_REQUIRED（默认）在外围方法开启事务的情况下Propagation.REQUIRED修饰的内部方法会加入到外围方法的事务中，所有Propagation.REQUIRED修饰的内部方法和外围方法均属于同一事务，只要一个方法回滚，整个事务均回滚。 2.PROPAGATION_NESTED（嵌套子事务）在外围方法开启事务的情">
+<meta name="twitter:description" content="本文记录几种主要的Spring事务传播行为。 Spring事务传播行为1.PROPAGATION_REQUIRED（默认）在外围方法开启事务的情况下Propagation.REQUIRED修饰的内部方法会加入到外围方法的事务中，所有Propagation.REQUIRED修饰的内部方法和外围方法均属于同一事务，只要一个方法回滚，整个事务均回滚。 2.PROPAGATION_NESTED（嵌套子事务">
 <meta name="twitter:image" content="http://arthornye.github.io/images/事务传播行为.jpg">
 
 
@@ -439,16 +439,27 @@
 
       
         <p>本文记录几种主要的Spring事务传播行为。</p>
-<h3 id="1-PROPAGATION-REQUIRED（默认）"><a href="#1-PROPAGATION-REQUIRED（默认）" class="headerlink" title="1.PROPAGATION_REQUIRED（默认）"></a>1.PROPAGATION_REQUIRED（默认）</h3><p><strong>在外围方法开启事务的情况下<code>Propagation.REQUIRED</code>修饰的内部方法会加入到外围方法的事务中，所有<code>Propagation.REQUIRED</code>修饰的内部方法和外围方法均属于同一事务，只要一个方法回滚，整个事务均回滚。</strong></p>
-<h3 id="2-PROPAGATION-NESTED（嵌套子事务）"><a href="#2-PROPAGATION-NESTED（嵌套子事务）" class="headerlink" title="2.PROPAGATION_NESTED（嵌套子事务）"></a>2.PROPAGATION_NESTED（嵌套子事务）</h3><p><strong>在外围方法开启事务的情况下<code>Propagation.NESTED</code>修饰的内部方法属于外部事务的子事务，外围主事务回滚，子事务一定回滚，而内部子事务可以单独回滚而不影响外围主事务和其他子事务。</strong></p>
-<h3 id="3-PROPAGATION-REQUIRES-NEW-（独立新事务）"><a href="#3-PROPAGATION-REQUIRES-NEW-（独立新事务）" class="headerlink" title="3.PROPAGATION_REQUIRES_NEW （独立新事务）"></a>3.PROPAGATION_REQUIRES_NEW （独立新事务）</h3><p><strong>在外围方法开启事务的情况下<code>Propagation.REQUIRES_NEW</code>修饰的内部方法依然会单独开启独立事务，且与外部方法事务也独立，内部方法之间、内部方法和外部方法事务均相互独立，互不干扰。</strong></p>
-<h3 id="4-PROPAGATION-NOT-SUPPORTED"><a href="#4-PROPAGATION-NOT-SUPPORTED" class="headerlink" title="4.PROPAGATION_NOT_SUPPORTED"></a>4.PROPAGATION_NOT_SUPPORTED</h3><p><strong>如果没有，就以非事务方式执行</strong>（如果发现方法A没有开启事务，则方法B也不开启事务）；<strong>如果有，就将当前事务挂起</strong>。（方法A的事务挂起，而方法B非事务的状态运行完，再继续方法A的事务。）这就是 <strong>PROPAGATION_NOT_SUPPORTED</strong>，这种方式非常强硬，没有就没有，有我也不支持你，把你挂起来，不鸟你。</p>
-<p>###5. PROPAGATION_SUPPORTED</p>
-<p><strong>如果没有，就以非事务方式执行</strong>（如果发现方法A没有开启事务，则方法B也不开启事务）；<strong>如果有，就加入当前事务。</strong>（方法B看到自己已经运行在方法A的事务内部，就不再起新的事务，直接加入方法A）。这就是 <strong>PROPAGATION_SUPPORTS</strong>，这种方式非常随意，没有就没有，有就有，有点无所谓的态度，反正我是支持你的。</p>
-<p>###6.PROPAGATION_NEVER</p>
-<p><strong>如果没有，就以非事务方式执行</strong>（如果发现方法A没有开启事务，则方法B也不开启事务）；<strong>如果有，就抛出异常</strong>（如果发现方法A有开启事务，则方法B直接抛出异常）。这就是 <strong>PROPAGATION_NEVER</strong>，这种方式更猛，没有就没有，有了反而报错，确实够牛的，它说：我从不支持事务！</p>
-<h3 id="7-PROPAGATION-MANDATORY"><a href="#7-PROPAGATION-MANDATORY" class="headerlink" title="7.PROPAGATION_MANDATORY"></a>7.PROPAGATION_MANDATORY</h3><p>如果没有，就抛出异常；如果有，就使用当前事务。这就是 <strong><code>PROPAGATION_MANDATORY</code></strong>，这种方式可以说是牛逼中的牛逼了，没有事务直接就报错，确实够狠的，它说：我必须要有事务！</p>
+<h3 id="Spring事务传播行为"><a href="#Spring事务传播行为" class="headerlink" title="Spring事务传播行为"></a>Spring事务传播行为</h3><h4 id="1-PROPAGATION-REQUIRED（默认）"><a href="#1-PROPAGATION-REQUIRED（默认）" class="headerlink" title="1.PROPAGATION_REQUIRED（默认）"></a>1.PROPAGATION_REQUIRED（默认）</h4><p><strong>在外围方法开启事务的情况下<code>Propagation.REQUIRED</code>修饰的内部方法会加入到外围方法的事务中，所有<code>Propagation.REQUIRED</code>修饰的内部方法和外围方法均属于同一事务，只要一个方法回滚，整个事务均回滚。</strong></p>
+<h4 id="2-PROPAGATION-NESTED（嵌套子事务）"><a href="#2-PROPAGATION-NESTED（嵌套子事务）" class="headerlink" title="2.PROPAGATION_NESTED（嵌套子事务）"></a>2.PROPAGATION_NESTED（嵌套子事务）</h4><p><strong>在外围方法开启事务的情况下<code>Propagation.NESTED</code>修饰的内部方法属于外部事务的子事务，外围主事务回滚，子事务一定回滚，而内部子事务可以单独回滚而不影响外围主事务和其他子事务。</strong></p>
+<h4 id="3-PROPAGATION-REQUIRES-NEW-（独立新事务）"><a href="#3-PROPAGATION-REQUIRES-NEW-（独立新事务）" class="headerlink" title="3.PROPAGATION_REQUIRES_NEW （独立新事务）"></a>3.PROPAGATION_REQUIRES_NEW （独立新事务）</h4><p><strong>在外围方法开启事务的情况下<code>Propagation.REQUIRES_NEW</code>修饰的内部方法依然会单独开启独立事务，且与外部方法事务也独立，内部方法之间、内部方法和外部方法事务均相互独立，互不干扰。</strong></p>
+<h4 id="4-PROPAGATION-NOT-SUPPORTED"><a href="#4-PROPAGATION-NOT-SUPPORTED" class="headerlink" title="4.PROPAGATION_NOT_SUPPORTED"></a>4.PROPAGATION_NOT_SUPPORTED</h4><p><strong>如果没有，就以非事务方式执行</strong>（如果发现方法A没有开启事务，则方法B也不开启事务）；<strong>如果有，就将当前事务挂起</strong>。（方法A的事务挂起，而方法B非事务的状态运行完，再继续方法A的事务。）这就是 <strong>PROPAGATION_NOT_SUPPORTED</strong>，这种方式非常强硬，没有就没有，有我也不支持你，把你挂起来，不鸟你。</p>
+<h4 id="5-PROPAGATION-SUPPORTED"><a href="#5-PROPAGATION-SUPPORTED" class="headerlink" title="5. PROPAGATION_SUPPORTED"></a>5. PROPAGATION_SUPPORTED</h4><p><strong>如果没有，就以非事务方式执行</strong>（如果发现方法A没有开启事务，则方法B也不开启事务）；<strong>如果有，就加入当前事务。</strong>（方法B看到自己已经运行在方法A的事务内部，就不再起新的事务，直接加入方法A）。这就是 <strong>PROPAGATION_SUPPORTS</strong>，这种方式非常随意，没有就没有，有就有，有点无所谓的态度，反正我是支持你的。</p>
+<h4 id="6-PROPAGATION-NEVER"><a href="#6-PROPAGATION-NEVER" class="headerlink" title="6.PROPAGATION_NEVER"></a>6.PROPAGATION_NEVER</h4><p><strong>如果没有，就以非事务方式执行</strong>（如果发现方法A没有开启事务，则方法B也不开启事务）；<strong>如果有，就抛出异常</strong>（如果发现方法A有开启事务，则方法B直接抛出异常）。这就是 <strong>PROPAGATION_NEVER</strong>，这种方式更猛，没有就没有，有了反而报错，确实够牛的，它说：我从不支持事务！</p>
+<h4 id="7-PROPAGATION-MANDATORY"><a href="#7-PROPAGATION-MANDATORY" class="headerlink" title="7.PROPAGATION_MANDATORY"></a>7.PROPAGATION_MANDATORY</h4><p>如果没有，就抛出异常；如果有，就使用当前事务。这就是 <strong><code>PROPAGATION_MANDATORY</code></strong>，这种方式可以说是牛逼中的牛逼了，没有事务直接就报错，确实够狠的，它说：我必须要有事务！</p>
 <p><img src="http://arthornye.github.io/images/事务传播行为.jpg" alt="cmd-markdown-logo"></p>
+<p>记录一片比较好的文章参考方便复习:<a href="https://segmentfault.com/a/1190000013341344#comment-area" target="_blank" rel="noopener">https://segmentfault.com/a/1190000013341344#comment-area</a></p>
+<h3 id="问题记录"><a href="#问题记录" class="headerlink" title="问题记录"></a>问题记录</h3><p>在外围方法开启事务的前提下，内部事务的传播行为REQUIRED，此时如果外部方法捕获内部方法的异常直接吞掉，外部事务在提交的时候会报<strong>Transaction rolled back because it has been marked as rollback-only</strong>。这是因为内部事务在回滚的时候已经将rollback-only设置为true，那么外部事务切面在执行的时候虽然没有捕获到异常但是判断这个状态为true，则进行回滚。</p>
+<h3 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h3><p>在乐其的工作中，通常会有处理一张数据量超大的表的需求。</p>
+<ul>
+<li><p>通常我们为了避免大事务会将这个事务分成几个独立事务分别进行提交，并汇总执行的结果。</p>
+</li>
+<li><p>其中一个失误发生异常通过try catch捕获，不影响其他事务。</p>
+</li>
+</ul>
+<p>1.内部方法添加独立事务注解：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Transactional</span>(rollbackFor = Exception.class,propagation = Propagation.REQUIRES_NEW)</span><br></pre></td></tr></table></figure>
+<p>2.外部方法添加事务：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Transactional</span>(rollbackFor = Exception.class,propagation = Propagation.REQUIRED)</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -582,7 +593,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">101</span>
+                  <span class="site-state-item-count">102</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -663,7 +674,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-PROPAGATION-REQUIRED（默认）"><span class="nav-number">1.</span> <span class="nav-text">1.PROPAGATION_REQUIRED（默认）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-PROPAGATION-NESTED（嵌套子事务）"><span class="nav-number">2.</span> <span class="nav-text">2.PROPAGATION_NESTED（嵌套子事务）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-PROPAGATION-REQUIRES-NEW-（独立新事务）"><span class="nav-number">3.</span> <span class="nav-text">3.PROPAGATION_REQUIRES_NEW （独立新事务）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-PROPAGATION-NOT-SUPPORTED"><span class="nav-number">4.</span> <span class="nav-text">4.PROPAGATION_NOT_SUPPORTED</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-PROPAGATION-MANDATORY"><span class="nav-number">5.</span> <span class="nav-text">7.PROPAGATION_MANDATORY</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring事务传播行为"><span class="nav-number">1.</span> <span class="nav-text">Spring事务传播行为</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-PROPAGATION-REQUIRED（默认）"><span class="nav-number">1.1.</span> <span class="nav-text">1.PROPAGATION_REQUIRED（默认）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-PROPAGATION-NESTED（嵌套子事务）"><span class="nav-number">1.2.</span> <span class="nav-text">2.PROPAGATION_NESTED（嵌套子事务）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-PROPAGATION-REQUIRES-NEW-（独立新事务）"><span class="nav-number">1.3.</span> <span class="nav-text">3.PROPAGATION_REQUIRES_NEW （独立新事务）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-PROPAGATION-NOT-SUPPORTED"><span class="nav-number">1.4.</span> <span class="nav-text">4.PROPAGATION_NOT_SUPPORTED</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-PROPAGATION-SUPPORTED"><span class="nav-number">1.5.</span> <span class="nav-text">5. PROPAGATION_SUPPORTED</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-PROPAGATION-NEVER"><span class="nav-number">1.6.</span> <span class="nav-text">6.PROPAGATION_NEVER</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-PROPAGATION-MANDATORY"><span class="nav-number">1.7.</span> <span class="nav-text">7.PROPAGATION_MANDATORY</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题记录"><span class="nav-number">2.</span> <span class="nav-text">问题记录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用场景"><span class="nav-number">3.</span> <span class="nav-text">应用场景</span></a></li></ol></div>
             
 
           </div>
